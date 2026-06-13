@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__claude_ai_Supermetrics_Marketing_Analytics__data_source_discovery",
+      "PowerShell(pip install *)",
+      "Bash(dir \"E:\\\\Blottman-law\")",
+      "Bash(python audit.py)",
+      "Bash(python E:/Blottman-law/_ca.py)",
+      "Bash(python E:/Blottman-law/stenth_watch.py)",
+      "PowerShell(python E:\\\\Blottman-law\\\\stenth_watch.py)",
+      "WebFetch(domain:blottman.com)",
+      "Bash(python -c \"import google.ads.googleads; print\\('google-ads library version:', google.ads.googleads.VERSION\\)\")",
+      "mcp__claude_ai_Google_Calendar__create_event",
+      "Bash(python *)",
+      "Skill(firecrawl-map)",
+      "PowerShell(python today.py)",
+      "PowerShell(python code\\\\today.py)",
+      "PowerShell(python code\\\\campaign_status.py)",
+      "PowerShell(python code\\\\calls_diag.py)",
+      "PowerShell(python code\\\\asset_policy.py)",
+      "PowerShell(python code\\\\stenth_watch.py)",
+      "PowerShell(python code\\\\today_leads.py)",
+      "PowerShell(python code\\\\today_leads.py YESTERDAY)",
+      "PowerShell(python code\\\\yesterday_review.py)",
+      "PowerShell(python code\\\\add_shared_negs.py)",
+      "PowerShell(python conv_actions.py)",
+      "PowerShell(python code\\\\form_conv_inspect.py)",
+      "PowerShell(python code\\\\form_tag_snippet.py)",
+      "PowerShell(python code\\\\leads.py)",
+      "PowerShell(python code\\\\ga4_link.py)",
+      "PowerShell(foreach \\($u in @\\('https://blottman.com/privacy-policy','https://blottman.com/privacy','https://blottman.com/privacy-policy/','https://www.blottman.com/privacy-policy'\\)\\) { try { $r = Invoke-WebRequest -Uri $u -Method Head -MaximumRedirection 5 -UseBasicParsing -TimeoutSec 15; Write-Output \"$u -> $\\($r.StatusCode\\)\" } catch { Write-Output \"$u -> FAIL $\\($_.Exception.Message.Split\\(\"`n\"\\)[0]\\)\" } })",
+      "PowerShell(python code\\\\build_lead_form.py)",
+      "PowerShell(python code\\\\budget_swap.py)",
+      "PowerShell(python code\\\\ttl_audit.py)",
+      "PowerShell(python code\\\\apply_audit_fixes.py)"
+    ]
+  }
+}
