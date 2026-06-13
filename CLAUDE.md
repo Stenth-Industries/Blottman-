@@ -286,7 +286,7 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   for future OCI). Also built **`code/leads.py` = THE standard daily report** — always reads
   all_conversions (never the misleading primary-only column), shows today/yesterday by
   campaign×action + 7d by action + 10 recent calls. ⚠️ **stenth default value is now $150, not
-  $500** (confirmed changed by Akash, 2026-06-12 — intentional interim value; $500 stays on roadmap for Phase 2 OCI/value-based bidding; no bidding impact now since account runs count-based Max Conv) — also "Contact Us" stays SECONDARY deliberately until the
+  $500** (someone changed it — Akash?) — also "Contact Us" stays SECONDARY deliberately until the
   client confirms she receives the form emails (it's WEBPAGE_CODELESS, 171/30d, may be noise;
   flipping it primary would point bidding at an unverified signal + reset learning). Budgets
   unchanged per Kushagra ("budget is good, don't lift") — the broad$30→25/TTL$5→10 neutral swap is
@@ -338,3 +338,18 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   no info and injects fake $500s. Real fix = **offline conversion import** (gclid capture on new site →
   stenth uploads only booked consults at $500), a Phase-1 (~July) build. This is **Akash's lane** — coordinate
   before changing asset wiring/values. Diagnostic only this session (no mutations).
+- **2026-06-14** (Kushagra): **CLIENT COMPLAINT (Les, WhatsApp 3:29am)** — "whatever was done to the
+  ads must be retracted… activate old ads as im still getting calls for parking tickets and irrelevant
+  questions." Diagnosed source (read-only, LAST_14_DAYS): the parking/junk **calls trace to PMAX, NOT
+  the new Search ads.** **PMAX - Blottman Max** insight categories: `parking ticket lawyer toronto`
+  (45 impr / **5 clk**), `parking ticket lawyer` (6 impr / 1 clk / **1 conv**), `parking tickets`.
+  **Blottman New pM #2** = the "irrelevant" source (`immigration lawyers`, `black legal aid clinic`,
+  `24 hour free legal advice`, competitors). The 2 Search campaigns show parking **impr but 0 clicks**
+  → clean, do NOT retract them. Did NOT do a blanket retraction (would kill clean traffic + the policy
+  fix). FIX APPLIED (API): added `[BRO] parking` (catch-all; only multi-word parking negs existed) +
+  `[BRO] immigration` to shared **Master Negatives** (`12109076551`, now 67, attached to all 5 enabled
+  campaigns). FIX PENDING (UI-only, can't script): **turn OFF Final URL Expansion on all 3 PMAX**
+  campaigns — the real lever for the insight-category leak — step-by-step in `fix-parking-pmax-UI.md`.
+  Consider pausing/cutting **pM #2** ($22/day, worst junk). Do NOT re-enable old "98% Win Rate"/DUI ad
+  `774748697421`. NOTE: enabled budgets now ~$117/day (pM #2 at $22, not $15 as previously logged).
+  Scripts: `add_parking_broad.py`. Effect re-learns over 24–48h.

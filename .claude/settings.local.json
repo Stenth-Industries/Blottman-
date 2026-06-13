@@ -32,7 +32,22 @@
       "PowerShell(python code\\\\build_lead_form.py)",
       "PowerShell(python code\\\\budget_swap.py)",
       "PowerShell(python code\\\\ttl_audit.py)",
-      "PowerShell(python code\\\\apply_audit_fixes.py)"
+      "PowerShell(python code\\\\apply_audit_fixes.py)",
+      "Bash(firecrawl scrape *)",
+      "Bash(nslookup -type=ns blottman.com)",
+      "Bash(nslookup -type=soa blottman.com)",
+      "Bash(nslookup blottman.com)",
+      "Bash(git remote *)",
+      "Bash(git ls-remote *)",
+      "Bash(git fetch *)",
+      "Bash(git ls-tree *)",
+      "Bash(MSYS_NO_PATHCONV=1 git show *)",
+      "Bash(git reset *)",
+      "Bash(git branch *)",
+      "Bash(git -c core.quotepath=false status -s)",
+      "Bash(git checkout *)",
+      "Bash(git check-ignore *)",
+      "Bash(git add *)"
     ]
   }
 }
