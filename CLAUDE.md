@@ -353,3 +353,46 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   Consider pausing/cutting **pM #2** ($22/day, worst junk). Do NOT re-enable old "98% Win Rate"/DUI ad
   `774748697421`. NOTE: enabled budgets now ~$117/day (pM #2 at $22, not $15 as previously logged).
   Scripts: `add_parking_broad.py`. Effect re-learns over 24–48h.
+- **2026-06-14** (Kushagra): **`blottman.com/traffic-tickets` is BROKEN** (client checked it live). Repointed
+  ALL live ad click-destinations to the **homepage** `https://blottman.com/`. Changed final_urls on 3 RSAs
+  in `Traffic ticket lawyer broad`: `812451424746` (ENABLED), `812455198290` (ENABLED), `812451172230`
+  (PAUSED) — were all → /traffic-tickets, now → homepage. Other enabled RSAs (`773055112233`,
+  `794266232108`) + all 3 PMAX asset groups were ALREADY on homepage. Only /traffic-tickets sitelink on a
+  live campaign (`322570766591` Cell Phone Ticket) is already REMOVED/not serving — no action needed.
+  **NOTE:** topical subpage sitelinks (`/careless-driving-ticket/`, `/stunt-driving-ticket/`,
+  `/traffic-violations/`, `/criminal-defense/` etc.) were left as-is — client only confirmed /traffic-tickets
+  is broken; verify the others before touching. **Also turned OFF Final URL Expansion on PMAX (UI, by
+  Akash/Kushagra)** — so PMAX now serves only to the homepage final URL. Script: `repoint_to_home.py`.
+- **2026-06-14** (Kushagra): **Fixed BMX geo.** `PMAX - Blottman Max` (`22979153470`) had **NO geo
+  targeting** (served anywhere) — a likely source of Les's "irrelevant/out-of-area calls." Set geo =
+  **Ontario** (`geoTargetConstants/20121`) + **PRESENCE-only** (`positive_geo_target_type=PRESENCE`),
+  since she's an Ontario paralegal serving all ON — keeps GTA + Barrie/Cookstown local + small cities,
+  drops only un-serviceable out-of-province traffic. ⚠️ **FOUND: pM #2 & #3 target only Sarnia+Windsor**
+  (tiny SW-Ontario, NOT her converting GTA market) — looks misconfigured; decide fix-or-pause (#2 is the
+  junk offender anyway). Search campaigns' geo is fine (broad=GTA; TTL=small-city play). Script:
+  `fix_pmax_geo.py`. Minor PMAX re-learning expected.
+- **2026-06-14** (Kushagra): **PMAX CONSOLIDATION (user-approved).** Paused **pM #2** (`23753177178`)
+  + **pM #3** (`23757095274`) — near-duplicates of BMX (same 12 themes, no audience signal, homepage)
+  but mis-geo'd to Sarnia+Windsor and generating legal-aid/immigration **junk reach** = a source of Les's
+  "irrelevant calls." Diagnosis: PMAX search themes are *hints not limits*; PMAX auto-expands across
+  Search/Display/YT/Gmail/Discover to "legal-interested" audiences — can't be fully fenced by negatives,
+  so the fix is to NOT run redundant PMAX. Raised **BMX** budget $50→**$60** (+20% safe step; BMX was
+  delivery-limited not budget-limited, so it'll scale into the room over days, not instantly). **Enabled
+  budgets now: BMX $60 + broad $20 + TTL $15 = $95/day (~$2,888/mo ≈ client's $3K target).** Short-term
+  spend may dip until BMX absorbs the volume; Search ($35/day) keeps leads flowing meanwhile. Next: step
+  BMX toward $75-80 once it stabilizes (watch CPA). Script: `consolidate_pmax.py`.
+- **2026-06-14** (Kushagra): **JUN-13 REVIEW + call-quality check — consolidation CONFIRMED right, HOLD it.**
+  Jun 13 closed: **269 impr / 19 clk / $92.30 / 7 leads** (≈ client's $98/day target). stenth fired **3×**
+  (2 on pM #2, 1 on pM #3) — firing consistently now. BUT all 7 Jun-13 leads came from **pM #2/#3 + TTL**;
+  **BMX produced 0 that day** (still spinning up post-throttle). First read looked like "we cut our best
+  campaigns" — it wasn't. Ran `code/call_quality.py` (read-only, call_view can't filter by date → pull-all +
+  client-side 7-day filter; area-code GTA set = 416/647/437/905/289/365). Result:
+  **BMX = 5 calls, 0 out-of-area, incl. a 513s (8.5-min) GTA consult Jun 8 + 32s GTA** → the clean quality
+  source. **pM #2 = 6 calls, 3 out-of-area** (519, 226 SW-Ont, **942 = invalid/spam area code**).
+  **pM #3 = 7 calls, 3 out-of-area** (**236 = British Columbia**, 613 Ottawa ×2). So pM's stenth "$500
+  conversions" were padding the count with out-of-area/junk calls — exactly Les's complaint. **DECISION:
+  keep pM #2/#3 PAUSED, let BMX run at $60 for 3–4 days (it's the clean horse, just needs to absorb budget).
+  If volume sags, bump Search (broad/TTL), NOT the PMAX duplicates. Re-check ~Jun 16–17.** Caveat: she serves
+  all Ontario, so 519/613 aren't strictly unserviceable — but BMX's all-GTA profile + the 513s consult make
+  it the right bet. (Reminder: stenth still stamps its default on any ≥30s call — count ≠ booked consults.)
+  Script: `call_quality.py`.
