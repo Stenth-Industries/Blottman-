@@ -250,23 +250,26 @@ for b in [
     story.append(bullet(b))
 story.append(Spacer(1, 6))
 
-story.append(Paragraph("Campaign Budget Allocation (Current)", H3))
+story.append(Paragraph("Campaign Budget Allocation (Current — post consolidation)", H3))
 story.append(data_table(
     ["Campaign", "Type", "Daily Budget", "Status"],
     [
-        ["PMAX - Blottman Max",        "Performance Max", "$50.00", "Active"],
-        ["Blottman New pM #2",         "Performance Max", "$15.00", "Active"],
-        ["Blottman New pM #3",         "Performance Max", "$10.00", "Active"],
-        ["Traffic ticket lawyer",      "Search",          "$15.00", "Active"],
-        ["Traffic ticket lawyer broad","Search",          "$10.00", "Active"],
-        ["Higher Value - New",         "Search (SKAG)",   "$5.00",  "Active / Learning"],
-        ["Lower Value - New",          "Search (SKAG)",   "$5.00",  "Active / Learning"],
-        ["Higher Value - New #3",      "Search (SKAG)",   "$5.01",  "Active / Learning"],
-        ["Blottman New pM",            "Performance Max", "$5.00",  "Active (re-enabled)"],
-        ["Traffic Ticket Lawyers Near You", "Smart",      "—",      "Paused (geo issue)"],
+        ["PMAX - Blottman Max",             "Performance Max", "$60.00", "Active — primary PMAX (clean GTA calls)"],
+        ["Traffic ticket lawyer broad",     "Search",          "$20.00", "Active — GTA Search"],
+        ["Traffic ticket lawyer",           "Search",          "$15.00", "Active — small-city Ontario"],
+        ["Higher Value - New",              "Search (SKAG)",   "$5.00",  "Active / Learning"],
+        ["Lower Value - New",               "Search (SKAG)",   "$5.00",  "Active / Learning"],
+        ["Higher Value - New #3",           "Search (SKAG)",   "$5.01",  "Active / Learning"],
+        ["Blottman New pM",                 "Performance Max", "$5.00",  "Active"],
+        ["Blottman New pM #2",              "Performance Max", "—",      "Paused — junk geo (Sarnia/Windsor only) + out-of-area calls"],
+        ["Blottman New pM #3",              "Performance Max", "—",      "Paused — junk geo (Sarnia/Windsor only) + out-of-area calls"],
+        ["Traffic Ticket Lawyers Near You", "Smart",           "—",      "Paused — no geo targeting, uncontrollable"],
     ],
-    [2.6*inch, 1.4*inch, 1.2*inch, 1.8*inch]
+    [2.6*inch, 1.4*inch, 1.15*inch, 1.85*inch]
 ))
+story.append(Paragraph(
+    "Total enabled daily budget: ~$95/day (~$2,888/mo) — aligned with client's $3,000/mo target.",
+    BODY_SMALL))
 story.append(Spacer(1, 10))
 
 # ── SECTION 5 – INCIDENT & RECOVERY ──────────────────────────────────────────
@@ -350,26 +353,40 @@ story.append(Spacer(1, 10))
 story += section_header("08 — Geo Targeting Audit & Quality Fixes (Jun 14)")
 story.append(Paragraph(
     "Following client feedback regarding leads from incorrect locations (outside Ontario, including "
-    "US states), a full geo targeting audit was conducted across all active campaigns. Two "
-    "critical issues were identified and resolved:", BODY))
+    "US states) and irrelevant call content, a full geo targeting audit was conducted across all "
+    "active campaigns. Multiple critical issues were identified and resolved:", BODY))
 story.append(Spacer(1, 4))
 
 story.append(kv_table([
-    ("Issue 1 — PMAX #2 Geo Setting",
-     "Campaign 'Blottman New pM #2' was set to PRESENCE_OR_INTEREST — meaning Google was "
-     "showing ads to anyone interested in Ontario regardless of physical location, including "
-     "users in New York, Massachusetts, and other US states. Changed to PRESENCE-only. ✅ Fixed."),
-    ("Issue 2 — Smart Campaign (No Geo)",
-     "'Traffic Ticket Lawyers Near You' had no location criteria attached despite PRESENCE "
-     "type being set — effectively serving everywhere. Campaign paused (Smart Campaigns cannot "
-     "have geo criteria added via API; UI fix blocked by campaign type restrictions). ✅ Paused."),
-    ("All Other Campaigns",
-     "All remaining enabled campaigns confirmed as Ontario-only, PRESENCE targeting. "
-     "No further geo issues found."),
-    ("Final URL Expansion",
-     "PMAX Final URL Expansion (FUE) investigated — Google has removed the toggle from "
-     "this account type in the current UI version. FUE impact is contained via the "
-     "comprehensive negative keyword list applied to all campaigns."),
+    ("Issue 1 — PMAX Max: No Geo Targeting",
+     "PMAX - Blottman Max (the primary campaign) had NO location criteria at all — it was "
+     "serving globally. Ontario province (PRESENCE-only) was added. This was a direct cause "
+     "of out-of-province and international leads reaching the client. ✅ Fixed."),
+    ("Issue 2 — PMAX #2 & #3: Wrong Geo",
+     "Blottman New pM #2 and #3 were targeting only Sarnia and Windsor (tiny SW Ontario "
+     "cities) — NOT the GTA market where Leslie converts. This explains why their calls were "
+     "largely out-of-area. Both campaigns subsequently paused (see Section 04). ✅ Identified."),
+    ("Issue 3 — PMAX #2 Geo Type",
+     "Blottman New pM #2 was also set to PRESENCE_OR_INTEREST — showing ads to anyone "
+     "interested in Ontario regardless of physical location, including users in New York and "
+     "Massachusetts. Changed to PRESENCE-only before pausing. ✅ Fixed."),
+    ("Issue 4 — Smart Campaign (No Geo)",
+     "'Traffic Ticket Lawyers Near You' had no location criteria attached — effectively "
+     "serving everywhere. Cannot be fixed via API for Smart Campaigns. ✅ Paused."),
+    ("Final URL Expansion — Turned OFF",
+     "Final URL Expansion (FUE) was successfully disabled on all PMAX campaigns via the "
+     "Google Ads UI. PMAX now serves only to the homepage (blottman.com) — preventing "
+     "Google from wandering to irrelevant pages and matching off-topic queries."),
+    ("Landing Page Fix — /traffic-tickets Broken",
+     "Discovered that blottman.com/traffic-tickets (the RSA destination URL) was returning "
+     "a broken page. All live RSA final URLs were immediately repointed to blottman.com "
+     "(homepage) to restore conversion flow. Sitelinks to other subpages left unchanged "
+     "pending client confirmation of their status."),
+    ("Call Quality Audit",
+     "Full call_view audit conducted. Result: PMAX Max = 100% GTA calls including an "
+     "8.5-minute consult call. PMAX #2/#3 = 3 out-of-area calls each (including BC, "
+     "invalid area codes, SW Ontario). Confirmed consolidation onto PMAX Max was the "
+     "correct decision — it is the clean, high-quality call source."),
 ]))
 story.append(Spacer(1, 10))
 
@@ -408,18 +425,23 @@ story.append(Spacer(1, 4))
 story.append(data_table(
     ["Script", "Purpose"],
     [
-        ["leads.py",            "Daily leads report — all conversions by campaign × action + 7d trend + recent calls"],
-        ["today_leads.py",      "Live intraday leads + full call_view detail with timestamps and durations"],
-        ["yesterday_review.py", "Deep-dive: campaigns, devices, geo, search terms for any given day"],
-        ["stenth_watch.py",     "Daily call-conversion monitor — tracks stenth $500 tracker firing over 14 days"],
-        ["campaign_status.py",  "Campaign primary status, delivery reasons, and budget snapshot"],
-        ["may_vs_june.py",      "Period-over-period comparison: May vs June performance"],
-        ["budget_swap.py",      "Neutral budget reallocation between campaigns"],
-        ["add_shared_negs.py",  "Add negatives to Master Negatives shared list with duplicate checking"],
-        ["build_lead_form.py",  "Deploy lead form asset to Search campaigns via API"],
-        ["form_tracking_setup.md","Full GTM/tag installation guide for form conversion tracking"],
-        ["live_view.py",        "Live hierarchy view: campaign → ad group → ads with approval status"],
-        ["strength_audit.py",   "Ad strength audit by keyword impressions — identifies copy gaps"],
+        ["leads.py",               "Daily leads report — all conversions by campaign × action + 7d trend + recent calls"],
+        ["today_leads.py",         "Live intraday leads + full call_view detail with timestamps and durations"],
+        ["yesterday_review.py",    "Deep-dive: campaigns, devices, geo, search terms for any given day"],
+        ["stenth_watch.py",        "Daily call-conversion monitor — tracks stenth $500 tracker firing over 14 days"],
+        ["campaign_status.py",     "Campaign primary status, delivery reasons, and budget snapshot"],
+        ["may_vs_june.py",         "Period-over-period comparison: May vs June performance"],
+        ["call_quality.py",        "Call quality audit — filters call_view by GTA area codes to separate real leads from junk/out-of-area"],
+        ["budget_swap.py",         "Neutral budget reallocation between campaigns"],
+        ["add_shared_negs.py",     "Add negatives to Master Negatives shared list with duplicate checking"],
+        ["add_parking_broad.py",   "Add BROAD parking + immigration negatives to block catch-all irrelevant queries"],
+        ["build_lead_form.py",     "Deploy lead form asset to Search campaigns via API"],
+        ["repoint_to_home.py",     "Repoint all RSA final URLs to homepage after /traffic-tickets was found broken"],
+        ["fix_pmax_geo.py",        "Set Ontario province + PRESENCE-only geo on PMAX Max (had no geo targeting)"],
+        ["consolidate_pmax.py",    "Pause PMAX #2 and #3 (junk geo + out-of-area calls) and raise PMAX Max budget"],
+        ["form_tracking_setup.md", "Full GTM/tag installation guide for form conversion tracking"],
+        ["live_view.py",           "Live hierarchy view: campaign → ad group → ads with approval status"],
+        ["strength_audit.py",      "Ad strength audit by keyword impressions — identifies copy gaps"],
     ],
     [2.0*inch, 5.0*inch]
 ))
@@ -465,8 +487,9 @@ story.append(data_table(
         ["Medium", "GA4 access recovery — add info@stenth.com as admin or via domain-registrar proof", "Leslie / Stenth"],
         ["Medium", "Phase 2: Offline Conversion Import (OCI) — gclid capture + booked consult uploads at $500", "Stenth"],
         ["Medium", "Phase 2: Switch to Max Conversion Value / tROAS once a campaign exceeds 30 conv/mo", "Stenth"],
-        ["Low",    "Turn Final URL Expansion OFF on PMAX Max — toggle removed from UI; monitor via negatives", "Stenth"],
-        ["Low",    "SKAG campaigns (Higher Value, Lower Value) — allow 2–3 more weeks of learning", "Stenth"],
+        ["Low",    "SKAG campaigns (Higher Value, Lower Value) — allow 2–3 more weeks of learning before assessing", "Stenth"],
+        ["Low",    "Step PMAX Max budget toward $75–80/day once CPA stabilises at $60 (~Jun 16–17 check)", "Stenth"],
+        ["Low",    "Verify remaining sitelink subpages (/careless-driving, /stunt-driving etc.) are live before restoring RSA URLs", "Leslie / Stenth"],
     ],
     [0.75*inch, 4.25*inch, 1.5*inch]
 ))
