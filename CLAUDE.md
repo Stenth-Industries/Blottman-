@@ -438,3 +438,37 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
 - **2026-06-14** (Akash): **GitHub repo created and all files pushed** to
   `https://github.com/Stenth-Industries/Blottman-.git` (main branch). Secrets (.env,
   credentials.json) excluded via .gitignore. All scripts, CLAUDE.md, report, and logos committed.
+- **2026-06-15** (Akash + Claude): **6-campaign budget split applied** — exact $100/day:
+  BMX $45 + TTL $20 + Lower Value-New $15 + TTL broad $10 + Higher Value-New $5 + Blottman New pM $5.
+  pM #2, pM #3, Higher Value-New #3 remain PAUSED. Goal = 2-3 qualifying calls/day.
+- **2026-06-15** (Akash + Claude): **Call quality — today's only call was lawsuit inquiry.**
+  One 647 call (43s, qualifying) was someone asking about filing a lawsuit — completely off-target
+  for a traffic ticket paralegal. Immediate action: added 16 PHRASE negatives to Master Negatives
+  covering lawsuits, civil litigation, personal injury, criminal law, divorce, family law, immigration
+  lawyer, notary. These block both the lawsuit-seeker intent AND other practice areas that have
+  historically triggered misdials. Total negatives in Master Negatives now ~85+.
+- **2026-06-15** (Akash + Claude): **Contact Us tracking gap CONFIRMED + full conversion audit.**
+  Leslie confirmed she received only 5-10 Contact Us submissions last week (not the 35 our data showed).
+  Ran full conversion action audit. KEY FINDINGS:
+  **(1) Contact Us (WEBPAGE_CODELESS) is ALREADY demoted** — include_in_conversions_metric=False,
+  primary=False. It shows 0 bid-conversions. The campaigns are NOT optimizing for it. The 35 number
+  was just what we reported to Leslie — we should stop quoting it as a "lead" metric entirely.
+  **(2) 30-day conversion breakdown (May 15–Jun 14):**
+    - Contact Us: 169 all-conv, 0 bid-conv (correctly demoted)
+    - Calls from Smart Campaign Ads: 25 all-conv, 25 bid-conv (Smart Campaign internal)
+    - Phone Click: 12 all-conv, 0 bid-conv (correctly demoted)
+    - Inbound call - Blottman (stenth): 5 all-conv, 5 bid-conv ← our only real quality signal
+    - Lead form - Submit: 0 conversions (no lead form submissions in 30 days)
+  **(3) CRITICAL INSIGHT:** PMAX and Search campaigns have only 5 stenth quality conversions in 30
+  days to learn from. This is far too thin for Max Conversions bidding. The algorithm is essentially
+  learning blind. This is the root cause of inconsistent results. Fix = install real form tag +
+  increase volume of real conversions so algorithm can optimize properly.
+  **(4) Lead Form = 0 submissions in 30 days.** Either the lead form ad extension isn't getting
+  impressions or users aren't filling it out. Needs investigation.
+- **2026-06-15** OPEN ITEMS (carried forward):
+  - [ ] Get site access from Leslie → install proper form conversion tag (form-tracking-setup.md ready)
+  - [ ] Investigate Lead Form submissions = 0: check if lead form is attached + getting impressions
+  - [ ] Re-check account Jun 18-19 to see if 2-3 calls/day target is being hit post-budget-split
+  - [ ] Get GA4 access (property id 409838286)
+  - [ ] Phase 2: Offline Conversion Import for booked consults at $500
+  - [ ] Get brand creative from Leslie: 4+ landscape, 4+ square, 2+ portrait + 1 video for PMAX
