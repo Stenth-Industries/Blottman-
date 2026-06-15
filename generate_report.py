@@ -10,6 +10,8 @@ from reportlab.platypus import (
 )
 from reportlab.platypus import PageBreak
 from reportlab.lib.colors import HexColor
+from reportlab.platypus import Image as RLImage
+import os
 from datetime import date
 
 # ── Brand colours ────────────────────────────────────────────────────────────
@@ -110,15 +112,37 @@ story = []
 
 # ── COVER BLOCK ──────────────────────────────────────────────────────────────
 story.append(Spacer(1, 0.3*inch))
-cover_top = Table(
-    [[Paragraph("STENTH", S("Normal", fontSize=9, textColor=GOLD,
-                                        fontName="Helvetica-Bold", leading=12)),
+
+# Logos row
+STENTH_LOGO   = "STENTH LOGO.png"
+BLOTTMAN_LOGO = "BLOTTMAN LOGO.png"
+
+def logo(path, max_w, max_h):
+    if os.path.exists(path):
+        img = RLImage(path)
+        w, h = img.imageWidth, img.imageHeight
+        ratio = min(max_w/w, max_h/h)
+        img.drawWidth  = w * ratio
+        img.drawHeight = h * ratio
+        return img
+    return Paragraph("", BODY)
+
+stenth_img   = logo(STENTH_LOGO,   1.6*inch, 0.6*inch)
+blottman_img = logo(BLOTTMAN_LOGO, 1.6*inch, 0.6*inch)
+
+logo_row = Table(
+    [[stenth_img,
       Paragraph(f"Prepared: {date.today().strftime('%B %d, %Y')}",
-                S("Normal", fontSize=9, textColor=MID_GREY, leading=12, alignment=TA_RIGHT))]],
-    colWidths=[3.5*inch, 3.5*inch]
+                S("Normal", fontSize=9, textColor=MID_GREY, leading=12, alignment=TA_CENTER)),
+      blottman_img]],
+    colWidths=[2*inch, 3*inch, 2*inch]
 )
-cover_top.setStyle(TableStyle([("VALIGN",(0,0),(-1,-1),"MIDDLE")]))
-story.append(cover_top)
+logo_row.setStyle(TableStyle([
+    ("VALIGN",  (0,0), (-1,-1), "MIDDLE"),
+    ("ALIGN",   (0,0), (0,0),   "LEFT"),
+    ("ALIGN",   (2,0), (2,0),   "RIGHT"),
+]))
+story.append(logo_row)
 story.append(HRFlowable(width="100%", thickness=2, color=GOLD, spaceAfter=16, spaceBefore=8))
 
 story.append(Paragraph("Google Ads Management", S("Normal", fontSize=13, textColor=MID_GREY,
@@ -450,13 +474,28 @@ story.append(Spacer(1, 10))
 
 # ── FOOTER NOTE ───────────────────────────────────────────────────────────────
 story.append(rule())
-story.append(Paragraph(
-    "This report was prepared by <b>Stenth</b> for the exclusive use of "
-    "<b>Blottman Law</b>. All data sourced directly from the Google Ads API "
-    "(Customer ID 858-621-4705). Reporting period: June 2026. "
-    f"Generated: {date.today().strftime('%B %d, %Y')}.",
-    S("Normal", fontSize=8, textColor=MID_GREY, leading=12, alignment=TA_CENTER)
-))
+
+footer_stenth   = logo(STENTH_LOGO,   1.2*inch, 0.45*inch)
+footer_blottman = logo(BLOTTMAN_LOGO, 1.2*inch, 0.45*inch)
+
+footer_logos = Table(
+    [[footer_stenth,
+      Paragraph(
+          "This report was prepared by <b>Stenth</b> for the exclusive use of "
+          "<b>Blottman Legal Services</b>. All data sourced directly from the Google Ads API "
+          f"(Customer ID 858-621-4705). Reporting period: June 2026. "
+          f"Generated: {date.today().strftime('%B %d, %Y')}.",
+          S("Normal", fontSize=8, textColor=MID_GREY, leading=12, alignment=TA_CENTER)
+      ),
+      footer_blottman]],
+    colWidths=[1.4*inch, 4.2*inch, 1.4*inch]
+)
+footer_logos.setStyle(TableStyle([
+    ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
+    ("ALIGN",  (0,0), (0,0),   "LEFT"),
+    ("ALIGN",  (2,0), (2,0),   "RIGHT"),
+]))
+story.append(footer_logos)
 
 # ─────────────────────────────────────────────────────────────────────────────
 doc.build(story)
