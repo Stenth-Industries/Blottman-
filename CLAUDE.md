@@ -396,3 +396,45 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   all Ontario, so 519/613 aren't strictly unserviceable — but BMX's all-GTA profile + the 513s consult make
   it the right bet. (Reminder: stenth still stamps its default on any ≥30s call — count ≠ booked consults.)
   Script: `call_quality.py`.
+- **2026-06-14** (Akash): **New SKAG campaigns created** in response to client frustration (Leslie
+  demanding more volume and old campaigns reinstated). Created: `Higher Value - New` ($5/day),
+  `Lower Value - New` ($5/day), `Higher Value - New #3` ($5.01/day), `Traffic Ticket Lawyers Near You`
+  ($4.50/day — Smart Campaign). Also re-enabled `Blottman New pM` ($5/day, the old paused PMAX)
+  at low budget to satisfy client's "bring back old campaigns" request. NOTE: all original old campaigns
+  (Higher Value - clicks, Lower Value - clicks, Calls etc.) are REMOVED — cannot be re-enabled;
+  these new campaigns are the rebuilt equivalents.
+- **2026-06-14** (Akash + Claude): **Full account review session.** Pulled today's live data
+  (653 impr / 19 clk / $31.38 / 1 lead mid-day) + yesterday confirmed 7 leads + stenth 3x.
+  Investigated why Leslie was getting out-of-province leads (NY, Massachusetts). Conducted full
+  geo audit across all enabled campaigns — all confirmed Ontario-only EXCEPT:
+  **(1) pM #2 = PRESENCE_OR_INTEREST → fixed to PRESENCE via API.**
+  **(2) Traffic Ticket Lawyers Near You = Smart Campaign with no location criteria → paused**
+  (API blocks geo edits on Smart Campaigns). Added legal aid negatives to Master Negatives:
+  `[PHR] legal aids` + `[PHR] free lawyer` (legal aid/free legal/pro bono were already present; now 69 total).
+  FUE toggle investigated — could not locate in UI during this session (note: Kushagra's earlier
+  session confirmed it was turned OFF — see Jun-14 Kushagra entry on blottman.com/traffic-tickets).
+  Budget adjustments applied: PMAX Max $60→$50, pM #2 $22→$15, TTL broad $20→$10. ⚠️ NOTE:
+  these changes were applied before reading Kushagra's Jun-14 consolidation notes — Kushagra had
+  already set BMX to $60 and budgets to $95/day. Recommend verifying live budget state and
+  restoring BMX to $60 / TTL broad to $20 if needed to match Kushagra's consolidation plan
+  (BMX $60 + broad $20 + TTL $15 = $95/day).
+- **2026-06-14** (Akash + Claude): **Contact Us form audit.** Pulled last 7 days (Jun 7–13):
+  **35 Contact Us submissions** across all campaigns. Breakdown: Jun 8 = 9 (best day), Jun 11 = 10,
+  Jun 13 = 4. Leslie to be asked whether she received these — if no/unknown, form emails are broken
+  or going to spam. NOTE: Contact Us is WEBPAGE_CODELESS (no tag installed) — count may include
+  bots/partial fills; true quality only confirmed by Leslie's inbox count.
+- **2026-06-14** (Akash + Claude): **Call volume analysis.** call_view (all-time): 1,116 total calls,
+  604 qualifying (≥30s), 512 short/missed. All qualifying calls from PMAX campaigns only — zero
+  calls from Search (TTL, TTL broad) despite call assets being attached. Search campaigns converting
+  via Contact Us form, not phone. Speed-to-answer flagged as a key issue for Leslie — many short
+  calls are likely missed/voicemail hang-ups. Call asset audit: pM #2 and #3 had one REMOVED +
+  one ENABLED entry each (ENABLED is the active one, REMOVED = old deleted version — no action needed).
+- **2026-06-14** (Akash + Claude): **Professional work summary PDF generated** —
+  `Blottman-Law-Google-Ads-Report.pdf` (12 sections, covers all work Jun 2026). Includes:
+  exec summary, account ownership transfer (Joshua → Leslie Rivas), initial audit findings,
+  campaign consolidation, delivery incident, search campaigns + RSAs, negative keywords,
+  geo fixes, lead form + conversion tracking, scripts built, performance table, open items.
+  Script: `generate_report.py`. Logos: `STENTH LOGO.png` + `BLOTTMAN LOGO.png`.
+- **2026-06-14** (Akash): **GitHub repo created and all files pushed** to
+  `https://github.com/Stenth-Industries/Blottman-.git` (main branch). Secrets (.env,
+  credentials.json) excluded via .gitignore. All scripts, CLAUDE.md, report, and logos committed.
