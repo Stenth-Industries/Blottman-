@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: theme("colors.paper");
+  color: theme("colors.ink.DEFAULT");
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .section {
+    @apply mx-auto w-full max-w-content px-5 sm:px-8;
+  }
+
+  /* All-caps eyebrow label with a short gold rule, à la Garde Wilson */
+  .eyebrow {
+    @apply inline-flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.28em] text-gold;
+  }
+  .eyebrow::before {
+    content: "";
+    @apply h-px w-7 bg-gold/70;
+  }
+
+  /* Heavy condensed display headline */
+  .display {
+    @apply font-display uppercase leading-[0.92] tracking-tight;
+  }
+  .h-section {
+    @apply display text-4xl sm:text-5xl;
+  }
+
+  /* Metallic gold text treatment for a single emphasised word */
+  .text-gold-sheen {
+    @apply bg-gold-sheen bg-clip-text text-transparent;
+  }
+
+  .card {
+    @apply rounded-2xl border border-ink/10 bg-white shadow-[0_1px_3px_rgba(12,12,12,0.06)] transition-all duration-300;
+  }
+  .card:hover {
+    @apply -translate-y-1 shadow-[0_16px_40px_-14px_rgba(12,12,12,0.2)];
+  }
+}
+
+/* Room above the mobile sticky CTA so nothing is hidden behind it */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 86px;
+  }
+}
