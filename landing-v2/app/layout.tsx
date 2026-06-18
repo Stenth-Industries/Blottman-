@@ -18,7 +18,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Fight Your Traffic Ticket | Blottman Law — Ontario",
+  title: "Fight Your Traffic Ticket | Blottman Law | Ontario",
   description:
     "Licensed Ontario paralegal. We fight speeding, careless, stunt-driving and other traffic tickets to protect your record and insurance. Free case review.",
 };

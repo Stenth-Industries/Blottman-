@@ -4,12 +4,10 @@ import StatsStrip from "@/components/StatsStrip";
 import LogoBar from "@/components/LogoBar";
 import AttentionBanner from "@/components/AttentionBanner";
 import Expertise from "@/components/Expertise";
-import Process from "@/components/Process";
-import VideoTestimonials from "@/components/VideoTestimonials";
+import ClaritySection from "@/components/ClaritySection";
 import Portfolio from "@/components/Portfolio";
 import CaseStudies from "@/components/CaseStudies";
-import Trustpilot from "@/components/Trustpilot";
-import WrittenTestimonials from "@/components/WrittenTestimonials";
+import GoogleReviews from "@/components/GoogleReviews";
 import Faq from "@/components/Faq";
 import QuoteForm from "@/components/QuoteForm";
 import StickyCta from "@/components/StickyCta";
@@ -26,12 +24,10 @@ export default function Home() {
       <Reveal><LogoBar /></Reveal>
       <Reveal><AttentionBanner /></Reveal>
       <Expertise />
-      <Reveal><Process /></Reveal>
-      <Reveal><VideoTestimonials /></Reveal>
+      <Reveal><ClaritySection /></Reveal>
       <Reveal><Portfolio /></Reveal>
       <Reveal><CaseStudies /></Reveal>
-      <Reveal><Trustpilot /></Reveal>
-      <Reveal><WrittenTestimonials /></Reveal>
+      <Reveal><GoogleReviews /></Reveal>
       <Reveal><Faq /></Reveal>
       <Reveal><QuoteForm /></Reveal>
       <StickyCta />

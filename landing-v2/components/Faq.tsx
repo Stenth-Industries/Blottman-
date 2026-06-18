@@ -52,7 +52,7 @@ export default function Faq() {
           })}
         </div>
 
-        <SectionCta label="Talk to a Paralegal — Free" />
+        <SectionCta label="Talk to a Paralegal for Free" />
       </div>
     </section>
   );

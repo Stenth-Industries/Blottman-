@@ -4,7 +4,8 @@ import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import CtaButton from "./CtaButton";
 import Stars from "./Stars";
-import { BENEFITS, PHONE_DISPLAY, PHONE_TEL, TRUSTPILOT } from "@/lib/content";
+import GoogleG from "./GoogleG";
+import { BENEFITS, PHONE_DISPLAY, PHONE_TEL, GOOGLE_RATING } from "@/lib/content";
 
 // Staggered entrance: each child rises + fades in sequence.
 const container: Variants = {
@@ -30,7 +31,7 @@ export default function Hero() {
         fill
         priority
         sizes="100vw"
-        className="pointer-events-none object-contain object-center blur-[1px]"
+        className="pointer-events-none object-cover object-center blur-[1px] lg:object-contain"
       />
       {/* left-to-right darkening: left very dark for the headline, right darkened ~30% behind Leslie */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/72 to-ink/65" />
@@ -90,16 +91,18 @@ export default function Hero() {
           </motion.div>
 
           <motion.div variants={item} className="mt-9 flex items-center gap-3">
-            <Stars rating={TRUSTPILOT.rating} />
-            <span className="text-sm text-white/70">
-              <span className="font-semibold text-white">{TRUSTPILOT.rating}</span> on Trustpilot
+            <Stars rating={GOOGLE_RATING.rating} color="#e7ac40" />
+            <span className="flex items-center gap-1.5 text-sm text-white/70">
+              <span className="font-semibold text-white">{GOOGLE_RATING.rating}</span> on
+              <GoogleG className="h-4 w-4" /> Google
             </span>
           </motion.div>
         </motion.div>
 
-        {/* Leslie — real, unedited photo blended into the hero with CSS only */}
+        {/* Leslie — real, unedited photo blended into the hero with CSS only.
+            Shown on mobile too (centred, constrained) so the hero has a face. */}
         <motion.div
-          className="relative hidden lg:block"
+          className="relative mx-auto w-full max-w-[280px] sm:max-w-xs lg:mx-0 lg:max-w-none"
           initial={reduce ? false : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
@@ -109,7 +112,7 @@ export default function Hero() {
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-[rgba(232,176,65,0.22)] bg-ink-soft shadow-[0_35px_90px_-30px_rgba(0,0,0,0.85)] ring-1 ring-inset ring-white/[0.07]">
             <Image
               src="/leslie-office.png"
-              alt="Leslie Rivas — licensed Ontario paralegal, Blottman Law"
+              alt="Leslie Rivas, licensed Ontario paralegal, Blottman Law"
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 40vw"

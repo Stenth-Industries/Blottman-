@@ -18,13 +18,14 @@ export default function Portfolio() {
             <div key={p.title} className="card group overflow-hidden">
               <div className="relative flex aspect-[16/10] items-center justify-center bg-ink">
                 <span className="text-xs uppercase tracking-[0.2em] text-white/30">Image placeholder</span>
-                <span className="absolute left-4 top-4 rounded-full bg-gold-sheen px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-ink">
+                <span className="absolute left-4 top-4 rounded-none bg-gold-sheen px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-ink">
                   {p.result}
                 </span>
               </div>
               <div className="p-5">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-gold-deep">{p.tag}</p>
                 <p className="mt-1.5 font-display text-lg uppercase tracking-tight text-ink">{p.title}</p>
+                <p className="mt-2 text-sm leading-relaxed text-ink-muted">{p.desc}</p>
               </div>
             </div>
           ))}

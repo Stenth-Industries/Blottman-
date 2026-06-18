@@ -33,7 +33,7 @@ export default function QuoteForm() {
             Get your <span className="text-gold-sheen">free quote.</span>
           </h2>
           <p className="mt-4 text-sm text-white/70">
-            Tell us where to reach you and we&apos;ll review your ticket — no obligation.
+            Tell us where to reach you and we&apos;ll review your ticket with no obligation.
           </p>
         </div>
 
@@ -58,7 +58,7 @@ export default function QuoteForm() {
             <button
               type="submit"
               disabled={status === "submitting"}
-              className="mt-2 inline-flex items-center justify-center rounded-full bg-gold-sheen px-8 py-4 text-[13px] font-semibold uppercase tracking-[0.12em] text-ink shadow-[0_8px_24px_rgba(231,172,64,0.35)] transition hover:-translate-y-0.5 disabled:opacity-60 sm:col-span-2"
+              className="mt-2 inline-flex items-center justify-center gap-3 rounded-none bg-gold-sheen px-10 py-[18px] text-[12px] font-semibold uppercase tracking-[0.22em] text-ink transition hover:brightness-[1.04] disabled:opacity-60 sm:col-span-2"
             >
               {status === "submitting" ? "Sending…" : "Get My Free Quote"}
             </button>

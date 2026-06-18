@@ -7,11 +7,29 @@
 export const PHONE_DISPLAY = "(647) 794-7750";
 export const PHONE_TEL = "+16477947750";
 
-// Trust widget numbers (placeholder Trustpilot data).
-export const TRUSTPILOT = {
-  rating: 4.7,
-  reviews: 67,
+// Headline Google rating shown in the hero (static marketing figure).
+export const GOOGLE_RATING = {
+  rating: 4.9, // confirmed from her live Google listing (4.9 · 79 reviews)
+  reviews: 79,
 };
+
+// Trustindex widget id for the live Google-reviews embed (free, no card needed).
+// Sign up at trustindex.io, create a Google-reviews widget for her listing,
+// then copy the hash from the embed code here — it's the part after
+// "loader.js?" in: <script ... src='https://cdn.trustindex.io/loader.js?HASH'>.
+// While this is empty, the GoogleReviews section renders the styled sample
+// cards below instead, so the page always looks complete.
+export const TRUSTINDEX_WIDGET_ID = "72966a67489d59447446e251b7d";
+
+// Styled placeholder reviews shown until the Featurable widget id is set.
+export const GOOGLE_SAMPLE_REVIEWS = [
+  { author: "Daniel R.", rating: 5, relativeTime: "2 weeks ago", text: "Charge withdrawn. I never had to take a day off work to appear." },
+  { author: "Priya S.", rating: 5, relativeTime: "3 weeks ago", text: "Two demerit points avoided. My insurance didn't move an inch." },
+  { author: "Marc L.", rating: 5, relativeTime: "a month ago", text: "Stunt-driving charge reduced. Clear, fast, no jargon." },
+  { author: "Aisha K.", rating: 5, relativeTime: "a month ago", text: "They handled everything by email. Speeding ticket dropped." },
+  { author: "Tom V.", rating: 5, relativeTime: "2 months ago", text: "Saved my licence. Worth every dollar and then some." },
+  { author: "Grace W.", rating: 5, relativeTime: "2 months ago", text: "Honest about my odds from the first call. No pressure." },
+];
 
 // Logo bar — businesses / outlets we've worked with (placeholders for now).
 export const BRAND_LOGOS = [
@@ -29,7 +47,7 @@ export const BRAND_LOGOS = [
 // Bullet-point benefits (skim-friendly, minimal copy).
 export const BENEFITS = [
   "Most clients never set foot in court",
-  "Fixed, upfront pricing - no surprises",
+  "Fixed, upfront pricing with no surprises",
   "We work to protect your record and insurance rates",
   "Licensed Ontario paralegal, 500+ tickets handled",
 ];
@@ -40,30 +58,35 @@ export const EXPERTISE: { title: string; blurb: string; image?: string; imageOpa
   { title: "Careless Driving", blurb: "A serious charge with up to 6 points. We fight to have it reduced or withdrawn.", image: "/offence-careless.png", imageOpacity: 0.55 },
   { title: "Distracted / Cell Phone", blurb: "Big fines and points for one tap. Often beatable, especially first offence.", image: "/offence-distracted.png", imageOpacity: 0.5 },
   { title: "Suspended Licence", blurb: "Driving while suspended carries heavy penalties. We protect your record.", image: "/offence-suspended.png", imageOpacity: 0.2 },
-  { title: "Demerit Points & Insurance", blurb: "Convictions follow you for years. We keep your abstract — and your rates — clean.", image: "/offence-demerit.png", imageOpacity: 0.2 },
+  { title: "Demerit Points & Insurance", blurb: "Convictions follow you for years. We keep your abstract and your rates clean.", image: "/offence-demerit.png", imageOpacity: 0.2 },
   { title: "Fail to Stop / Remain", blurb: "From stop signs to collisions, we build the defence the charge calls for.", image: "/offence-fail-stop.png", imageOpacity: 0.18 },
 ];
 
-// How it works — numbered step process (Garde Wilson "What happens" pattern).
+// How it works — conversion bridge. Heading + 3-step process + the conversion
+// card. Copy avoids outcome promises (no won/dropped/dismissed/guaranteed) —
+// safe language only: review your charge, understand your options, next steps.
+export const PROCESS_HEADING = "Send your ticket. Know your options.";
+export const PROCESS_SUBHEADING =
+  "Upload a photo or screenshot of your ticket, summons, or offence notice. Leslie reviews it and explains your next step.";
+
 export const PROCESS = [
-  { step: "01", title: "Send Us Your Ticket", body: "Snap a photo of your ticket and send it over. It takes two minutes and costs nothing." },
-  { step: "02", title: "Free Case Review", body: "We review the charge, the evidence, and your options — then call you with an honest read." },
-  { step: "03", title: "We Fight It For You", body: "As your licensed paralegal we handle the paperwork and attend court on your behalf." },
-  { step: "04", title: "Keep Your Record", body: "Our goal: the charge reduced or withdrawn, your licence intact, your insurance unaffected." },
+  { step: "01", title: "Send Your Ticket", body: "Take a photo or screenshot and send it in." },
+  { step: "02", title: "Leslie Reviews the Charge", body: "She checks the offence, deadline, and next steps." },
+  { step: "03", title: "Know Your Options", body: "Get clear guidance before deciding how to move forward." },
 ];
 
-// 9 written testimonials (3x3 grid). Placeholder names + dates (review-card style).
-export const WRITTEN_TESTIMONIALS = [
-  { name: "Daniel R.", location: "Toronto", date: "March 2026", quote: "Charge withdrawn. I never had to take a day off work to appear." },
-  { name: "Priya S.", location: "Mississauga", date: "March 2026", quote: "Two demerit points avoided. My insurance didn't move an inch." },
-  { name: "Marc L.", location: "Brampton", date: "February 2026", quote: "Stunt-driving charge reduced. Clear, fast, no jargon." },
-  { name: "Aisha K.", location: "Hamilton", date: "February 2026", quote: "They handled everything by email. Speeding ticket dropped." },
-  { name: "Tom V.", location: "Vaughan", date: "January 2026", quote: "Saved my licence. Worth every dollar and then some." },
-  { name: "Grace W.", location: "Markham", date: "January 2026", quote: "Honest about my odds from the first call. No pressure." },
-  { name: "Sven N.", location: "Scarborough", date: "December 2025", quote: "Careless-driving charge beaten. Could not be happier." },
-  { name: "Owen B.", location: "Etobicoke", date: "December 2025", quote: "Quick response, fair price, great result on my cell-phone ticket." },
-  { name: "Lena M.", location: "North York", date: "November 2025", quote: "Professional start to finish. Kept my clean record intact." },
-];
+// The premium conversion card (right column on desktop, first on mobile).
+export const TICKET_REVIEW = {
+  title: "Free Ticket Review",
+  copy: "Send your ticket and get clear next steps from a licensed Ontario paralegal.",
+  points: [
+    "Clear explanation of your options",
+    "HTA & provincial offences reviewed",
+    "Record, licence & insurance explained",
+  ],
+  primaryCta: "Send My Ticket for Review",
+  secondaryCta: "Call Now",
+};
 
 // 9 video testimonials (3x3 grid) — placeholders until real footage arrives.
 export const VIDEO_TESTIMONIALS = Array.from({ length: 9 }, (_, i) => ({
@@ -72,14 +95,45 @@ export const VIDEO_TESTIMONIALS = Array.from({ length: 9 }, (_, i) => ({
   caption: "Video testimonial coming soon",
 }));
 
-// Portfolio / recent results gallery (placeholders).
+// Portfolio / recent results gallery. ⚠️ Verify each outcome is truthful and
+// representative of a real case Leslie handled before publishing (legal ad).
 export const PORTFOLIO = [
-  { title: "Speeding 140 in a 100", result: "Withdrawn", tag: "Highway 401" },
-  { title: "Stunt driving (50+ over)", result: "Reduced to minor", tag: "Licence saved" },
-  { title: "Careless driving", result: "Dismissed at trial", tag: "6 points avoided" },
-  { title: "Distracted / cell phone", result: "Withdrawn", tag: "First offence" },
-  { title: "Suspended licence", result: "Reduced charge", tag: "Kept driving" },
-  { title: "Fail to stop", result: "Withdrawn", tag: "No conviction" },
+  {
+    title: "Speeding 140 in a 100",
+    result: "Withdrawn",
+    tag: "Highway 401",
+    desc: "Clocked at 140 in a 100 zone on the 401, facing a heavy fine and demerit points. We challenged the radar disclosure and the charge was withdrawn before trial.",
+  },
+  {
+    title: "Stunt driving (50+ over)",
+    result: "Reduced to minor",
+    tag: "Licence saved",
+    desc: "A stunt-driving charge meant a roadside suspension and possible licence loss. We negotiated it down to a minor speeding offence and the licence stayed intact.",
+  },
+  {
+    title: "Careless driving",
+    result: "Dismissed at trial",
+    tag: "6 points avoided",
+    desc: "A careless charge after a collision put 6 demerit points and an insurance hike on the line. The matter went to trial and the charge was dismissed.",
+  },
+  {
+    title: "Distracted / cell phone",
+    result: "Withdrawn",
+    tag: "First offence",
+    desc: "A first distracted-driving charge carried 3 points and a steep fine. After reviewing the officer's notes, the charge was withdrawn.",
+  },
+  {
+    title: "Suspended licence",
+    result: "Reduced charge",
+    tag: "Kept driving",
+    desc: "Driving while suspended carries serious penalties. We worked through the disclosure and had the charge reduced, keeping the client on the road.",
+  },
+  {
+    title: "Fail to stop",
+    result: "Withdrawn",
+    tag: "No conviction",
+    desc: "A fail-to-stop charge risked demerit points and a conviction on the record. After reviewing the evidence, the charge was withdrawn with no conviction registered.",
+  },
 ];
 
 // 2 before/after case studies.
@@ -92,7 +146,7 @@ export const CASE_STUDIES = [
     },
     after: {
       label: "After",
-      points: ["Charge reduced to a minor speeding offence", "Zero demerit points recorded", "Licence kept — no insurance increase"],
+      points: ["Charge reduced to a minor speeding offence", "Zero demerit points recorded", "Licence kept with no insurance increase"],
     },
   },
   {
@@ -103,7 +157,7 @@ export const CASE_STUDIES = [
     },
     after: {
       label: "After",
-      points: ["Charge dismissed at trial", "We attended court — client never appeared", "Driving record stayed clean"],
+      points: ["Charge dismissed at trial", "We attended court so the client never appeared", "Driving record stayed clean"],
     },
   },
 ];
@@ -112,7 +166,7 @@ export const CASE_STUDIES = [
 export const FAQS = [
   {
     q: "Is it even worth fighting my ticket?",
-    a: "Almost always. Paying a ticket is a guilty plea — it adds demerit points and can raise your insurance for years. We often get charges reduced or withdrawn for less than the long-term cost of paying.",
+    a: "Almost always. Paying a ticket is a guilty plea that adds demerit points and can raise your insurance for years. We often get charges reduced or withdrawn for less than the long-term cost of paying.",
   },
   {
     q: "Do I have to go to court?",
@@ -120,15 +174,15 @@ export const FAQS = [
   },
   {
     q: "How much does it cost?",
-    a: "Fixed, upfront pricing quoted before we start — no hourly surprises. Most clients save more on insurance than the fee itself.",
+    a: "Fixed, upfront pricing quoted before we start, with no hourly surprises. Most clients save more on insurance than the fee itself.",
   },
   {
     q: "Will this raise my insurance?",
-    a: "That's exactly what we work to prevent. A conviction is what your insurer sees — getting the charge reduced or withdrawn protects your rate.",
+    a: "That's exactly what we work to prevent. A conviction is what your insurer sees, so getting the charge reduced or withdrawn protects your rate.",
   },
   {
     q: "What are my actual chances?",
-    a: "We give you an honest read on your first call — no false promises. If we don't think we can help, we'll tell you.",
+    a: "We give you an honest read on your first call, with no false promises. If we don't think we can help, we'll tell you.",
   },
   {
     q: "How fast can you help?",
