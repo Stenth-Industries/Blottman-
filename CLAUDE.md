@@ -465,6 +465,59 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   increase volume of real conversions so algorithm can optimize properly.
   **(4) Lead Form = 0 submissions in 30 days.** Either the lead form ad extension isn't getting
   impressions or users aren't filling it out. Needs investigation.
+- **2026-06-17** (Kushagra): **CLICKBAIT policy violation fixed on PMAX - Blottman Max / Asset Group 1**
+  (`6607110351`). UI showed 2 violations on the asset group: (1) **Clickbait** (red — Google
+  Investigation / automated check; does NOT name the asset) and (2) Commission-of-a-crime (the known
+  harmless residual). Root cause of clickbait = **unsubstantiated "98% Win Rate" stat (×6 assets) + a
+  "#1 Lawyer" superlative** — double-violation in a legal vertical (clickbait + outcome guarantee).
+  Note: the API never surfaced clickbait as a `policy_topic_entry` (it's a pending editorial check),
+  only the crime topic showed — so this was diagnosed from the UI screenshot + asset text scan.
+  **FIX (API, published):** replaced all 7 flagged assets via `/generate-ads` (validated to char
+  limits + editorial rules) with policy-safe copy that fills pattern gaps: HEADLINES → `Skilled Ticket
+  Defence Team`, `Fight Auto Fines & Keep Points`, `Avoid Costly Demerit Points`, `Experienced Ticket
+  Paralegal`; LONG_HEADLINE → `Fight Your Car Ticket & Keep Your Licence · Free Case Review With
+  Blottman`; DESCRIPTIONS → `Fight your car ticket with 24/7 legal help. 500+ cases handled. Free case
+  review.` + `Ontario traffic ticket specialists. Fight your ticket with a free case review today.`
+  Kept the verified "500+ cases handled" signal; dropped every win-rate stat. Verified: **0 clickbait
+  assets enabled** post-change. Old assets unlinked (not deleted); 1 of the 7 old links was already
+  REMOVED (someone removed "98% Win Rate, Fight Tickets" earlier). New assets in editorial review —
+  recheck the asset-group "Clickbait" flag clears in a few hrs/24h. Script: `fix_clickbait_assets.py`.
+  ⚠️ NOTE (creative = Akash's lane). OPEN follow-ups spotted, NOT changed: (a) other BMX headlines
+  still say "Lawyer" though Leslie is a **paralegal** = misrepresentation risk; (b) typo headline
+  "500+ Cases Car Cases Handled" (`283882668010`). Also re-confirmed the `COMMISSION_OF_A_CRIME_IN_
+  PERSONALIZED_ADS` flag is harmless residual (assets APPROVED_LIMITED, still serving, NO audience
+  signal attached — the real throttle trigger from Jun-11 stays removed). Scripts: `asset_policy.py`,
+  `campaign_status.py`.
+- **2026-06-17** (Kushagra): **Lead form now APPROVED + expanded to all 4 Search campaigns.** The
+  lead form asset `371903420556` ("Lead Form - Free Case Review (Stenth)", CTA GET_QUOTE) finally
+  cleared review → **APPROVED / REVIEWED** (was stuck behind the account-wide Lead Form ToS/review).
+  It started serving for the first time: **11 impressions Jun 16** on `Traffic ticket lawyer` (0 clk
+  yet — day one). Resolves the eligibility half of the Jun-15 "Lead Form = 0 submissions" open item.
+  **Attached the same asset to the 2 Search SKAGs that lacked it** — `Lower Value - New`
+  (`22780000236`) + `Higher Value - New` (`22780001277`) — so all 4 ENABLED Search campaigns now
+  carry it (the other 2 already had it). **Skipped both PMAX** (Blottman Max, Blottman New pM): PMAX
+  doesn't take campaign-level lead-form extensions and they're policy-touchy — left to calls.
+  Note: broad shows 0 form impr in 14d (loses ~83% IS to rank → no room to attach the extension);
+  volume will come mainly from the small-city `Traffic ticket lawyer`. Script: `attach_lead_form.py`.
+  ⚠️ Reinforces the **daily lead-form download chore** (submissions don't email Leslie + auto-delete
+  after 30d) — more campaigns now = more submissions to catch same-day. Consider the `leads.py`
+  lead-form-submission add-on / webhook.
+- **2026-06-18** (Akash + Claude): **JUN-17 REVIEW — best day in weeks, consolidation validated.**
+  Jun 17 closed: **~800 impr / 40 clk / ~$143 / 11 all-conv.** **stenth $500 fired 4× — ALL on
+  PMAX - Blottman Max, ALL GTA:** 647 (33s), 416 (92s), 416 (63s), 416 (43s). Zero out-of-area, zero
+  junk → exactly the clean-horse outcome the Jun-14 PMAX consolidation bet on. Contact Us = 7 (4 PMAX
+  Max, 2 `Traffic ticket lawyer`, 1 Higher Value-New). One 2s misdial didn't qualify. **Geo clean:**
+  Toronto $77/3conv, Brampton $13/2, Mississauga, Richmond Hill, Oshawa — GTA-dominant, small cheap
+  Ottawa tail, **no out-of-province leak** (geo fixes holding). **Search terms clean** — all
+  traffic/speeding/careless/cell-phone/stop-sign/suspended intent, no parking/competitor/lawsuit/
+  immigration leakage (negative-list buildup working). Search SKAGs (Lower/Higher Value-New, TTL
+  broad) click but produce 0 stenth calls — they convert via form only, consistent with prior pattern.
+  ⚠️ **SPEND PACING HOT: $143 vs $100/day target (+43%)**, driven by **BMX spending $70 on its $45
+  budget** (PMAX can run up to ~2× on a day; watch the monthly average). Recommendation: lean into BMX
+  since it's the verified quality source — either formally raise its budget or rein the day in. Per-day
+  campaign table: BMX $70/8conv, TTL $28.84/2conv, Lower Value-New $16.78/0, TTL broad $12.29/0,
+  Blottman New pM $9.93/0, Higher Value-New $5.12/1conv. Read-only review; no mutations. Scripts:
+  `yesterday_review.py`, `today_leads.py YESTERDAY`.
 - **2026-06-15** OPEN ITEMS (carried forward):
   - [ ] Get site access from Leslie → install proper form conversion tag (form-tracking-setup.md ready)
   - [ ] Investigate Lead Form submissions = 0: check if lead form is attached + getting impressions

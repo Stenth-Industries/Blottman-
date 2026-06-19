@@ -13,6 +13,28 @@ export const TRUSTPILOT = {
   reviews: 67,
 };
 
+// Headline Google rating shown in the GoogleReviews fallback (from her live listing).
+export const GOOGLE_RATING = {
+  rating: 4.9,
+  reviews: 79,
+};
+
+// Trustindex widget id for the live Google-reviews embed (free, no card needed).
+// When set, GoogleReviews renders the live, auto-updating Google reviews widget;
+// the sample cards below are only the fallback if the widget can't load.
+export const TRUSTINDEX_WIDGET_ID = "72966a67489d59447446e251b7d";
+
+// Fallback review cards — REAL verified Google reviews from blottman.com, used only
+// if the live widget fails to load (never show fabricated reviews to real visitors).
+export const GOOGLE_SAMPLE_REVIEWS = [
+  { author: "Daniel Tran", rating: 5, relativeTime: "Verified Google review", text: "Leslie was outstanding. She got my careless driving withdrawn and amended my speeding ticket to disobey sign, which saved me from major demerit points. Highly recommend." },
+  { author: "Emal S", rating: 5, relativeTime: "Verified Google review", text: "Amazing work — they reduced my stunt driving to just a speeding ticket with 0 demerit points. I recommend them if you are in a crazy situation like I was." },
+  { author: "Spencer Hauser", rating: 5, relativeTime: "Verified Google review", text: "Leslie has helped me with multiple tickets and has always been great with communication and customer service skills!" },
+  { author: "Ajeet Sahijwani", rating: 5, relativeTime: "Verified Google review", text: "Blottman Legal Services takes care of traffic tickets professionally. They resolved my fail-to-stop at a stop sign issue with zero points." },
+  { author: "Joshua Alba", rating: 5, relativeTime: "Verified Google review", text: "Thank you for your excellent service. Your expertise, clear communication, and professionalism greatly eased a challenging process. Highly recommend." },
+  { author: "Tom Zhang", rating: 5, relativeTime: "Verified Google review", text: "The fee was very reasonable and the work was excellent. Thank you very much." },
+];
+
 // Logo bar — businesses / outlets we've worked with (placeholders for now).
 export const BRAND_LOGOS = [
   "Globe Daily",
