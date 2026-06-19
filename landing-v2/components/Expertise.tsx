@@ -42,7 +42,7 @@ export default function Expertise() {
       {/* warm gold glow on the far left and far right edges (slightly reduced) */}
       <div className="pointer-events-none absolute -left-44 top-1/2 h-[30rem] w-[30rem] -translate-y-1/2 rounded-full bg-gold/8 blur-[140px]" />
       <div className="pointer-events-none absolute -right-44 top-1/2 h-[30rem] w-[30rem] -translate-y-1/2 rounded-full bg-gold/8 blur-[140px]" />
-      <div className="section relative z-10">
+      <div className="section relative z-10 max-w-[1180px]">
         <motion.div
           className="max-w-2xl"
           initial={reduce ? false : { opacity: 0, y: 20 }}
