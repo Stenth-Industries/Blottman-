@@ -93,7 +93,32 @@
       "PowerShell($ok=$false; for\\($i=0;$i -lt 40;$i++\\){ try{ $r=Invoke-WebRequest \"http://localhost:3000\" -UseBasicParsing -TimeoutSec 3; if\\($r.StatusCode -eq 200\\){$ok=$true;break} }catch{ Start-Sleep -Milliseconds 900 } }; if\\($ok\\){ \"READY on 3000 \\(status 200\\)\" }else{ \"not ready\" })",
       "PowerShell(git pull *)",
       "PowerShell(Get-ChildItem -Force -Recurse .git -Filter desktop.ini | ForEach-Object { Write-Output $_.FullName; Remove-Item -Force $_.FullName })",
-      "PowerShell(git *)"
+      "PowerShell(git *)",
+      "PowerShell(cd landing-v2; npx tsc --noEmit 2>&1 | Select-Object -First 30; \"exit: $LASTEXITCODE\")",
+      "PowerShell(npx --prefix E:\\\\Blottman-law\\\\landing-v2 tsc -p E:\\\\Blottman-law\\\\landing-v2\\\\tsconfig.json --noEmit 2>&1 | Select-Object -First 30; \"exit: $LASTEXITCODE\")",
+      "PowerShell(npx --prefix E:\\\\Blottman-law\\\\landing-v2 tsc -p E:\\\\Blottman-law\\\\landing-v2\\\\tsconfig.json --noEmit 2>&1 | Select-Object -First 30; \"tsc exit: $LASTEXITCODE\")",
+      "Bash(wait)",
+      "Bash(grep -oiE 'gradient[^;{}\"]{0,80}' .firecrawl/gw-rendered.html)",
+      "Bash(xxd)",
+      "PowerShell(npx --prefix E:\\\\Blottman-law\\\\landing-v2 tsc -p E:\\\\Blottman-law\\\\landing-v2\\\\tsconfig.json --noEmit 2>&1 | Select-Object -First 20; \"tsc exit: $LASTEXITCODE\")",
+      "Bash(grep -oiE '<a [^>]*elementor-button[^>]*>|elementor-button-text[^<]*<|>[^<]{2,40}appointment[^<]*<|>[^<]{2,40}contact[^<]*<|>[^<]{2,40}get in touch[^<]*<' .firecrawl/gw-rendered.html)",
+      "Bash(curl -s -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\)\" \"https://www.gardewilson.com.au/\" -o .firecrawl/gw-raw-src.html)",
+      "Bash(curl -s -A \"Mozilla/5.0\" \"https://www.gardewilson.com.au/wp-content/litespeed/css/552801a5b504667c9511d892394aba03.css?ver=320f2\" -o .firecrawl/gw.css)",
+      "Bash(npx playwright *)",
+      "Bash(node -e \"console.log\\(require\\('puppeteer/package.json'\\).version\\)\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(npx tsc *)",
+      "WebSearch",
+      "WebFetch(domain:maps.app.goo.gl)",
+      "WebFetch(domain:www.google.com)",
+      "Bash(python3 -c \"print\\('CID decimal:', int\\('0x3a55ff3539f944c7',16\\)\\)\")",
+      "Bash(npm run *)",
+      "Bash(echo \"started, pid $!\")",
+      "Read(//tmp/**)",
+      "Bash(break)",
+      "Bash(curl -s -o /tmp/page.html -w \"%{http_code}\" http://localhost:3002/)",
+      "Bash(git diff *)",
+      "Bash(git log *)"
     ]
   }
 }
