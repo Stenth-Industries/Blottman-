@@ -6,7 +6,7 @@ import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/content";
 export default function NoInsuranceBanner() {
   return (
     <section className="bg-ink py-16 text-white sm:py-20">
-      <div className="section max-w-3xl text-center">
+      <div className="section max-w-4xl text-center">
         <p className="eyebrow justify-center">Driving With No Insurance</p>
         <h2 className="h-section mt-4">
           Charged With Driving With No Insurance in{" "}

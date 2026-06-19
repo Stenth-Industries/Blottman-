@@ -26,7 +26,7 @@ export default function QuoteForm() {
   return (
     <section id="quote" className="relative scroll-mt-6 overflow-hidden bg-ink py-16 text-white sm:py-24">
       <div className="pointer-events-none absolute -left-40 bottom-0 h-[28rem] w-[28rem] rounded-full bg-gold/10 blur-[120px]" />
-      <div className="section relative max-w-2xl">
+      <div className="section relative max-w-3xl">
         <div className="text-center">
           <p className="eyebrow justify-center">Free Case Review</p>
           <h2 className="display mt-4 text-4xl text-white sm:text-5xl">

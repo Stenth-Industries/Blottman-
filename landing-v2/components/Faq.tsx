@@ -10,7 +10,7 @@ export default function Faq() {
 
   return (
     <section className="bg-ink py-16 sm:py-24">
-      <div className="section max-w-3xl">
+      <div className="section max-w-4xl">
         <div className="text-center">
           <p className="eyebrow justify-center">Questions</p>
           <h2 className="h-section mt-4 text-white">

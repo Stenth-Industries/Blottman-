@@ -29,7 +29,7 @@ const config: Config = {
         sans: ["var(--font-poppins)", "system-ui", "sans-serif"],
       },
       maxWidth: {
-        content: "1180px",
+        content: "1400px",
       },
       backgroundImage: {
         // Restrained metallic-gold sweep, used only on key words/buttons

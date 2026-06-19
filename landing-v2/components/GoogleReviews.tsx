@@ -65,40 +65,42 @@ function SampleReviews() {
     "https://www.google.com/maps/search/?api=1&query=Blottman+Legal+Services+Cookstown";
   return (
     <>
-      <div className="mt-10 flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-ink-soft px-6 py-7 text-center shadow-[0_1px_3px_rgba(0,0,0,0.4)] sm:flex-row sm:justify-center sm:gap-6 sm:text-left">
-        <GoogleG className="h-9 w-9 shrink-0" />
-        <div className="flex flex-col items-center sm:items-start">
-          <div className="flex items-baseline gap-2">
-            <span className="font-display text-4xl leading-none text-white">
-              {GOOGLE_RATING.rating.toFixed(1)}
-            </span>
-            <span className="text-sm text-white/60">out of 5</span>
+      <div className="mt-10 flex flex-col items-center gap-6 rounded-2xl border border-gold/40 bg-ink-soft px-7 py-7 text-center shadow-[0_0_30px_-12px_rgba(231,172,64,0.4)] sm:flex-row sm:justify-between sm:gap-6 sm:text-left">
+        {/* Left — aggregate rating */}
+        <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-5">
+          <GoogleG className="h-10 w-10 shrink-0" />
+          <div className="flex flex-col items-center sm:items-start">
+            <div className="flex items-baseline gap-2">
+              <span className="font-display text-4xl leading-none text-white">
+                {GOOGLE_RATING.rating.toFixed(1)}
+              </span>
+              <span className="text-sm text-white/60">out of 5</span>
+            </div>
+            <Stars rating={GOOGLE_RATING.rating} color="#e7ac40" className="mt-2" />
+            <p className="mt-2 text-sm font-semibold text-gold">
+              Excellent · {GOOGLE_RATING.reviews}+ Google reviews
+            </p>
           </div>
-          <Stars rating={GOOGLE_RATING.rating} color="#e7ac40" className="mt-2" />
         </div>
-        <div className="hidden h-12 w-px bg-white/10 sm:block" />
-        <div className="flex flex-col items-center sm:items-start">
-          <p className="text-sm font-semibold text-white">
-            Excellent · {GOOGLE_RATING.reviews}+ Google reviews
-          </p>
-          <div className="mt-2 flex flex-wrap items-center justify-center gap-3 sm:justify-start">
-            <a
-              href={reviewUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-full bg-gold-sheen px-5 py-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-ink transition hover:-translate-y-0.5"
-            >
-              Write a Review
-            </a>
-            <a
-              href={reviewUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-semibold text-gold underline-offset-4 hover:underline"
-            >
-              Read all reviews &rarr;
-            </a>
-          </div>
+
+        {/* Right — actions */}
+        <div className="flex flex-col items-center gap-3 sm:items-end">
+          <a
+            href={reviewUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center rounded-full bg-gold-sheen px-6 py-2.5 text-[12px] font-semibold uppercase tracking-[0.12em] text-ink shadow-[0_8px_24px_rgba(231,172,64,0.35)] transition hover:-translate-y-0.5"
+          >
+            Write a Review
+          </a>
+          <a
+            href={reviewUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-semibold text-gold underline-offset-4 hover:underline"
+          >
+            Read all reviews &rarr;
+          </a>
         </div>
       </div>
 
