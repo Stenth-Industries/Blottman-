@@ -137,7 +137,12 @@
       "Bash(cp /tmp/u_g.jpg process-3-court.jpg)",
       "Bash(cp /tmp/u_b.jpg process-4-driving.jpg)",
       "Bash(cp /tmp/u_d.jpg result-speeding.jpg)",
-      "Bash(awk '{print $5, $9}')"
+      "Bash(awk '{print $5, $9}')",
+      "Bash(cp /tmp/rr_ts6.jpg result-speeding.jpg)",
+      "Bash(cp /tmp/rr_ts2.jpg result-stunt.jpg)",
+      "Bash(cp /tmp/rr_of2.jpg result-careless.jpg)",
+      "Bash(cp /tmp/rr_ph7.jpg result-distracted.jpg)",
+      "Bash(cp /tmp/rr_of1.jpg result-suspended.jpg)"
     ]
   }
 }
