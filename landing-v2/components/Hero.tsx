@@ -37,7 +37,7 @@ export default function Hero() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_55%,rgba(12,12,12,0.65),transparent_55%)]" />
       {/* warm gold light — reduced so it doesn't overpower */}
       <div className="pointer-events-none absolute -right-40 -top-40 h-[28rem] w-[28rem] rounded-full bg-gold/8 blur-[130px]" />
-      <div className="section relative z-10 grid items-center gap-12 py-16 sm:py-24 lg:grid-cols-[1.15fr_0.85fr]">
+      <div className="section relative z-10 grid max-w-[1180px] items-center gap-12 py-16 sm:py-24 lg:grid-cols-[1.15fr_0.85fr]">
         <motion.div
           className="lg:-ml-16 xl:-ml-28"
           variants={container}
