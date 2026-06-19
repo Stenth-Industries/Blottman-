@@ -20,7 +20,7 @@ import {
 export default function GoogleReviews() {
   return (
     <section className="bg-ink py-16 sm:py-24">
-      <div className="section">
+      <div className="section max-w-[1100px]">
         <div className="max-w-2xl">
           <p className="eyebrow">Google Reviews</p>
           <h2 className="h-section mt-4 text-white">
@@ -105,7 +105,7 @@ function SampleReviews() {
       </div>
 
       <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
-        {GOOGLE_SAMPLE_REVIEWS.map((r, i) => (
+        {GOOGLE_SAMPLE_REVIEWS.slice(0, 6).map((r, i) => (
           <figure key={`${r.author}-${i}`} className="card flex flex-col gap-4 p-6">
             <div className="flex items-center justify-between">
               <Stars rating={r.rating} color="#e7ac40" />
