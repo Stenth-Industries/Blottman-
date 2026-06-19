@@ -20,18 +20,24 @@ export const GOOGLE_RATING = {
 };
 
 // Trustindex widget id for the live Google-reviews embed (free, no card needed).
-// When set, GoogleReviews renders the live, auto-updating Google reviews widget;
-// the sample cards below are only the fallback if the widget can't load.
-export const TRUSTINDEX_WIDGET_ID = "72966a67489d59447446e251b7d";
+// ⚠️ Left EMPTY on purpose: the live widget surfaces the newest Google entries, many
+// of which are rating-only ("left a rating", no text) and look empty to visitors.
+// We instead render the curated written reviews below so every card has real words.
+// Put the widget id back here to re-enable the live embed.
+export const TRUSTINDEX_WIDGET_ID = "";
 
-// Fallback review cards — REAL verified Google reviews from blottman.com, used only
-// if the live widget fails to load (never show fabricated reviews to real visitors).
+// REAL verified written Google reviews from blottman.com. These are shown directly
+// (not just as a fallback) so the section always displays reviews with actual words,
+// not rating-only entries. Never show fabricated reviews to real visitors.
 export const GOOGLE_SAMPLE_REVIEWS = [
-  { author: "Daniel Tran", rating: 5, relativeTime: "Verified Google review", text: "Leslie was outstanding. She got my careless driving withdrawn and amended my speeding ticket to disobey sign, which saved me from major demerit points. Highly recommend." },
+  { author: "Anthony Sweeney", rating: 5, relativeTime: "Verified Google review", text: "I retained Blottman Law, represented by Leslie Rivas, for a hand-held device charge. On the first day of proceedings she had the ticket withdrawn — no demerit points, no suspension, nothing on my record, and over $200 saved versus the fine. She explained everything clearly and delivered excellent results. Strongly recommend." },
+  { author: "Daniel Tran", rating: 5, relativeTime: "Verified Google review", text: "Leslie was outstanding. She got my careless driving withdrawn and amended my speeding ticket to disobey sign, which saved me from major demerit points. Great communication and very professional service. Highly recommend." },
   { author: "Emal S", rating: 5, relativeTime: "Verified Google review", text: "Amazing work — they reduced my stunt driving to just a speeding ticket with 0 demerit points. I recommend them if you are in a crazy situation like I was." },
+  { author: "Al C", rating: 5, relativeTime: "Verified Google review", text: "Communication, professionalism, and RESULTS — three of the reasons why you should look no further than Blottman Legal Services for any traffic needs. My experience was phenomenal. Best service and results in the GTA. Thank you." },
+  { author: "Eleane Reid", rating: 5, relativeTime: "Verified Google review", text: "Our family is eternally grateful for your legal team. The experience was seamless from beginning to end. Both my grandsons were handed bouquets of tickets and were able to get off with little or nothing. Thank you Leslie for all your hard work." },
   { author: "Spencer Hauser", rating: 5, relativeTime: "Verified Google review", text: "Leslie has helped me with multiple tickets and has always been great with communication and customer service skills!" },
   { author: "Ajeet Sahijwani", rating: 5, relativeTime: "Verified Google review", text: "Blottman Legal Services takes care of traffic tickets professionally. They resolved my fail-to-stop at a stop sign issue with zero points." },
-  { author: "Joshua Alba", rating: 5, relativeTime: "Verified Google review", text: "Thank you for your excellent service. Your expertise, clear communication, and professionalism greatly eased a challenging process. Highly recommend." },
+  { author: "Joshua Alba", rating: 5, relativeTime: "Verified Google review", text: "Thank you for your excellent service. Your expertise, clear communication, and professionalism greatly eased a challenging process. I would highly recommend your services." },
   { author: "Tom Zhang", rating: 5, relativeTime: "Verified Google review", text: "The fee was very reasonable and the work was excellent. Thank you very much." },
 ];
 
@@ -68,10 +74,10 @@ export const EXPERTISE: { title: string; blurb: string; image?: string; imageOpa
 
 // How it works — numbered step process (Garde Wilson "What happens" pattern).
 export const PROCESS = [
-  { step: "01", title: "Send Us Your Ticket", body: "Snap a photo of your ticket and send it over. It takes two minutes and costs nothing." },
-  { step: "02", title: "Free Case Review", body: "We review the charge, the evidence, and your options — then call you with an honest read." },
-  { step: "03", title: "We Fight It For You", body: "As your licensed paralegal we handle the paperwork and attend court on your behalf." },
-  { step: "04", title: "Keep Your Record", body: "Our goal: the charge reduced or withdrawn, your licence intact, your insurance unaffected." },
+  { step: "01", title: "Send Us Your Ticket", body: "Snap a photo of your ticket and send it over. It takes two minutes and costs nothing.", image: "/process-1-ticket.jpg" },
+  { step: "02", title: "Free Case Review", body: "We review the charge, the evidence, and your options — then call you with an honest read.", image: "/process-2-review.jpg" },
+  { step: "03", title: "We Fight It For You", body: "As your licensed paralegal we handle the paperwork and attend court on your behalf.", image: "/process-3-court.jpg" },
+  { step: "04", title: "Keep Your Record", body: "Our goal: the charge reduced or withdrawn, your licence intact, your insurance unaffected.", image: "/process-4-driving.jpg" },
 ];
 
 // Real verified Google reviews, pulled from blottman.com (Trustindex Google widget).
@@ -130,14 +136,14 @@ export const VIDEO_TESTIMONIALS = Array.from({ length: 9 }, (_, i) => ({
   caption: "Video testimonial coming soon",
 }));
 
-// Portfolio / recent results gallery (placeholders).
+// Portfolio / recent results gallery (example imagery for now).
 export const PORTFOLIO = [
-  { title: "Speeding 140 in a 100", result: "Withdrawn", tag: "Highway 401" },
-  { title: "Stunt driving (50+ over)", result: "Reduced to minor", tag: "Licence saved" },
-  { title: "Careless driving", result: "Dismissed at trial", tag: "6 points avoided" },
-  { title: "Distracted / cell phone", result: "Withdrawn", tag: "First offence" },
-  { title: "Suspended licence", result: "Reduced charge", tag: "Kept driving" },
-  { title: "Fail to stop", result: "Withdrawn", tag: "No conviction" },
+  { title: "Speeding 140 in a 100", result: "Withdrawn", tag: "Highway 401", image: "/result-speeding.jpg" },
+  { title: "Stunt driving (50+ over)", result: "Reduced to minor", tag: "Licence saved", image: "/result-stunt.jpg" },
+  { title: "Careless driving", result: "Dismissed at trial", tag: "6 points avoided", image: "/result-careless.jpg" },
+  { title: "Distracted / cell phone", result: "Withdrawn", tag: "First offence", image: "/result-distracted.jpg" },
+  { title: "Suspended licence", result: "Reduced charge", tag: "Kept driving", image: "/result-suspended.jpg" },
+  { title: "Fail to stop", result: "Withdrawn", tag: "No conviction", image: "/result-failstop.jpg" },
 ];
 
 // 2 before/after case studies.
@@ -181,11 +187,7 @@ export const FAQS = [
     a: "Fixed, upfront pricing quoted before we start — no hourly surprises. Most clients save more on insurance than the fee itself.",
   },
   {
-    q: "Will this raise my insurance?",
-    a: "That's exactly what we work to prevent. A conviction is what your insurer sees — getting the charge reduced or withdrawn protects your rate.",
-  },
-  {
-    q: "Will a speeding ticket increase my insurance?",
+    q: "Will a traffic ticket increase my insurance?",
     a: "Insurance consequences vary depending on the type of offence, your driving history, and your insurer. Before paying a ticket, it may be beneficial to understand the potential impact and explore your available options.",
   },
   {

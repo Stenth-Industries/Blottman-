@@ -32,11 +32,8 @@ const config: Config = {
         content: "1180px",
       },
       backgroundImage: {
-        // Metallic-gold ramp lifted from gardewilson.com.au — the pale champagne
-        // highlight band (#fadd99) through the middle is what makes it read as
-        // brushed metal rather than a flat fill. Used on key words + buttons.
-        "gold-sheen":
-          "linear-gradient(103deg, #e7ac3f 0%, #fadd99 30%, #fadf9e 58%, #e7ac40 88%)",
+        // Restrained metallic-gold sweep, used only on key words/buttons
+        "gold-sheen": "linear-gradient(100deg, #f5c03d 0%, #e7ac40 45%, #d99944 100%)",
       },
       keyframes: {
         "fade-up": {

@@ -39,7 +39,7 @@ export default function ClaritySection() {
               <CtaButton href="#quote" className="w-full sm:w-auto text-center justify-center">
                 Send My Ticket for Review
               </CtaButton>
-              <CtaButton href={`tel:${PHONE_TEL}`} variant="ghost" arrow={false} className="w-full sm:w-auto text-center justify-center">
+              <CtaButton href={`tel:${PHONE_TEL}`} variant="ghost" className="w-full sm:w-auto text-center justify-center">
                 <Phone />
                 Call Leslie Now
               </CtaButton>

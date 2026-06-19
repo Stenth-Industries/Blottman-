@@ -7,8 +7,8 @@ html {
 }
 
 body {
-  background-color: theme("colors.paper");
-  color: theme("colors.ink.DEFAULT");
+  background-color: theme("colors.ink.DEFAULT");
+  color: #ffffff;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -17,13 +17,9 @@ body {
     @apply mx-auto w-full max-w-content px-5 sm:px-8;
   }
 
-  /* All-caps eyebrow label with a short gold rule, à la Garde Wilson */
+  /* All-caps eyebrow label */
   .eyebrow {
     @apply inline-flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.28em] text-gold;
-  }
-  .eyebrow::before {
-    content: "";
-    @apply h-px w-7 bg-gold/70;
   }
 
   /* Heavy condensed display headline */
@@ -40,10 +36,10 @@ body {
   }
 
   .card {
-    @apply rounded-2xl border border-ink/10 bg-white shadow-[0_1px_3px_rgba(12,12,12,0.06)] transition-all duration-300;
+    @apply rounded-2xl border border-white/10 bg-ink-soft shadow-[0_1px_3px_rgba(0,0,0,0.4)] transition-all duration-300;
   }
   .card:hover {
-    @apply -translate-y-1 shadow-[0_16px_40px_-14px_rgba(12,12,12,0.2)];
+    @apply -translate-y-1 border-gold/30 shadow-[0_16px_40px_-14px_rgba(0,0,0,0.7)];
   }
 }
 

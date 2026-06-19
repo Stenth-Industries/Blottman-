@@ -9,16 +9,16 @@ export default function Faq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="bg-paper py-16 sm:py-24">
+    <section className="bg-ink py-16 sm:py-24">
       <div className="section max-w-3xl">
         <div className="text-center">
           <p className="eyebrow justify-center">Questions</p>
-          <h2 className="h-section mt-4">
+          <h2 className="h-section mt-4 text-white">
             Before you just <span className="text-gold-sheen">pay it.</span>
           </h2>
         </div>
 
-        <div className="mt-12 divide-y divide-ink/10 overflow-hidden rounded-2xl border border-ink/10 bg-white">
+        <div className="mt-12 divide-y divide-white/10 overflow-hidden rounded-2xl border border-white/10 bg-ink-soft">
           {FAQS.map((item, i) => {
             const isOpen = open === i;
             return (
@@ -28,7 +28,7 @@ export default function Faq() {
                   className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left"
                   aria-expanded={isOpen}
                 >
-                  <span className="text-base font-semibold text-ink">{item.q}</span>
+                  <span className="text-base font-semibold text-white">{item.q}</span>
                   <span
                     className={`grid h-7 w-7 shrink-0 place-items-center rounded-full border border-gold/40 text-gold transition-transform ${
                       isOpen ? "rotate-45 bg-gold-sheen text-ink" : ""
@@ -45,7 +45,7 @@ export default function Faq() {
                     isOpen ? "grid-rows-[1fr] pb-5 opacity-100" : "grid-rows-[0fr] opacity-0"
                   }`}
                 >
-                  <p className="min-h-0 text-[15px] leading-relaxed text-ink-muted">{item.a}</p>
+                  <p className="min-h-0 text-[15px] leading-relaxed text-white/65">{item.a}</p>
                 </div>
               </div>
             );

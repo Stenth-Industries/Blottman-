@@ -7,7 +7,7 @@ export default function NoInsuranceBanner() {
   return (
     <section className="bg-ink py-16 text-white sm:py-20">
       <div className="section max-w-3xl text-center">
-        <p className="inline-flex items-center justify-center gap-2.5 text-xs font-semibold uppercase tracking-[0.28em] text-gold">Driving With No Insurance</p>
+        <p className="eyebrow justify-center">Driving With No Insurance</p>
         <h2 className="h-section mt-4">
           Charged With Driving With No Insurance in{" "}
           <span className="text-gold-sheen">Ontario?</span>

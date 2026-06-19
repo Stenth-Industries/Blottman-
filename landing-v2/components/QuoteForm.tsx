@@ -49,11 +49,38 @@ export default function QuoteForm() {
             </p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <form onSubmit={handleSubmit} encType="multipart/form-data" className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field name="firstName" label="First name" autoComplete="given-name" />
             <Field name="lastName" label="Last name" autoComplete="family-name" />
             <Field name="email" label="Email" type="email" autoComplete="email" className="sm:col-span-2" />
             <Field name="phone" label="Phone" type="tel" autoComplete="tel" className="sm:col-span-2" />
+
+            <label className="flex flex-col gap-1.5 sm:col-span-2">
+              <span className="text-xs font-medium uppercase tracking-wide text-white/60">
+                Upload your ticket <span className="text-white/35">(optional)</span>
+              </span>
+              <input
+                name="ticket"
+                type="file"
+                accept="image/*,.pdf"
+                className="rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white/80 outline-none transition file:mr-4 file:rounded-full file:border-0 file:bg-gold-sheen file:px-4 file:py-1.5 file:text-xs file:font-semibold file:uppercase file:tracking-wide file:text-ink hover:file:brightness-105 focus:border-gold/60 focus:bg-white/10"
+              />
+              <span className="text-[11px] text-white/40">
+                Snap a photo of your ticket — JPG, PNG or PDF.
+              </span>
+            </label>
+
+            <label className="flex flex-col gap-1.5 sm:col-span-2">
+              <span className="text-xs font-medium uppercase tracking-wide text-white/60">
+                Brief message <span className="text-white/35">(optional)</span>
+              </span>
+              <textarea
+                name="message"
+                rows={4}
+                placeholder="Tell us briefly what happened…"
+                className="resize-y rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/30 outline-none transition focus:border-gold/60 focus:bg-white/10"
+              />
+            </label>
 
             <button
               type="submit"

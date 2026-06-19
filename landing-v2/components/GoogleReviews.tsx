@@ -19,11 +19,11 @@ import {
 // same black-and-gold layout as the rest of the page.
 export default function GoogleReviews() {
   return (
-    <section className="bg-white py-16 sm:py-24">
+    <section className="bg-ink py-16 sm:py-24">
       <div className="section">
         <div className="max-w-2xl">
           <p className="eyebrow">Google Reviews</p>
-          <h2 className="h-section mt-4">
+          <h2 className="h-section mt-4 text-white">
             What our <span className="text-gold-sheen">clients say.</span>
           </h2>
         </div>
@@ -59,34 +59,46 @@ function TrustindexWidget({ id }: { id: string }) {
   return <div ref={ref} className="mt-10" />;
 }
 
-// Styled fallback — aggregate trust badge + review cards in the site's tokens.
+// Aggregate trust badge + written review cards in the site's dark tokens.
 function SampleReviews() {
+  const reviewUrl =
+    "https://www.google.com/maps/search/?api=1&query=Blottman+Legal+Services+Cookstown";
   return (
     <>
-      <div className="mt-10 flex flex-col items-center gap-4 rounded-2xl border border-ink/10 bg-paper px-6 py-7 text-center shadow-[0_1px_3px_rgba(12,12,12,0.06)] sm:flex-row sm:justify-center sm:gap-6 sm:text-left">
+      <div className="mt-10 flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-ink-soft px-6 py-7 text-center shadow-[0_1px_3px_rgba(0,0,0,0.4)] sm:flex-row sm:justify-center sm:gap-6 sm:text-left">
         <GoogleG className="h-9 w-9 shrink-0" />
         <div className="flex flex-col items-center sm:items-start">
           <div className="flex items-baseline gap-2">
-            <span className="font-display text-4xl leading-none text-ink">
+            <span className="font-display text-4xl leading-none text-white">
               {GOOGLE_RATING.rating.toFixed(1)}
             </span>
-            <span className="text-sm text-ink-muted">out of 5</span>
+            <span className="text-sm text-white/60">out of 5</span>
           </div>
           <Stars rating={GOOGLE_RATING.rating} color="#e7ac40" className="mt-2" />
         </div>
-        <div className="hidden h-12 w-px bg-ink/10 sm:block" />
+        <div className="hidden h-12 w-px bg-white/10 sm:block" />
         <div className="flex flex-col items-center sm:items-start">
-          <p className="text-sm font-semibold text-ink">
-            {GOOGLE_RATING.reviews}+ Google reviews
+          <p className="text-sm font-semibold text-white">
+            Excellent · {GOOGLE_RATING.reviews}+ Google reviews
           </p>
-          <a
-            href="https://www.google.com/maps/search/?api=1&query=Blottman+Legal+Services+Cookstown"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-1 text-sm font-semibold text-gold-deep underline-offset-4 hover:underline"
-          >
-            Read all reviews on Google &rarr;
-          </a>
+          <div className="mt-2 flex flex-wrap items-center justify-center gap-3 sm:justify-start">
+            <a
+              href={reviewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center rounded-full bg-gold-sheen px-5 py-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-ink transition hover:-translate-y-0.5"
+            >
+              Write a Review
+            </a>
+            <a
+              href={reviewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-semibold text-gold underline-offset-4 hover:underline"
+            >
+              Read all reviews &rarr;
+            </a>
+          </div>
         </div>
       </div>
 
@@ -97,16 +109,16 @@ function SampleReviews() {
               <Stars rating={r.rating} color="#e7ac40" />
               <GoogleG className="h-4 w-4" />
             </div>
-            <blockquote className="text-[15px] leading-relaxed text-ink/90">
+            <blockquote className="text-[15px] leading-relaxed text-white/85">
               &ldquo;{r.text}&rdquo;
             </blockquote>
-            <figcaption className="mt-auto flex items-center gap-3 border-t border-ink/10 pt-4">
+            <figcaption className="mt-auto flex items-center gap-3 border-t border-white/10 pt-4">
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gold-sheen font-display text-sm text-ink">
                 {r.author.charAt(0).toUpperCase()}
               </span>
               <div>
-                <p className="text-sm font-semibold text-ink">{r.author}</p>
-                <p className="text-xs text-ink-muted">
+                <p className="text-sm font-semibold text-white">{r.author}</p>
+                <p className="text-xs text-white/55">
                   {r.relativeTime} · Posted on Google
                 </p>
               </div>
