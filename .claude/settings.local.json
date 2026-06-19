@@ -118,7 +118,16 @@
       "Bash(break)",
       "Bash(curl -s -o /tmp/page.html -w \"%{http_code}\" http://localhost:3002/)",
       "Bash(git diff *)",
-      "Bash(git log *)"
+      "Bash(git log *)",
+      "Bash(vercel --version)",
+      "Bash(vercel whoami *)",
+      "Bash(vercel project *)",
+      "Bash(vercel domains *)",
+      "Bash(vercel --prod --yes)",
+      "Bash(git show *)",
+      "Bash(grep -iE \"^[+-].*\\(#[0-9a-fA-F]{3,6}|bg-|text-gold|text-ink|text-paper|from-|to-|via-|gold-sheen|bg-gold|bg-ink\\)\")",
+      "Bash(grep -vE \"background-image|//|/\\\\*\")",
+      "Bash(git status *)"
     ]
   }
 }
