@@ -28,17 +28,17 @@ export default function Expertise() {
     <section className="relative overflow-hidden bg-ink py-16 text-white sm:py-24">
       {/* full-section background — kept very faint behind everything (not inside the cards) */}
       <Image
-        src="/what-we-fight-bg.png"
+        src="/what-we-fight-bg-3.jpg"
         alt=""
         aria-hidden="true"
         fill
         sizes="100vw"
-        className="pointer-events-none object-cover opacity-[0.40]"
+        className="pointer-events-none object-cover opacity-[0.67]"
       />
       {/* horizontal overlay: near-black through the centre behind the grid, lighter at the edges so the road shows only there */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink/35 via-ink to-ink/35" />
       {/* stronger centre darkening behind the offence grid so the cards sit on clean near-black */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_72%_92%_at_center,rgba(12,12,12,0.94),transparent_70%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_72%_92%_at_center,rgba(12,12,12,0.82),transparent_72%)]" />
       {/* warm gold glow on the far left and far right edges (slightly reduced) */}
       <div className="pointer-events-none absolute -left-44 top-1/2 h-[30rem] w-[30rem] -translate-y-1/2 rounded-full bg-gold/8 blur-[140px]" />
       <div className="pointer-events-none absolute -right-44 top-1/2 h-[30rem] w-[30rem] -translate-y-1/2 rounded-full bg-gold/8 blur-[140px]" />

@@ -17,13 +17,9 @@ body {
     @apply mx-auto w-full max-w-content px-5 sm:px-8;
   }
 
-  /* All-caps eyebrow label with a short gold rule, à la Garde Wilson */
+  /* All-caps eyebrow label */
   .eyebrow {
     @apply inline-flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.28em] text-gold;
-  }
-  .eyebrow::before {
-    content: "";
-    @apply h-px w-7 bg-gold/70;
   }
 
   /* Heavy condensed display headline */

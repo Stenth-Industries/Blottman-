@@ -3,8 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import CtaButton from "./CtaButton";
-import Stars from "./Stars";
-import { BENEFITS, PHONE_DISPLAY, PHONE_TEL, TRUSTPILOT } from "@/lib/content";
+import { BENEFITS, PHONE_DISPLAY, PHONE_TEL } from "@/lib/content";
 
 // Staggered entrance: each child rises + fades in sequence.
 const container: Variants = {
@@ -30,7 +29,7 @@ export default function Hero() {
         fill
         priority
         sizes="100vw"
-        className="pointer-events-none object-contain object-center blur-[1px]"
+        className="pointer-events-none object-cover object-center blur-[1px]"
       />
       {/* left-to-right darkening: left very dark for the headline, right darkened ~30% behind Leslie */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/72 to-ink/65" />
@@ -52,7 +51,7 @@ export default function Hero() {
               width={1957}
               height={1800}
               priority
-              className="mb-6 h-auto w-[100px] sm:w-[100px]"
+              className="mb-6 h-auto w-[120px] sm:w-[120px]"
             />
           </motion.div>
           <motion.p variants={item} className="text-lg font-semibold uppercase tracking-[0.18em] text-gold">
@@ -88,44 +87,53 @@ export default function Hero() {
               </span>
             </a>
           </motion.div>
-
-          <motion.div variants={item} className="mt-9 flex items-center gap-3">
-            <Stars rating={TRUSTPILOT.rating} />
-            <span className="text-sm text-white/70">
-              <span className="font-semibold text-white">{TRUSTPILOT.rating}</span> on Trustpilot
-            </span>
-          </motion.div>
         </motion.div>
 
         {/* Leslie — real, unedited photo blended into the hero with CSS only */}
         <motion.div
-          className="relative hidden lg:block"
+          className="relative ml-auto hidden w-full max-w-[330px] lg:block"
           initial={reduce ? false : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
         >
-          {/* warm gold glow + soft shadow around the card so it sits in the black-and-gold hero */}
-          <div className="absolute -inset-4 rounded-[2.25rem] bg-gold/15 blur-3xl" />
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-[rgba(232,176,65,0.22)] bg-ink-soft shadow-[0_35px_90px_-30px_rgba(0,0,0,0.85)] ring-1 ring-inset ring-white/[0.07]">
-            <Image
-              src="/leslie-office.png"
-              alt="Leslie Rivas — licensed Ontario paralegal, Blottman Law"
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 40vw"
-              className="object-cover object-top brightness-95"
-            />
-            {/* soft black gradient — softer at the bottom so it isn't too heavy, easing to clear over her face */}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/65 via-ink/20 to-transparent" />
-            {/* gentle top fade */}
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-1/5 bg-gradient-to-b from-ink/40 to-transparent" />
-            {/* edge vignette — darkens the corners/edges, keeps the centre (face) clear */}
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_38%,transparent_46%,rgba(12,12,12,0.62))]" />
+          {/* Portrait card + name badge — own positioning context so the badge anchors to the card, not the whole column */}
+          <div className="relative">
+            {/* warm gold glow + soft shadow around the card so it sits in the black-and-gold hero */}
+            <div className="absolute -inset-4 rounded-[2.25rem] bg-gold/15 blur-3xl" />
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-[rgba(232,176,65,0.22)] bg-ink-soft shadow-[0_35px_90px_-30px_rgba(0,0,0,0.85)] ring-1 ring-inset ring-white/[0.07]">
+              <Image
+                src="/leslie-office.png"
+                alt="Leslie Rivas — licensed Ontario paralegal, Blottman Law"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                className="object-cover object-top brightness-95"
+              />
+              {/* soft black gradient — softer at the bottom so it isn't too heavy, easing to clear over her face */}
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/65 via-ink/20 to-transparent" />
+              {/* gentle top fade */}
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-1/5 bg-gradient-to-b from-ink/40 to-transparent" />
+              {/* edge vignette — darkens the corners/edges, keeps the centre (face) clear */}
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_38%,transparent_46%,rgba(12,12,12,0.62))]" />
+            </div>
+            <div className="absolute -bottom-5 -left-5 rounded-2xl border border-gold/20 bg-ink/90 px-5 py-3.5 shadow-[0_18px_44px_-14px_rgba(0,0,0,0.9)] ring-1 ring-inset ring-white/[0.08] backdrop-blur-sm">
+              <p className="font-display text-xl uppercase tracking-tight text-gold">Leslie Rivas</p>
+              <p className="mt-0.5 text-[11px] uppercase tracking-[0.18em] text-white/60">Licensed Ontario Paralegal</p>
+            </div>
           </div>
-          <div className="absolute -bottom-5 -left-5 rounded-2xl border border-gold/20 bg-ink/90 px-5 py-3.5 shadow-[0_18px_44px_-14px_rgba(0,0,0,0.9)] ring-1 ring-inset ring-white/[0.08] backdrop-blur-sm">
-            <p className="font-display text-xl uppercase tracking-tight text-gold">Leslie Rivas</p>
-            <p className="mt-0.5 text-[11px] uppercase tracking-[0.18em] text-white/60">Licensed Ontario Paralegal</p>
-          </div>
+
+          {/* Personal quote from Leslie, beneath her portrait (clears the overhanging name badge) */}
+          <figure className="mt-10 border-l-2 border-gold/50 pl-5">
+            <blockquote className="text-[13.5px] italic leading-relaxed text-white/75">
+              &ldquo;Many drivers underestimate the long-term consequences of a traffic ticket.
+              It can affect your insurance, your driving record, and your future. Before you pay
+              a ticket or let a deadline pass, take the time to understand your rights and the
+              options available to you.&rdquo;
+            </blockquote>
+            <figcaption className="mt-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-gold">
+              &mdash; Leslie Rivas
+            </figcaption>
+          </figure>
         </motion.div>
       </div>
     </section>

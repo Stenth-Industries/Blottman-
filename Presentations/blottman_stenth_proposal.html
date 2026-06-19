@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stenth × Blottman Legal — Google Ads Proposal</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f3ee;
+    --accent: #e8401c;
+    --accent2: #f0a500;
+    --mid: #1e1e1e;
+    --border: rgba(245,243,238,0.12);
+    --text-dim: rgba(245,243,238,0.5);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* SLIDE SYSTEM */
+  .slide {
+    min-height: 100vh;
+    padding: 60px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .slide.visible { opacity: 1; transform: translateY(0); }
+
+  .slide-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+
+  /* COVER */
+  .cover {
+    background: var(--black);
+    justify-content: space-between;
+    padding: 80px;
+  }
+  .cover-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .logo-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    text-transform: uppercase;
+  }
+  .cover-title {
+    margin-top: auto;
+    padding-top: 80px;
+  }
+  .cover-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .cover-h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 10vw, 140px);
+    line-height: 0.9;
+    color: var(--white);
+    letter-spacing: 2px;
+  }
+  .cover-h1 span { color: var(--accent); }
+  .cover-sub {
+    margin-top: 32px;
+    font-size: 17px;
+    color: var(--text-dim);
+    max-width: 480px;
+    font-weight: 300;
+  }
+  .cover-bottom {
+    margin-top: 60px;
+    display: flex;
+    gap: 60px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+  .cover-stat { }
+  .cover-stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--accent2);
+    line-height: 1;
+  }
+  .cover-stat-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+
+  /* SECTION HEADERS */
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .slide-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 6vw, 80px);
+    line-height: 0.95;
+    letter-spacing: 1px;
+    margin-bottom: 48px;
+  }
+  .slide-title span { color: var(--accent); }
+
+  /* BUSINESS MODEL GRID */
+  .biz-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px;
+    background: var(--border);
+  }
+  .biz-cell {
+    background: var(--black);
+    padding: 32px;
+  }
+  .biz-cell-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .biz-cell-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .biz-cell p {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  .biz-cell ul {
+    list-style: none;
+    margin-top: 10px;
+  }
+  .biz-cell ul li {
+    font-size: 13px;
+    color: var(--text-dim);
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .biz-cell ul li::before { content: '→ '; color: var(--accent2); }
+
+  /* PROBLEMS */
+  .problems-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .problem-item {
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    align-items: center;
+    gap: 32px;
+    background: var(--mid);
+    padding: 24px 32px;
+    border-left: 3px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .problem-item:hover { border-left-color: var(--accent); }
+  .problem-item.critical { border-left-color: var(--accent); }
+  .problem-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--border);
+    line-height: 1;
+  }
+  .problem-item.critical .problem-num { color: rgba(232,64,28,0.3); }
+  .problem-title {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+  .problem-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .problem-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 6px 12px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .badge-critical { background: rgba(232,64,28,0.15); color: var(--accent); }
+  .badge-warn { background: rgba(240,165,0,0.15); color: var(--accent2); }
+  .badge-ok { background: rgba(245,243,238,0.08); color: var(--text-dim); }
+
+  /* GAME PLAN */
+  .gameplan-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--border);
+  }
+  .gp-card {
+    background: var(--mid);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .gp-card::before {
+    content: attr(data-phase);
+    position: absolute;
+    right: -10px;
+    top: -20px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 120px;
+    color: rgba(245,243,238,0.03);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .gp-phase {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .gp-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  .gp-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .gp-items li {
+    font-size: 14px;
+    color: var(--text-dim);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .gp-items li::before {
+    content: '✓';
+    color: var(--accent2);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* KEYWORDS / CAMPAIGN STRATEGY */
+  .campaign-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .campaign-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    text-align: left;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .campaign-table td {
+    padding: 16px 20px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .campaign-table tr:hover td { background: rgba(245,243,238,0.02); }
+  .priority-high { color: var(--accent); font-weight: 600; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; }
+  .priority-med { color: var(--accent2); font-weight: 600; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; }
+  .priority-low { color: var(--text-dim); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; }
+  .tag {
+    display: inline-block;
+    background: rgba(245,243,238,0.06);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    font-size: 11px;
+    border-radius: 2px;
+    margin: 2px;
+    color: var(--text-dim);
+  }
+
+  /* COMPETITORS */
+  .comp-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: var(--border);
+    margin-bottom: 40px;
+  }
+  .comp-card {
+    background: var(--mid);
+    padding: 28px;
+  }
+  .comp-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+  .comp-strength { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
+  .comp-threat {
+    display: inline-block;
+    margin-top: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+  }
+  .threat-high { background: rgba(232,64,28,0.15); color: var(--accent); }
+  .threat-med { background: rgba(240,165,0,0.15); color: var(--accent2); }
+
+  .advantage-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--border);
+  }
+  .adv-cell {
+    background: var(--mid);
+    padding: 28px 32px;
+  }
+  .adv-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .adv-label.red { color: var(--accent); }
+  .adv-label.gold { color: var(--accent2); }
+  .adv-cell ul { list-style: none; }
+  .adv-cell ul li { font-size: 13px; color: var(--text-dim); padding: 5px 0; }
+  .adv-cell ul li::before { content: '— '; }
+
+  /* BUDGET PLAN */
+  .budget-blocks {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    margin-bottom: 32px;
+  }
+  .budget-block {
+    background: var(--mid);
+    padding: 36px;
+    text-align: center;
+  }
+  .budget-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    color: var(--accent2);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .budget-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+  .budget-desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+
+  /* PRICING */
+  .pricing-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px;
+    background: var(--border);
+  }
+  .price-card {
+    background: var(--mid);
+    padding: 40px;
+  }
+  .price-card.featured { background: var(--accent); }
+  .price-card.featured .price-amount,
+  .price-card.featured .price-label,
+  .price-card.featured .price-items li { color: var(--white); }
+  .price-card.featured .price-items li::before { color: var(--white); }
+  .price-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+  }
+  .price-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .price-per { font-size: 13px; color: var(--text-dim); margin-bottom: 28px; }
+  .price-card.featured .price-per { color: rgba(245,243,238,0.7); }
+  .price-items { list-style: none; }
+  .price-items li {
+    font-size: 13px;
+    color: var(--text-dim);
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+  }
+  .price-card.featured .price-items li { border-bottom-color: rgba(245,243,238,0.2); }
+  .price-items li::before { content: '✓'; color: var(--accent2); flex-shrink: 0; }
+  .price-card.featured .price-items li::before { color: var(--white); }
+
+  /* FINAL SLIDE */
+  .final-slide {
+    background: var(--accent);
+    text-align: center;
+    align-items: center;
+  }
+  .final-slide .slide-title { color: var(--white); margin-bottom: 20px; }
+  .final-slide .slide-title span { color: var(--black); }
+  .final-cta {
+    font-size: 18px;
+    color: rgba(245,243,238,0.8);
+    max-width: 540px;
+    margin: 0 auto 40px;
+  }
+  .final-contact {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .contact-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--white);
+    border: 1px solid rgba(245,243,238,0.3);
+    padding: 12px 24px;
+  }
+
+  /* NAV */
+  .nav {
+    position: fixed;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 100;
+  }
+  .nav-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--border);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .nav-dot.active {
+    background: var(--accent);
+    transform: scale(1.5);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .slide { padding: 40px 24px; }
+    .cover { padding: 40px 24px; }
+    .biz-grid, .gameplan-grid, .comp-grid, .budget-blocks, .pricing-row, .advantage-row { grid-template-columns: 1fr; }
+    .problem-item { grid-template-columns: 40px 1fr; }
+    .problem-badge { display: none; }
+    .campaign-table { font-size: 12px; }
+    .campaign-table th, .campaign-table td { padding: 10px; }
+    .nav { display: none; }
+    .cover-bottom { flex-wrap: wrap; gap: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV DOTS -->
+<nav class="nav" id="nav"></nav>
+
+<!-- SLIDE 1: COVER -->
+<section class="slide cover visible" data-slide="0">
+  <div class="cover-top">
+    <div class="logo-badge">Stenth Digital</div>
+    <div class="logo-badge">Confidential Proposal · 2026</div>
+  </div>
+  <div class="cover-title">
+    <div class="cover-eyebrow">Google Ads Management Proposal</div>
+    <h1 class="cover-h1">GROW<br><span>BLOTTMAN</span><br>LEGAL</h1>
+    <p class="cover-sub">A data-driven Google Ads strategy to dominate Ontario's traffic ticket defence market and turn ad spend into real leads.</p>
+  </div>
+  <div class="cover-bottom">
+    <div class="cover-stat">
+      <div class="cover-stat-num">$100</div>
+      <div class="cover-stat-label">Daily Budget</div>
+    </div>
+    <div class="cover-stat">
+      <div class="cover-stat-num">Ontario</div>
+      <div class="cover-stat-label">Target Market</div>
+    </div>
+    <div class="cover-stat">
+      <div class="cover-stat-num">~3K</div>
+      <div class="cover-stat-label">Monthly Drivers Charged in ON</div>
+    </div>
+    <div class="cover-stat">
+      <div class="cover-stat-num">98%</div>
+      <div class="cover-stat-label">Blottman Win Rate</div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 2: ABOUT BLOTTMAN -->
+<section class="slide" data-slide="1">
+  <div class="slide-num">01 — About the Business</div>
+  <div class="section-label">Business Model</div>
+  <h2 class="slide-title">WHO IS<br><span>BLOTTMAN</span> LEGAL</h2>
+  <div class="biz-grid">
+    <div class="biz-cell">
+      <div class="biz-cell-label">What They Do</div>
+      <div class="biz-cell-title">Traffic Defence</div>
+      <p>Blottman Legal Services defends Ontario drivers against traffic charges — from speeding tickets to DUIs and stunt driving. They appear in court so clients don't have to.</p>
+    </div>
+    <div class="biz-cell">
+      <div class="biz-cell-label">Services</div>
+      <div class="biz-cell-title">Full Range</div>
+      <ul>
+        <li>Speeding Tickets</li>
+        <li>Stunt / Racing Driving</li>
+        <li>Careless Driving</li>
+        <li>Distracted Driving</li>
+        <li>DUI / Impaired Driving</li>
+        <li>Fail to Stop</li>
+        <li>Criminal Defence</li>
+      </ul>
+    </div>
+    <div class="biz-cell">
+      <div class="biz-cell-label">Strengths</div>
+      <div class="biz-cell-title">Why They Win</div>
+      <ul>
+        <li>98% success rate (claimed)</li>
+        <li>Strong Google Reviews</li>
+        <li>Licensed lawyers + paralegals</li>
+        <li>Serve all of Ontario</li>
+        <li>Named attorneys (Leslie, Samayita)</li>
+        <li>Client doesn't attend court</li>
+      </ul>
+    </div>
+    <div class="biz-cell">
+      <div class="biz-cell-label">How They Get Clients</div>
+      <div class="biz-cell-title">Lead Model</div>
+      <p>Clients need a lawyer urgently after getting a ticket. The window to act is short — typically 15 days to respond. Calls and form submissions are the primary lead types.</p>
+    </div>
+    <div class="biz-cell">
+      <div class="biz-cell-label">Target Customer</div>
+      <div class="biz-cell-title">Any Ontario Driver</div>
+      <p>Anyone who just received a traffic ticket in Ontario. High urgency — they're searching for help within hours of getting the ticket. High intent, short decision window.</p>
+    </div>
+    <div class="biz-cell">
+      <div class="biz-cell-label">Revenue Model</div>
+      <div class="biz-cell-title">Per-Case Fees</div>
+      <p>Fixed fee per ticket type. High-value cases (stunt driving, DUI, careless driving) can be worth $800–$2,500+ per client. Even a few leads per month justifies the ad spend.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 3: THE PROBLEM -->
+<section class="slide" data-slide="2">
+  <div class="slide-num">02 — Account Audit Findings</div>
+  <div class="section-label">What We Found</div>
+  <h2 class="slide-title">THE<br><span>PROBLEMS</span></h2>
+  <div class="problems-list">
+    <div class="problem-item critical">
+      <div class="problem-num">01</div>
+      <div>
+        <div class="problem-title">Conversion Tracking Not Set Up</div>
+        <div class="problem-desc">Most campaigns show 0 conversions despite spending thousands. Tracking was broken or never installed — no data to optimize against.</div>
+      </div>
+      <span class="problem-badge badge-critical">Critical</span>
+    </div>
+    <div class="problem-item critical">
+      <div class="problem-num">02</div>
+      <div>
+        <div class="problem-title">Best Campaigns Hidden as "IGNORE"</div>
+        <div class="problem-desc">The top two performing campaigns (333 + 12 conversions) were named "IGNORE" and "IGNOREE" — suspicious naming that obscured performance from the client.</div>
+      </div>
+      <span class="problem-badge badge-critical">Critical</span>
+    </div>
+    <div class="problem-item">
+      <div class="problem-num">03</div>
+      <div>
+        <div class="problem-title">$82,500 Spent with Only 19 Conversions</div>
+        <div class="problem-desc">"Higher Value - clicks" campaign spent $82.5K all-time and generated just 19 conversions — a cost per lead of ~$4,300. Unsustainable.</div>
+      </div>
+      <span class="problem-badge badge-critical">Critical</span>
+    </div>
+    <div class="problem-item">
+      <div class="problem-num">04</div>
+      <div>
+        <div class="problem-title">Multiple Campaigns With Zero Results</div>
+        <div class="problem-desc">Several paused campaigns had zero conversions across their entire lifetime. Budget was spread too thin across too many untested ideas.</div>
+      </div>
+      <span class="problem-badge badge-warn">Warning</span>
+    </div>
+    <div class="problem-item">
+      <div class="problem-num">05</div>
+      <div>
+        <div class="problem-title">Policy Violations on Some Campaigns</div>
+        <div class="problem-desc">Multiple campaigns show "asset group limited by policy" — legal advertising restrictions that were never resolved, limiting reach.</div>
+      </div>
+      <span class="problem-badge badge-warn">Warning</span>
+    </div>
+    <div class="problem-item">
+      <div class="problem-num">06</div>
+      <div>
+        <div class="problem-title">No Clear Account Strategy</div>
+        <div class="problem-desc">20+ campaigns running simultaneously with no clear structure, naming convention, or optimization logic. A mess that's hard to scale.</div>
+      </div>
+      <span class="problem-badge badge-warn">Warning</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 4: COMPETITORS -->
+<section class="slide" data-slide="3">
+  <div class="slide-num">03 — Market Landscape</div>
+  <div class="section-label">Competition</div>
+  <h2 class="slide-title">WHO<br><span>BLOTTMAN</span> IS FIGHTING</h2>
+  <div class="comp-grid">
+    <div class="comp-card">
+      <div class="comp-name">X-Copper</div>
+      <div class="comp-strength">Canada's largest traffic ticket firm. Heavy ad spend, national brand, aggressive bidding on all major keywords.</div>
+      <div class="comp-threat threat-high">High Threat</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-name">Ticket911</div>
+      <div class="comp-strength">1,000+ Google reviews. Fixed-price packages, online app. Strong digital presence targeting all of Ontario.</div>
+      <div class="comp-threat threat-high">High Threat</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-name">POINTTS</div>
+      <div class="comp-strength">National franchise with multiple Ontario locations. Established brand since the 1980s. Strong local SEO.</div>
+      <div class="comp-threat threat-med">Med Threat</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-name">JusticeJolt</div>
+      <div class="comp-strength">Virtual platform, all Ontario. Fast-growing. Focused on accessibility and digital-first experience.</div>
+      <div class="comp-threat threat-med">Med Threat</div>
+    </div>
+  </div>
+  <div class="advantage-row">
+    <div class="adv-cell">
+      <div class="adv-label red">Competitors' Edge</div>
+      <ul>
+        <li>Bigger budgets & brand recognition</li>
+        <li>More Google reviews volume</li>
+        <li>Fixed pricing shown upfront online</li>
+        <li>National reach & multiple offices</li>
+      </ul>
+    </div>
+    <div class="adv-cell">
+      <div class="adv-label gold">Blottman's Edge</div>
+      <ul>
+        <li>Named attorneys — personal trust factor</li>
+        <li>98% success rate claim</li>
+        <li>Strong existing Google reviews</li>
+        <li>Client never needs to attend court</li>
+        <li>More agile — can move faster than franchises</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 5: GAME PLAN -->
+<section class="slide" data-slide="4">
+  <div class="slide-num">04 — Stenth's Strategy</div>
+  <div class="section-label">Game Plan</div>
+  <h2 class="slide-title">HOW STENTH<br><span>FIXES THIS</span></h2>
+  <div class="gameplan-grid">
+    <div class="gp-card" data-phase="1">
+      <div class="gp-phase">Phase 1 — Week 1</div>
+      <div class="gp-title">Fix the Foundation</div>
+      <ul class="gp-items">
+        <li>Install proper conversion tracking (calls + form fills)</li>
+        <li>Connect Google Analytics & Tag Manager</li>
+        <li>Audit and resolve policy violations</li>
+        <li>Pause all zero-performing campaigns</li>
+        <li>Enable "IGNORE" & "IGNOREE" campaigns (proven converters)</li>
+        <li>Clean up account naming & structure</li>
+      </ul>
+    </div>
+    <div class="gp-card" data-phase="2">
+      <div class="gp-phase">Phase 2 — Week 2–3</div>
+      <div class="gp-title">Launch Smart Campaigns</div>
+      <ul class="gp-items">
+        <li>Build high-intent keyword campaigns by ticket type</li>
+        <li>Focus on phrase & exact match keywords only</li>
+        <li>Separate campaigns: Speeding / Stunt / DUI / Distracted</li>
+        <li>Tight Ontario geo-targeting by region</li>
+        <li>Write urgency-driven ad copy ("Get Help Today")</li>
+        <li>Set up call extensions & call-only ads</li>
+      </ul>
+    </div>
+    <div class="gp-card" data-phase="3">
+      <div class="gp-phase">Phase 3 — Month 2</div>
+      <div class="gp-title">Optimize & Scale</div>
+      <ul class="gp-items">
+        <li>Weekly review of search terms — add negatives</li>
+        <li>A/B test ad headlines & CTAs</li>
+        <li>Switch to Target CPA bidding once data builds</li>
+        <li>Scale budget into what's converting</li>
+        <li>Build landing pages per ticket type</li>
+        <li>Review Quality Score and improve ad relevance</li>
+      </ul>
+    </div>
+    <div class="gp-card" data-phase="4">
+      <div class="gp-phase">Phase 4 — Ongoing</div>
+      <div class="gp-title">Grow & Report</div>
+      <ul class="gp-items">
+        <li>Monthly performance reports to client</li>
+        <li>Track cost per lead monthly</li>
+        <li>Add new practice areas as they grow</li>
+        <li>Explore Performance Max for awareness</li>
+        <li>Leverage reviews in ads (star ratings)</li>
+        <li>Seasonal adjustments (summer = more tickets)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 6: CAMPAIGN STRUCTURE -->
+<section class="slide" data-slide="5">
+  <div class="slide-num">05 — Campaign Blueprint</div>
+  <div class="section-label">Ad Strategy</div>
+  <h2 class="slide-title">RECOMMENDED<br><span>CAMPAIGNS</span></h2>
+  <table class="campaign-table">
+    <thead>
+      <tr>
+        <th>Campaign</th>
+        <th>Target Keywords</th>
+        <th>Type</th>
+        <th>Est. Budget</th>
+        <th>Priority</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Stunt Driving Defence</strong></td>
+        <td>
+          <span class="tag">stunt driving lawyer ontario</span>
+          <span class="tag">racing ticket lawyer</span>
+          <span class="tag">stunt driving charge help</span>
+        </td>
+        <td>Search</td>
+        <td>$20/day</td>
+        <td><span class="priority-high">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>Speeding Ticket Defence</strong></td>
+        <td>
+          <span class="tag">speeding ticket lawyer ontario</span>
+          <span class="tag">fight speeding ticket toronto</span>
+          <span class="tag">speeding lawyer near me</span>
+        </td>
+        <td>Search</td>
+        <td>$25/day</td>
+        <td><span class="priority-high">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>Distracted Driving</strong></td>
+        <td>
+          <span class="tag">distracted driving lawyer</span>
+          <span class="tag">cellphone ticket lawyer ontario</span>
+          <span class="tag">HTA 78.1 lawyer</span>
+        </td>
+        <td>Search</td>
+        <td>$20/day</td>
+        <td><span class="priority-high">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>Careless Driving</strong></td>
+        <td>
+          <span class="tag">careless driving lawyer ontario</span>
+          <span class="tag">section 130 HTA lawyer</span>
+        </td>
+        <td>Search</td>
+        <td>$15/day</td>
+        <td><span class="priority-med">MED</span></td>
+      </tr>
+      <tr>
+        <td><strong>General Traffic Tickets</strong></td>
+        <td>
+          <span class="tag">traffic ticket lawyer ontario</span>
+          <span class="tag">fight traffic ticket</span>
+          <span class="tag">traffic paralegal near me</span>
+        </td>
+        <td>Search</td>
+        <td>$20/day</td>
+        <td><span class="priority-med">MED</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="margin-top:24px; padding:20px 24px; background:var(--mid); border-left: 3px solid var(--accent2);">
+    <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent2);letter-spacing:2px;">KEY RULE: </span>
+    <span style="font-size:14px;color:var(--text-dim);">Only phrase match and exact match keywords. No broad match. Add 50+ negative keywords from day one (free legal advice, law school, lawyer salary, jobs, etc.)</span>
+  </div>
+</section>
+
+<!-- SLIDE 7: BUDGET PLAN -->
+<section class="slide" data-slide="6">
+  <div class="slide-num">06 — Budget & Expected Results</div>
+  <div class="section-label">ROI Projection</div>
+  <h2 class="slide-title">MAKING $100/DAY<br><span>WORK HARD</span></h2>
+  <div class="budget-blocks">
+    <div class="budget-block">
+      <div class="budget-amount">$100</div>
+      <div class="budget-label">Daily Budget</div>
+      <div class="budget-desc">$3,000/month total. Focused on high-intent search keywords only — no wasted display spend.</div>
+    </div>
+    <div class="budget-block">
+      <div class="budget-amount">15–25</div>
+      <div class="budget-label">Leads / Month (Target)</div>
+      <div class="budget-desc">Based on ~$120–200 cost per lead for traffic law — achievable with proper tracking and keyword focus.</div>
+    </div>
+    <div class="budget-block">
+      <div class="budget-amount">5–8x</div>
+      <div class="budget-label">Est. Return on Ad Spend</div>
+      <div class="budget-desc">Even 10 new clients/month at $500 avg case value = $5,000 revenue from $3,000 spend. Scales up fast.</div>
+    </div>
+  </div>
+  <div style="padding:24px 32px;background:var(--mid);border-left:3px solid var(--accent);">
+    <p style="font-size:14px;color:var(--text-dim);line-height:1.8;">
+      <strong style="color:var(--white);">Important context:</strong> The previous manager spent $82,500 on one campaign and got 19 leads (~$4,300/lead). With proper tracking, smart keyword targeting, and ongoing optimization, Stenth's goal is to bring that cost per lead down to under $200 — a 20x improvement in efficiency.
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 8: PRICING -->
+<section class="slide" data-slide="7">
+  <div class="slide-num">07 — Stenth's Pricing</div>
+  <div class="section-label">Investment</div>
+  <h2 class="slide-title">WHAT STENTH<br><span>CHARGES</span></h2>
+  <div class="pricing-row">
+    <div class="price-card">
+      <div class="price-label">Starter</div>
+      <div class="price-amount">$500</div>
+      <div class="price-per">/ month + ad spend</div>
+      <ul class="price-items">
+        <li>Account audit & cleanup</li>
+        <li>Up to 3 campaigns managed</li>
+        <li>Conversion tracking setup</li>
+        <li>Monthly performance report</li>
+        <li>Keyword & negative keyword management</li>
+      </ul>
+    </div>
+    <div class="price-card featured">
+      <div class="price-label">Recommended</div>
+      <div class="price-amount">$800</div>
+      <div class="price-per">/ month + ad spend</div>
+      <ul class="price-items">
+        <li>Everything in Starter</li>
+        <li>Up to 6 campaigns managed</li>
+        <li>A/B ad copy testing</li>
+        <li>Landing page recommendations</li>
+        <li>Bi-weekly check-in calls</li>
+        <li>Search terms & competitor monitoring</li>
+      </ul>
+    </div>
+    <div class="price-card">
+      <div class="price-label">Growth</div>
+      <div class="price-amount">$1,200</div>
+      <div class="price-per">/ month + ad spend</div>
+      <ul class="price-items">
+        <li>Everything in Recommended</li>
+        <li>Unlimited campaigns</li>
+        <li>Landing page builds</li>
+        <li>Google Analytics deep reporting</li>
+        <li>Call tracking setup</li>
+        <li>Weekly optimization</li>
+      </ul>
+    </div>
+  </div>
+  <div style="margin-top:24px;padding:16px 24px;background:var(--mid);font-size:13px;color:var(--text-dim);">
+    * Management fee is separate from Google Ads spend. Client pays Google directly. No long-term contracts — month-to-month.
+  </div>
+</section>
+
+<!-- SLIDE 9: FINAL -->
+<section class="slide final-slide" data-slide="8">
+  <div class="slide-num" style="color:rgba(245,243,238,0.5)">08 — Let's Get Started</div>
+  <h2 class="slide-title">READY TO<br><span>BUILD THIS?</span></h2>
+  <p class="final-cta">Blottman Legal has the product, the reviews, and the win rate. They just need the right ads strategy. Stenth is here to build it.</p>
+  <div class="final-contact">
+    <div class="contact-item">STENTH DIGITAL</div>
+    <div class="contact-item">GOOGLE ADS MANAGEMENT</div>
+    <div class="contact-item">ONTARIO TRAFFIC LAW SPECIALISTS</div>
+  </div>
+</section>
+
+<script>
+  // Intersection Observer for slide animations
+  const slides = document.querySelectorAll('.slide');
+  const navEl = document.getElementById('nav');
+
+  // Build nav dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => slides[i].scrollIntoView({ behavior: 'smooth' }));
+    navEl.appendChild(dot);
+  });
+
+  const dots = document.querySelectorAll('.nav-dot');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        const idx = Array.from(slides).indexOf(entry.target);
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+    });
+  }, { threshold: 0.15 });
+
+  slides.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

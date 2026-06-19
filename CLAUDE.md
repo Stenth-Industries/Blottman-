@@ -472,3 +472,34 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   - [ ] Get GA4 access (property id 409838286)
   - [ ] Phase 2: Offline Conversion Import for booked consults at $500
   - [ ] Get brand creative from Leslie: 4+ landscape, 4+ square, 2+ portrait + 1 video for PMAX
+- **2026-06-16** (Akash + Claude): **COMPROMISED-SITE cleanup (done) + CLICKBAIT policy diagnosis
+  (ON HOLD pending Kushagra coord).**
+  **(A) DONE — detached all compromised `blottmanlaw.com` assets.** Found the OLD domain
+  `blottmanlaw.com` (NOT the live `blottman.com`) flagged `COMPROMISED_SITE`+`ONLINE_GAMBLING` —
+  hacked/repurposed. 24 disapproved sitelinks + 1 disapproved PROMOTION asset were still in the
+  account. Source campaigns ("IGNORE"/"IGNOREE") are REMOVED, BUT the PROMOTION asset (`108881683961`)
+  was still ENABLED-linked to **2 LIVE campaigns** (`Lower Value - New` 22780000236, `Higher Value -
+  New` 22780001277) + paused `Higher Value - New #3` (23692507381) — all 3 links REMOVED via API.
+  All 24 compromised sitelinks now only link to REMOVED campaigns → fully orphaned, cannot serve.
+  ⚠️ Orphaned assets DON'T show in Assets→Sitelinks UI (that view only lists attached assets), so
+  they can't be hand-deleted; they're harmless and Google auto-GCs them. No script saved (ad-hoc
+  inline API). Verified 0 compromised assets on any ENABLED/PAUSED campaign.
+  **(B) ON HOLD — Clickbait violation on PMAX - Blottman Max (+ shared assets).** The asset group's
+  2nd policy violation (UI "Clickbait"; the API does NOT expose a CLICKBAIT topic, only the separate
+  `COMMISSION_OF_A_CRIME_IN_PERSONALIZED_ADS` label which is benign/unfixable = the legal content).
+  Clickbait trigger = **unverifiable claims "98% Win Rate" / "#1" / "100%"**. ⚠️ "98% Win Rate" is
+  ACCOUNT-WIDE (~30 RSAs across Higher Value-New, Lower Value-New, Traffic ticket lawyer, Higher
+  Value-New #3, Blottman New pM + PMAX). 10 claim-bearing assets feed live PMAX:
+  asset-group HEADLINES `283878683260` ("Fight Auto Fines, 98% Win Rate"), `283878683272` ("98% Win
+  Rate, Fight Auto Fines"), `283882668013` ("#1 Lawyer For Car Tickets"); LONG_HEADLINE `283878683284`;
+  DESCRIPTIONS `283811294381` + `373198526544`; plus SHARED campaign-level callouts "98% Win Rate" &
+  "100% Representation", a campaign sitelink ("Contact Us" w/ 98% desc) + an account sitelink ("Fight
+  Your Car Tickets" w/ 98% desc). NOTE `500+ Cases`, `4.8 Star/300+ Reviews`, `500+ Car Ticket Cases
+  Handled` are TRUE/verified → KEEP. Proposed compliant replacements drafted (see chat). **NOT
+  APPLIED** — Akash to coordinate with Kushagra first because #7-10 are shared assets that also touch
+  the Search campaigns (Kushagra's lane). Mechanism note: GAds text assets are IMMUTABLE → fix =
+  create new asset + relink + remove old (not in-place edit). Timing guidance: do the copy swap on a
+  day with NO budget/bid changes (asset re-review ≈1-2 days, does NOT reset bid-strategy learning;
+  the campaign keeps serving on its other ~20 approved assets). The clickbait claims are ALREADY a
+  drag (asset group reads LIMITED-by-policy) so removing them likely HELPS delivery + avoids a harder
+  disapproval/account strike. Don't bundle with a budget reshuffle.

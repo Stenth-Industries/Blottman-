@@ -36,12 +36,12 @@ export const BENEFITS = [
 
 // What we fight — numbered practice-area grid (Garde Wilson "Expertise" pattern).
 export const EXPERTISE: { title: string; blurb: string; image?: string; imageOpacity?: number }[] = [
-  { title: "Speeding & Stunt Driving", blurb: "Built to protect your licence, record, and insurance rates when the stakes are high.", image: "/offence-speeding.png", imageOpacity: 0.8 },
-  { title: "Careless Driving", blurb: "A serious charge with up to 6 points. We fight to have it reduced or withdrawn.", image: "/offence-careless.png", imageOpacity: 0.55 },
-  { title: "Distracted / Cell Phone", blurb: "Big fines and points for one tap. Often beatable, especially first offence.", image: "/offence-distracted.png", imageOpacity: 0.5 },
-  { title: "Suspended Licence", blurb: "Driving while suspended carries heavy penalties. We protect your record.", image: "/offence-suspended.png", imageOpacity: 0.2 },
-  { title: "Demerit Points & Insurance", blurb: "Convictions follow you for years. We keep your abstract — and your rates — clean.", image: "/offence-demerit.png", imageOpacity: 0.2 },
-  { title: "Fail to Stop / Remain", blurb: "From stop signs to collisions, we build the defence the charge calls for.", image: "/offence-fail-stop.png", imageOpacity: 0.18 },
+  { title: "Speeding & Stunt Driving", blurb: "Built to protect your licence, record, and insurance rates when the stakes are high.", image: "/offence-speeding.png", imageOpacity: 0.9 },
+  { title: "Careless Driving", blurb: "A serious charge with up to 6 points. We fight to have it reduced or withdrawn.", image: "/offence-careless.png", imageOpacity: 0.72 },
+  { title: "Distracted / Cell Phone", blurb: "Big fines and points for one tap. Often beatable, especially first offence.", image: "/offence-distracted.png", imageOpacity: 0.68 },
+  { title: "Suspended Licence", blurb: "Driving while suspended carries heavy penalties. We protect your record.", image: "/offence-suspended.png", imageOpacity: 0.42 },
+  { title: "Demerit Points & Insurance", blurb: "Convictions follow you for years. We keep your abstract — and your rates — clean.", image: "/offence-demerit.png", imageOpacity: 0.42 },
+  { title: "Fail to Stop / Remain", blurb: "From stop signs to collisions, we build the defence the charge calls for.", image: "/offence-fail-stop.png", imageOpacity: 0.4 },
 ];
 
 // How it works — numbered step process (Garde Wilson "What happens" pattern).
@@ -52,17 +52,53 @@ export const PROCESS = [
   { step: "04", title: "Keep Your Record", body: "Our goal: the charge reduced or withdrawn, your licence intact, your insurance unaffected." },
 ];
 
-// 9 written testimonials (3x3 grid). Placeholder names + dates (review-card style).
+// Real verified Google reviews, pulled from blottman.com (Trustindex Google widget).
+// Source: https://blottman.com/ — keep verbatim; these are genuine client reviews.
 export const WRITTEN_TESTIMONIALS = [
-  { name: "Daniel R.", location: "Toronto", date: "March 2026", quote: "Charge withdrawn. I never had to take a day off work to appear." },
-  { name: "Priya S.", location: "Mississauga", date: "March 2026", quote: "Two demerit points avoided. My insurance didn't move an inch." },
-  { name: "Marc L.", location: "Brampton", date: "February 2026", quote: "Stunt-driving charge reduced. Clear, fast, no jargon." },
-  { name: "Aisha K.", location: "Hamilton", date: "February 2026", quote: "They handled everything by email. Speeding ticket dropped." },
-  { name: "Tom V.", location: "Vaughan", date: "January 2026", quote: "Saved my licence. Worth every dollar and then some." },
-  { name: "Grace W.", location: "Markham", date: "January 2026", quote: "Honest about my odds from the first call. No pressure." },
-  { name: "Sven N.", location: "Scarborough", date: "December 2025", quote: "Careless-driving charge beaten. Could not be happier." },
-  { name: "Owen B.", location: "Etobicoke", date: "December 2025", quote: "Quick response, fair price, great result on my cell-phone ticket." },
-  { name: "Lena M.", location: "North York", date: "November 2025", quote: "Professional start to finish. Kept my clean record intact." },
+  {
+    name: "Anthony Sweeney",
+    quote:
+      "I retained Blottman Law, represented by Leslie Rivas, for a Highway Traffic Act, s.78.1(1) – Driving with Hand-Held Communication Device charge. On the first day of proceedings, Ms. Rivas successfully had the ticket withdrawn. This meant no loss of demerit points, no licence suspension, nothing on my record, and over $200 saved compared to paying the fine, while also sparing me long-term insurance implications and added stress. Ms. Rivas explained the potential consequences clearly, guided me through the process with confidence, and delivered excellent results. I strongly recommend her and Blottman Law to anyone facing traffic charges in York Region or across Ontario.",
+  },
+  {
+    name: "Daniel Tran",
+    quote:
+      "Leslie was outstanding. She got my careless driving withdrawn and amended my speeding ticket to disobey sign, which saved me from major demerit points. Great communication and very professional service. Highly recommend.",
+  },
+  {
+    name: "Emal S",
+    quote:
+      "Amazing work — they reduced my stunt driving to just a speeding ticket with 0 demerit points. I recommend them if you are in a crazy situation like I was.",
+  },
+  {
+    name: "Al C",
+    quote:
+      "Communication, professionalism, and RESULTS — three of the reasons why you should look no further than Blottman Legal Services for any traffic needs you might have. My experience was phenomenal. They provided me with the best possible outcome for my traffic infractions, and were upfront with me from the beginning. Best service and results in the GTA. THANK YOU.",
+  },
+  {
+    name: "Eleane Reid",
+    quote:
+      "Our family is eternally grateful for your Legal Team. The experience was seamless from beginning to end. Both my grandsons were handed bouquets of tickets and were able to get off with little or nothing. Thank you Leslie for all your hard work. — The Reid Family",
+  },
+  {
+    name: "Spencer Hauser",
+    quote:
+      "Leslie has helped me with multiple tickets and has always been great with communication and customer service skills!",
+  },
+  {
+    name: "Ajeet Sahijwani",
+    quote:
+      "Blottman Legal Services takes care of traffic tickets professionally. They resolved my fail-to-stop at a stop sign issue with zero points.",
+  },
+  {
+    name: "Joshua Alba",
+    quote:
+      "Thank you for your excellent service. Your expertise, clear communication, and professionalism greatly eased a challenging process. I truly appreciated your dedication and thoughtful guidance throughout. I would highly recommend your services.",
+  },
+  {
+    name: "Tom Zhang",
+    quote: "The fee was very reasonable and the work was excellent. Thank you very much.",
+  },
 ];
 
 // 9 video testimonials (3x3 grid) — placeholders until real footage arrives.
@@ -125,6 +161,10 @@ export const FAQS = [
   {
     q: "Will this raise my insurance?",
     a: "That's exactly what we work to prevent. A conviction is what your insurer sees — getting the charge reduced or withdrawn protects your rate.",
+  },
+  {
+    q: "Will a speeding ticket increase my insurance?",
+    a: "Insurance consequences vary depending on the type of offence, your driving history, and your insurer. Before paying a ticket, it may be beneficial to understand the potential impact and explore your available options.",
   },
   {
     q: "What are my actual chances?",
