@@ -128,7 +128,16 @@
       "Bash(grep -iE \"^[+-].*\\(#[0-9a-fA-F]{3,6}|bg-|text-gold|text-ink|text-paper|from-|to-|via-|gold-sheen|bg-gold|bg-ink\\)\")",
       "Bash(grep -vE \"background-image|//|/\\\\*\")",
       "Bash(git status *)",
-      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:3001)"
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:3001)",
+      "Bash(curl -sL -o /tmp/test-unsplash.jpg \"https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=900&q=80\")",
+      "WebFetch(domain:unsplash.com)",
+      "Bash(curl -sL -o n_doc.jpg \"https://images.unsplash.com/photo-1648823161626-0e839927401b?w=900&q=80&fit=crop\" -w \"doc http=%{http_code} bytes=%{size_download}\\\\n\")",
+      "Bash(cp /tmp/u_n.jpg process-1-ticket.jpg)",
+      "Bash(cp /tmp/u_h.jpg process-2-review.jpg)",
+      "Bash(cp /tmp/u_g.jpg process-3-court.jpg)",
+      "Bash(cp /tmp/u_b.jpg process-4-driving.jpg)",
+      "Bash(cp /tmp/u_d.jpg result-speeding.jpg)",
+      "Bash(awk '{print $5, $9}')"
     ]
   }
 }
