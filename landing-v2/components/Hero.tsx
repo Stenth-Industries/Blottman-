@@ -29,6 +29,7 @@ export default function Hero() {
         fill
         priority
         sizes="100vw"
+        quality={45}
         className="pointer-events-none object-cover object-center blur-[1px]"
       />
       {/* left-to-right darkening: left very dark for the headline, right darkened ~30% behind Leslie */}
@@ -48,8 +49,8 @@ export default function Hero() {
             <Image
               src="/logo.png"
               alt="Blottman Legal Services"
-              width={1957}
-              height={1800}
+              width={480}
+              height={535}
               priority
               className="mb-6 h-auto w-[100px] sm:w-[120px]"
             />
@@ -134,7 +135,7 @@ export default function Hero() {
                 alt="Leslie Rivas — licensed Ontario paralegal, Blottman Law"
                 fill
                 priority
-                sizes="(max-width: 1024px) 100vw, 40vw"
+                sizes="330px"
                 className="object-cover object-top brightness-95"
               />
               {/* soft black gradient — softer at the bottom so it isn't too heavy, easing to clear over her face */}

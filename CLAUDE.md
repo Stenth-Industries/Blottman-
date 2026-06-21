@@ -559,3 +559,21 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   Blottman New pM enabled — no change made.** Real long-term lever stays the same: point PMAX at the
   verified call signal (stenth) instead of Contact Us = needs the form tag / site access (still blocked).
   Watch item: lead *quality* of PMAX Contact Us form-fills.
+- **2026-06-21** (Kushagra + Claude): **landing-v2 lead webhook — added a confirmation auto-reply to the
+  person who fills the form** (previously only `info@stenth.com` got notified; the lead got nothing).
+  Edited `landing-v2/lead-webhook.gs` (the Google Apps Script behind the form): `doPost` now sends a
+  **second email to the lead's address** with a clean, professional HTML template (white card, gold
+  accent line, no emojis/buttons) + plain-text fallback. Copy = confirmation + "we'll reply within one
+  business day" + "don't pay the fine / plead guilty yet" advice; **signed off as Leslie Rivas, Blottman
+  Law**; em-dashes removed per request. Personalized by first name; `replyTo` routes replies to
+  `info@stenth.com`. Added `testAutoReply()` editor helper that always previews to
+  **brothersify10@gmail.com** (`TEST_EMAIL` const). **Apps Script gotcha learned:** new "Deploy →
+  New deployment" generates a NEW `/exec` URL each time (use **Manage deployments → ✏️ → New version**
+  to keep the URL stable). **LIVE webhook URL is now**
+  `https://script.google.com/macros/s/AKfycbx9lKNOxJvu1p_yJGCMD6so8D7faR62cSbQEDiVwOzUbrAQZc8ISOPlaPBLI9CbUxgm/exec`
+  — verified working (`{"ok":true}`, real auto-reply received). ⚠️ **AKASH TODO:** this URL is in local
+  `.env.local` (gitignored) — **it must also be set as `LEAD_WEBHOOK_URL` in Vercel** (Project →
+  Settings → Env Vars) for the production form to use it, then redeploy. Also folded in landing perf
+  tweaks: `Hero.tsx` image quality/size fixes + `next.config.mjs` AVIF + 1yr image cache TTL.
+  ⚠️ Reminder: the Apps Script itself must be re-pasted + redeployed in the editor for `.gs` changes to
+  go live (the repo file is just the source copy, not linked to the live script).
