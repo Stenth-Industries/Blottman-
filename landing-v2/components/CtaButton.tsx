@@ -7,23 +7,40 @@ type Props = {
   className?: string;
 };
 
-// Single source of truth for CTA styling — gold, bold, uppercase (Garde Wilson style).
+// Single source of truth for CTA styling — an outline pill (per image copy 4.png):
+// light text + a thin light border on a TRANSPARENT background, with a diagonal
+// arrow. On hover the text + border + arrow turn gold (a deeper, less-bright
+// gold than the headline sheen). No background fill in any state.
 export default function CtaButton({
   href,
   children,
-  variant = "primary",
   className = "",
 }: Props) {
-  const base =
-    "inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-[13px] font-semibold uppercase tracking-[0.12em] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gold/60";
-  const styles =
-    variant === "primary"
-      ? "bg-gold-sheen text-ink shadow-[0_8px_24px_rgba(231,172,64,0.35)] hover:-translate-y-0.5 hover:shadow-[0_12px_32px_rgba(231,172,64,0.5)]"
-      : "border border-gold/50 text-gold hover:bg-gold/10";
-
   return (
-    <Link href={href} className={`${base} ${styles} ${className}`}>
-      {children}
+    <Link
+      href={href}
+      className={`group inline-flex items-center justify-center gap-3 rounded-full border border-white/45 px-8 py-4 text-[13px] font-semibold uppercase tracking-[0.12em] transition-colors duration-200 hover:border-gold focus:outline-none focus:ring-2 focus:ring-gold/50 ${className}`}
+    >
+      {/* White by default; the rich-gold gradient is revealed on hover via
+          background-clip (same technique as .text-gold-sheen). */}
+      <span className="bg-gold-sheen-hover bg-clip-text text-white transition-colors duration-200 group-hover:text-transparent">
+        {children}
+      </span>
+      {/* Diagonal arrow matching the reference; turns gold on hover. */}
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        className="h-4 w-4 shrink-0 text-white transition-[color,transform] duration-200 group-hover:text-gold motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5"
+      >
+        <path
+          d="M7 17L17 7M17 7H8M17 7V16"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
     </Link>
   );
 }

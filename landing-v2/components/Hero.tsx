@@ -51,13 +51,13 @@ export default function Hero() {
               width={1957}
               height={1800}
               priority
-              className="mb-6 h-auto w-[120px] sm:w-[120px]"
+              className="mb-6 h-auto w-[100px] sm:w-[120px]"
             />
           </motion.div>
-          <motion.p variants={item} className="text-lg font-semibold uppercase tracking-[0.18em] text-gold">
+          <motion.p variants={item} className="eyebrow text-sm">
             Ontario Traffic-Ticket Defence
           </motion.p>
-          <motion.h1 variants={item} className="display mt-5 text-5xl sm:text-7xl">
+          <motion.h1 variants={item} className="display mt-5 text-[clamp(2.25rem,9vw,3rem)] sm:text-7xl">
             Fight your ticket.
             <br />
             Protect your <span className="text-gold-sheen">record.</span>
@@ -65,7 +65,7 @@ export default function Hero() {
 
           <motion.ul variants={item} className="mt-8 grid gap-3 sm:grid-cols-2">
             {BENEFITS.map((b) => (
-              <li key={b} className="flex items-start gap-2.5 text-[15px] text-white/85">
+              <li key={b} className="flex items-start gap-2.5 text-base text-white/85">
                 <Check />
                 <span>{b}</span>
               </li>
@@ -87,6 +87,34 @@ export default function Hero() {
               </span>
             </a>
           </motion.div>
+
+          {/* Mobile-only: Leslie's photo + quote. The desktop portrait sidebar is
+              hidden on phones (lg:block), so this brings the face + trust message
+              — the strongest conversion element — to mobile visitors. */}
+          <motion.figure variants={item} className="mt-10 lg:hidden">
+            <div className="flex items-center gap-4">
+              <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-gold/25 ring-1 ring-inset ring-white/10">
+                <Image
+                  src="/leslie-office.png"
+                  alt="Leslie Rivas — licensed Ontario paralegal, Blottman Law"
+                  fill
+                  sizes="80px"
+                  className="object-cover object-top"
+                />
+              </div>
+              <div>
+                <p className="font-display text-lg uppercase tracking-tight text-gold">Leslie Rivas</p>
+                <p className="text-[11px] uppercase tracking-[0.18em] text-white/60">
+                  Licensed Ontario Paralegal
+                </p>
+              </div>
+            </div>
+            <blockquote className="mt-4 border-l-2 border-gold/50 pl-4 text-[13.5px] italic leading-relaxed text-white/75">
+              &ldquo;Many drivers underestimate the long-term consequences of a traffic ticket.
+              It can affect your insurance, your driving record, and your future. Before you pay
+              a ticket or let a deadline pass, take the time to understand your rights.&rdquo;
+            </blockquote>
+          </motion.figure>
         </motion.div>
 
         {/* Leslie — real, unedited photo blended into the hero with CSS only */}

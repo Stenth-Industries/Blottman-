@@ -45,7 +45,7 @@ export default function Faq() {
                     isOpen ? "grid-rows-[1fr] pb-5 opacity-100" : "grid-rows-[0fr] opacity-0"
                   }`}
                 >
-                  <p className="min-h-0 text-[15px] leading-relaxed text-white/65">{item.a}</p>
+                  <p className="min-h-0 text-base leading-relaxed text-white/65">{item.a}</p>
                 </div>
               </div>
             );

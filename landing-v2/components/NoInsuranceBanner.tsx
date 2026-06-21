@@ -12,7 +12,7 @@ export default function NoInsuranceBanner() {
           Charged With Driving With No Insurance in{" "}
           <span className="text-gold-sheen">Ontario?</span>
         </h2>
-        <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-white/70">
+        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/70">
           The decisions you make now could affect your driving record, insurance premiums,
           and future options. Before paying your ticket, speak with Blottman Legal Services
           to understand your rights and the options available to you.
@@ -21,7 +21,7 @@ export default function NoInsuranceBanner() {
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
             href="#quote"
-            className="inline-flex items-center justify-center rounded-full bg-gold-sheen px-8 py-4 text-[13px] font-semibold uppercase tracking-[0.12em] text-ink shadow-[0_8px_24px_rgba(231,172,64,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_rgba(231,172,64,0.5)] focus:outline-none focus:ring-2 focus:ring-gold/60"
+            className="btn-sheen inline-flex items-center justify-center rounded-full bg-gold-sheen px-8 py-4 text-[13px] font-semibold uppercase tracking-[0.12em] text-ink shadow-[0_8px_24px_rgba(231,172,64,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_rgba(231,172,64,0.5)] focus:outline-none focus:ring-2 focus:ring-gold/60"
           >
             Speak With Blottman Legal
           </Link>

@@ -22,7 +22,7 @@ export default function ClaritySection() {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            <p className="text-sm font-semibold uppercase tracking-widest text-gold mb-4">
+            <p className="eyebrow mb-4">
               Licensed Ontario Paralegal
             </p>
             <h2 className="font-display text-4xl sm:text-5xl lg:text-[4rem] leading-[1.05] uppercase tracking-tight text-white">

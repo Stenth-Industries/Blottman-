@@ -32,7 +32,7 @@ export default function Portfolio() {
               </div>
               <div className="p-5">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-gold">{p.tag}</p>
-                <p className="mt-1.5 font-display text-lg uppercase tracking-tight text-white">{p.title}</p>
+                <p className="mt-1.5 font-display text-xl uppercase tracking-tight text-white">{p.title}</p>
               </div>
             </div>
           ))}

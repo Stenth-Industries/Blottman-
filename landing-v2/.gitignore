@@ -6,4 +6,6 @@ next-env.d.ts
 .DS_Store
 .vercel
 
-.vercel
+# env files (keep secrets out of git) — .env.local.example is the safe template
+.env
+.env*.local

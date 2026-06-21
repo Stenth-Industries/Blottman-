@@ -24,7 +24,7 @@ export const GOOGLE_RATING = {
 // of which are rating-only ("left a rating", no text) and look empty to visitors.
 // We instead render the curated written reviews below so every card has real words.
 // Put the widget id back here to re-enable the live embed.
-export const TRUSTINDEX_WIDGET_ID = "";
+export const TRUSTINDEX_WIDGET_ID = "72966a67489d59447446e251b7d";
 
 // REAL verified written Google reviews from blottman.com. These are shown directly
 // (not just as a fallback) so the section always displays reviews with actual words,

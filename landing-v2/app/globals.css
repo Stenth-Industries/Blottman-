@@ -27,7 +27,7 @@ body {
     @apply font-display uppercase leading-[0.92] tracking-tight;
   }
   .h-section {
-    @apply display text-4xl sm:text-5xl;
+    @apply display text-4xl sm:text-5xl lg:text-6xl;
   }
 
   /* Metallic gold text treatment for a single emphasised word */
@@ -43,9 +43,50 @@ body {
   }
 }
 
-/* Room above the mobile sticky CTA so nothing is hidden behind it */
+/* Room above the mobile sticky bottom bar (Call | Contact) so nothing is hidden
+   behind it; add the notch safe-area inset on phones that have one. */
 @media (max-width: 767px) {
   body {
-    padding-bottom: 86px;
+    padding-bottom: calc(60px + env(safe-area-inset-bottom));
+  }
+}
+
+/* Continuous "brushed-metal" sheen sweep for the primary gold CTAs. Runs on its
+   own (no hover) so it also draws the eye on mobile/touch — e.g. the sticky Call
+   bar. A quick sweep followed by a long idle pause keeps it subtle, not flashy. */
+.btn-sheen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 45%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 100%
+  );
+  transform: translateX(-160%) skewX(-20deg);
+  animation: btn-sheen 4.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+@keyframes btn-sheen {
+  0% {
+    transform: translateX(-160%) skewX(-20deg);
+  }
+  18%,
+  100% {
+    transform: translateX(260%) skewX(-20deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-sheen::after {
+    animation: none;
+    display: none;
   }
 }

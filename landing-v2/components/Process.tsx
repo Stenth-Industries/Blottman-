@@ -31,10 +31,10 @@ export default function Process() {
                 </span>
               </div>
               <div className="p-6">
-                <h3 className="font-display text-lg uppercase tracking-tight text-white">
+                <h3 className="font-display text-xl uppercase tracking-tight text-white">
                   {p.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-white/65">{p.body}</p>
+                <p className="mt-2 text-base leading-relaxed text-white/65">{p.body}</p>
               </div>
             </div>
           ))}

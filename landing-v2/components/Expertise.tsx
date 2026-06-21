@@ -50,7 +50,7 @@ export default function Expertise() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="text-lg font-semibold uppercase tracking-[0.18em] text-gold">What We Fight</p>
+          <p className="eyebrow">What We Fight</p>
           <h2 className="h-section mt-4 text-white">
             Every ticket has a <span className="text-gold-sheen">defence.</span>
           </h2>
@@ -94,7 +94,7 @@ export default function Expertise() {
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink from-[38%] via-ink/65 to-ink/5" />
                 </>
               )}
-              <div className={`relative z-10 ${card.image ? "max-w-[58%]" : ""}`}>
+              <div className={`relative z-10 ${card.image ? "sm:max-w-[58%]" : ""}`}>
                 <motion.span
                   variants={numberItem}
                   className="inline-block origin-left font-display text-2xl text-gold/60 transition-all duration-300 group-hover:scale-110 group-hover:text-gold"
@@ -104,7 +104,7 @@ export default function Expertise() {
                 <h3 className="mt-4 font-display text-xl uppercase tracking-tight text-white [text-shadow:0_1px_10px_rgba(12,12,12,0.6)]">
                   {card.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-white/70 [text-shadow:0_1px_8px_rgba(12,12,12,0.6)]">{card.blurb}</p>
+                <p className="mt-2 text-base leading-relaxed text-white/70 [text-shadow:0_1px_8px_rgba(12,12,12,0.6)]">{card.blurb}</p>
               </div>
             </motion.div>
           ))}

@@ -32,8 +32,16 @@ const config: Config = {
         content: "1400px",
       },
       backgroundImage: {
-        // Restrained metallic-gold sweep, used only on key words/buttons
-        "gold-sheen": "linear-gradient(100deg, #f5c03d 0%, #e7ac40 45%, #d99944 100%)",
+        // Metallic-gold ramp lifted from gardewilson.com.au — the pale champagne
+        // highlight band (#fadd99) through the middle is what makes it read as
+        // brushed metal rather than a flat fill. Used on key words + buttons.
+        "gold-sheen":
+          "linear-gradient(103deg, #f5c03d 0%, #fadd99 30%, #fadf9e 58%, #f5c03d 88%)",
+        // Rich metallic gold for the outline button's text on hover — uniform
+        // gold with a subtle bright sheen (no pale champagne band), matching the
+        // all-gold hover reference (image copy 5.png).
+        "gold-sheen-hover":
+          "linear-gradient(103deg, #e7ac40 0%, #f3c75e 45%, #d99944 100%)",
       },
       keyframes: {
         "fade-up": {

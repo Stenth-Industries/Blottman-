@@ -42,7 +42,9 @@ export default function GoogleReviews() {
 
 // Trustindex renders its widget at the position of its loader <script>. React
 // won't execute a script written directly into JSX, so we append it into this
-// container in an effect — the widget then mounts inside our section.
+// container in an effect — the widget then mounts inside our section. The widget
+// is already themed (dark cards, gold) in the Trustindex dashboard, so we add no
+// styling of our own here.
 function TrustindexWidget({ id }: { id: string }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -111,7 +113,7 @@ function SampleReviews() {
               <Stars rating={r.rating} color="#e7ac40" />
               <GoogleG className="h-4 w-4" />
             </div>
-            <blockquote className="text-[15px] leading-relaxed text-white/85">
+            <blockquote className="text-base leading-relaxed text-white/85">
               &ldquo;{r.text}&rdquo;
             </blockquote>
             <figcaption className="mt-auto flex items-center gap-3 border-t border-white/10 pt-4">

@@ -6,8 +6,6 @@
 > Claude Code instances read the same context. **When something material changes in the
 > account, update this file** — it is the single source of truth, not either machine's local memory.
 
----
-
 ## How we work as a team
 
 - **Same Claude login ≠ shared memory.** Each computer's Claude has its own local memory. This
@@ -22,8 +20,6 @@
   burns the shared rate limit faster — coordinate big batch jobs.
 - **Log changes here** with date + who, so the other person (and the other Claude) stays current.
 
----
-
 ## The client
 
 **Blottman Law** — traffic-ticket lawyer, Ontario Canada.
@@ -36,8 +32,6 @@
   **NOT parking** (parking leads are off-target — see Parking note below).
 - **Google Ads customer ID:** `8586214705`
 - **Project dir:** `E:\Blottman-law` (this folder). Not a git repo. Google Ads API creds in `.env`.
-
----
 
 ## Account state (as of 2026-06-10)
 
@@ -69,8 +63,6 @@
 - **STILL MISSING:** marketing images are thin (1 landscape + 1 square, 0 portrait, 0 video).
   **Need brand creative files from client.**
 
----
-
 ## Conversion tracking (it's a junk drawer)
 
 - ~25 actions, a dozen enabled, overlapping (6+ call actions), inconsistent values (0/1/10/$500).
@@ -80,8 +72,6 @@
   (0 in 30d)** despite being wired 2026-06-09. Brand-new or misconfigured. **Get this firing.**
   - Open question: does stenth fire on *every* call or only *booked* consults? The $500 value
     should attach to **booked consults only**.
-
----
 
 ## Strategy / blueprint
 
@@ -107,8 +97,6 @@ to the current site (need site access); SKAGs can launch against existing `/traf
 4. Get the stenth $500 tracker firing.
 - Reminder set ~Jun 15 in `REMINDER.md` (Google Calendar MCP was offline).
 
----
-
 ## Parking-leads issue (resolved 2026-06-10)
 
 Client saw parking-ticket leads from PMAX - Blottman Max. Root cause was **~90% historical** —
@@ -121,8 +109,6 @@ pre-fix). Post-fix (Jun 8–10): **0 parking conversions.**
   are Google semantic groupings, not literal queries — negatives can't block a category.
 - True fix for residual = turn OFF Final URL Expansion (**UI only** — `url_expansion_opt_out` was
   removed from the Campaign resource in google-ads lib v31 / API v24, can't set via API).
-
----
 
 ## Scripts in this folder
 
@@ -142,8 +128,6 @@ pre-fix). Post-fix (Jun 8–10): **0 parking conversions.**
 
 > ⚠️ If you sync this folder to share context, **exclude `.env` and `credentials.json`** from any
 > public/Git location. Keep secrets out of shared cloud links that aren't private.
-
----
 
 ## ⚠️ INCIDENT — calls went dark Jun 9–11 (diagnosed + fixed 2026-06-11)
 
@@ -556,3 +540,22 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   the campaign keeps serving on its other ~20 approved assets). The clickbait claims are ALREADY a
   drag (asset group reads LIMITED-by-policy) so removing them likely HELPS delivery + avoids a harder
   disapproval/account strike. Don't bundle with a budget reshuffle.
+- **2026-06-21** (Akash + Claude): **Pulse check + impression-spike diagnosis (read-only, NO mutations).**
+  Live pull (`leads.py`, `campaign_status.py`, `yesterday_review.py`). Account healthy & delivering;
+  6 campaigns enabled at **$100/day** total (BMX $45, TTL $20, Lower Value-New $15, TTL broad $10,
+  Higher Value-New $5, Blottman New pM $5). **stenth $500 firing consistently — 7× in last 7d.**
+  **Jun-20 = 16 leads** on 18,494 impr / 198 clk / $117.91 (spend ran hot vs $100 target; PMAX can do ~2×/day).
+  **IMPRESSION SPIKE EXPLAINED:** the 18.5k (vs ~800 on Jun 17) is **98% PMAX** — BMX 12,663 impr ($0.56 CPC)
+  + Blottman New pM 5,507 impr (**$0.16 CPC**); Search campaigns tiny/clean. Those CPCs = cheap
+  Display/Discover/YT inventory, NOT search demand (PMAX has no network controls; FUE already OFF).
+  **Device split is the smoking gun:** Mobile 13,553 impr / 13 conv (the real engine, healthy);
+  **Desktop 1,041 impr / 1 clk / 0 conv** (pure junk Display reach); **Tablet 3,895 impr / $15 / 2 conv**
+  (the old tablet waste creeping back); CTV 5 impr (PMAX starting to push video). Mobile carries all the
+  real conversions, so the headline number is mostly harmless cheap reach — BUT the underlying risk is
+  PMAX optimizing toward **Contact Us form-fills** (untrusted WEBPAGE_CODELESS signal) → cheap Display
+  placements breed low-quality/bot form-fills, matching Leslie's "I only get 5–10/week" complaint.
+  Recommended cleanest cut = pause **Blottman New pM** (worst junk-reach/$: 5.5k cheap impr, 1 conv,
+  near-dup of BMX; siblings #2/#3 already paused Jun-14 for the same reason). **DECISION: user said KEEP
+  Blottman New pM enabled — no change made.** Real long-term lever stays the same: point PMAX at the
+  verified call signal (stenth) instead of Contact Us = needs the form tag / site access (still blocked).
+  Watch item: lead *quality* of PMAX Contact Us form-fills.
