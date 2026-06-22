@@ -1,0 +1,18 @@
+# The Vercel app lives only in landing-v2/. Ignore the heavy root-level Google
+# Ads working files (images, PDFs, scripts) so the deploy upload stays small.
+# Patterns are anchored with a leading slash = repo root ONLY, so nothing inside
+# landing-v2/ is affected, and Vercel's default node_modules exclusion is kept.
+/*.png
+/*.jpeg
+/*.jpg
+/*.pdf
+/*.csv
+/*.py
+/code
+/landing
+/Assets and Deliverables
+/Presentations
+/.next
+/.tmp.driveupload
+landing-v2/node_modules
+landing-v2/.next

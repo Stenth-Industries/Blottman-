@@ -14,7 +14,7 @@ const REPLY_FROM_NAME = "Blottman Law";
 const REPLY_SUBJECT = "We've got your case — Blottman Law";
 const PHONE_DISPLAY = "(647) 794-7750";
 const PHONE_TEL = "+16477947750";
-const SITE_URL = "https://blottman.com";
+const SITE_URL = "https://blottman.ca";
 
 // Brand palette (gardewilson-style black & gold)
 const C = {
@@ -156,8 +156,8 @@ function autoReplyHtml(firstName) {
       '<tr><td style="padding:20px 36px;border-top:1px solid #eeeeee;background:#fafafa;border-radius:0 0 8px 8px;">' +
         '<div style="font:400 12px/1.6 Arial,Helvetica,sans-serif;color:#888;">' +
           'Blottman Law &nbsp;&middot;&nbsp; ' + PHONE_DISPLAY + ' &nbsp;&middot;&nbsp; ' +
-          '<a href="' + SITE_URL + '" style="color:#b8860b;text-decoration:none;">blottman.com</a><br>' +
-          '<span style="color:#aaa;">You received this email because you requested a free case review at blottman.com.</span>' +
+          '<a href="' + SITE_URL + '" style="color:#b8860b;text-decoration:none;">blottman.ca</a><br>' +
+          '<span style="color:#aaa;">You received this email because you requested a free case review at blottman.ca.</span>' +
         '</div>' +
       '</td></tr>' +
 
