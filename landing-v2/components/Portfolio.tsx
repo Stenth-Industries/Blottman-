@@ -6,7 +6,7 @@ import { PORTFOLIO } from "@/lib/content";
 // verified Google reviews (see PORTFOLIO in lib/content.ts for the source quotes).
 export default function Portfolio() {
   return (
-    <section className="bg-ink py-16 sm:py-24">
+    <section className="bg-ink border-t border-ink-line py-16 sm:py-24">
       <div className="section">
         <div className="max-w-2xl">
           <p className="eyebrow">Recent Results</p>

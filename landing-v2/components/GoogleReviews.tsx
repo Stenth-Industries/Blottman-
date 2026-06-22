@@ -19,7 +19,7 @@ import {
 // same black-and-gold layout as the rest of the page.
 export default function GoogleReviews() {
   return (
-    <section className="bg-ink py-16 sm:py-24">
+    <section className="bg-ink border-t border-ink-line py-16 sm:py-24">
       <div className="section">
         <div className="max-w-2xl">
           <p className="eyebrow">Google Reviews</p>

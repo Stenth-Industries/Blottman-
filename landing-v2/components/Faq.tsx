@@ -9,7 +9,7 @@ export default function Faq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="bg-ink py-16 sm:py-32">
+    <section className="bg-ink border-t border-ink-line py-16 sm:py-32">
       <div className="section">
         <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
           

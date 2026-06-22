@@ -56,7 +56,7 @@ export default function QuoteForm() {
   }
 
   return (
-    <section id="quote" className="relative scroll-mt-6 overflow-hidden bg-ink py-16 text-white sm:py-32">
+    <section id="quote" className="relative scroll-mt-6 overflow-hidden bg-ink border-t border-ink-line py-16 text-white sm:py-32">
       {/* Background glow — smooth, even radial gradient */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_80%,rgba(231,172,64,0.06)_0%,transparent_60%)]" />
       

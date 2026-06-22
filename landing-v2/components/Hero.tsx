@@ -16,19 +16,19 @@ export default function Hero() {
 
   return (
     <section className="relative overflow-hidden bg-ink text-white">
-      {/* Ontario courthouse atmosphere — slightly blurred so it reads as background, not focus */}
-      {/* Pre-optimized 20KB WebP served directly (unoptimized) so the LCP isn't
-          gated on a cold /_next/image round-trip after each deploy. */}
-      <Image
-        src="/courthouse-bg.webp"
-        alt=""
-        aria-hidden="true"
-        fill
-        priority
-        unoptimized
-        sizes="100vw"
-        className="pointer-events-none object-cover object-center blur-[1px]"
-      />
+      {/* Cinematic Video Background — slow moving, blurred out, driving at night POV */}
+      {/* The video file 'hero-bg.mp4' needs to be dropped into the public/ folder. 
+          Until then, it uses the courthouse-bg.webp as a seamless fallback poster. */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        poster="/courthouse-bg.webp"
+        className="absolute inset-0 h-full w-full object-cover object-center blur-[2px] opacity-80"
+      >
+        <source src="/hero-bg.mp4" type="video/mp4" />
+      </video>
       {/* left-to-right darkening: left very dark for the headline, right darkened ~30% behind Leslie */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/72 to-ink/65" />
       {/* soft black halo behind Leslie's portrait so it blends into the hero */}

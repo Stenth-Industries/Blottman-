@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
     name: str(form.get("name")),
     phone: str(form.get("phone")),
     email: str(form.get("email")),
+    charge: str(form.get("charge")),
     message: str(form.get("message")),
     gclid: str(form.get("gclid")),
     page: str(form.get("page")),

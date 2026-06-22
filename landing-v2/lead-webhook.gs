@@ -3,7 +3,7 @@
 // Save, then Deploy → New deployment → Web app (Execute as: Me, Access: Anyone).
 // It logs each lead to the Sheet AND emails it from your Google account.
 //
-// Sheet header row (row 1): ts | name | phone | email | message | gclid | page | ticket
+// Sheet header row (row 1): ts | name | phone | email | charge | message | gclid | page | ticket
 
 // Where leads are emailed. Comma-separate for several; cc optional.
 const TO_EMAIL = "info@stenth.com";
@@ -31,13 +31,14 @@ function doPost(e) {
   try {
     const d = JSON.parse(e.postData.contents);
     const sh = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
-    sh.appendRow([d.ts, d.name, d.phone, d.email, d.message, d.gclid, d.page, d.ticket_name || ""]);
+    sh.appendRow([d.ts, d.name, d.phone, d.email, d.charge || "", d.message, d.gclid, d.page, d.ticket_name || ""]);
 
     const body =
       "New traffic-ticket lead\n\n" +
       "Name:    " + d.name + "\n" +
       "Phone:   " + d.phone + "\n" +
       "Email:   " + d.email + "\n" +
+      "Charge:  " + (d.charge || "—") + "\n" +
       "Message: " + (d.message || "—") + "\n" +
       "gclid:   " + (d.gclid || "—") + "\n" +
       "Page:    " + (d.page || "—") + "\n";

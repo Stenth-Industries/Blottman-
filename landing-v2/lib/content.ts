@@ -143,12 +143,42 @@ export const VIDEO_TESTIMONIALS = Array.from({ length: 9 }, (_, i) => ({
 // is labelled as such. Imagery is illustrative. Source review quoted per entry so
 // the provenance is auditable. Do NOT replace with invented results.
 export const PORTFOLIO = [
-  { title: "Speeding", result: "Reduced to 0 points", tag: "$200+ fine → $45", image: "/result-speeding.jpg" },
-  { title: "Careless driving", result: "Fully withdrawn", tag: "No conviction", image: "/result-careless.jpg" },
-  { title: "Stunt driving", result: "Conviction withdrawn", tag: "Record saved", image: "/result-stunt.jpg" },
-  { title: "Distracted / cell phone", result: "Withdrawn", tag: "No record", image: "/result-distracted.jpg" },
-  { title: "Fail to remain + careless", result: "Charges dropped", tag: "Record stayed clean", image: "/result-failstop.jpg" },
-  { title: "Disobey sign", result: "Demerit points cleared", tag: "Plus fine reduction", image: "/result-suspended.jpg" },
+  { 
+    title: "Hand-held Device / Cell Phone", 
+    result: "Completely Withdrawn", 
+    tag: "Client Anthony S. facing a hand-held device charge. Ticket withdrawn with 0 demerit points and no fine.", 
+    image: "/result-distracted.jpg" 
+  },
+  { 
+    title: "Careless Driving", 
+    result: "Fully Withdrawn", 
+    tag: "Client Daniel T. facing major demerit points for careless driving. Charge completely withdrawn.", 
+    image: "/result-careless.jpg" 
+  },
+  { 
+    title: "Stunt Driving", 
+    result: "Reduced to 0 Points", 
+    tag: "Client Emal S. facing a severe stunt driving charge. Reduced to a minor speeding ticket with 0 demerit points.", 
+    image: "/result-stunt.jpg" 
+  },
+  { 
+    title: "Fail to Stop / Sign", 
+    result: "Zero Points", 
+    tag: "Client Ajeet S. facing a fail-to-stop at a stop sign charge. Resolved entirely with zero demerit points.", 
+    image: "/result-failstop.jpg" 
+  },
+  { 
+    title: "Multiple Severe Tickets", 
+    result: "Tickets Cleared", 
+    tag: "Client Eleane R.'s family facing a 'bouquet' of serious tickets. Able to get off with little or nothing.", 
+    image: "/result-suspended.jpg" 
+  },
+  { 
+    title: "Speeding", 
+    result: "Major Reduction", 
+    tag: "Client Al C. facing significant traffic infractions. Secured the best possible outcome and saved the driving record.", 
+    image: "/result-speeding.jpg" 
+  },
 ];
 
 // 2 before/after case studies.
