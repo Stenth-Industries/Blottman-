@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { m, useReducedMotion } from "motion/react";
 import CtaButton from "./CtaButton";
 import { PHONE_TEL } from "@/lib/content";
 
@@ -16,7 +16,7 @@ export default function ClaritySection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           
           {/* Left Column: The Message */}
-          <motion.div
+          <m.div
             initial={reduce ? false : { opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
@@ -44,10 +44,10 @@ export default function ClaritySection() {
                 Call Leslie Now
               </CtaButton>
             </div>
-          </motion.div>
+          </m.div>
 
           {/* Right Column: The "What did you receive?" Checkpoint */}
-          <motion.div
+          <m.div
             initial={reduce ? false : { opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
@@ -103,7 +103,7 @@ export default function ClaritySection() {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </m.div>
 
         </div>
       </div>

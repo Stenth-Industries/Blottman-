@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Anton, Poppins } from "next/font/google";
 import Script from "next/script";
+import MotionProvider from "@/components/MotionProvider";
 import "./globals.css";
 
 // Anton ≈ the heavy condensed "Thunder" display face used on gardewilson.com.au
@@ -13,7 +14,7 @@ const anton = Anton({
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
   variable: "--font-poppins",
   display: "swap",
 });
@@ -43,7 +44,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${anton.variable} ${poppins.variable}`}>
       <body className="font-sans">
-        {children}
+        <MotionProvider>{children}</MotionProvider>
         {GADS_ID && (
           <>
             <Script src={`https://www.googletagmanager.com/gtag/js?id=${GADS_ID}`} strategy="afterInteractive" />

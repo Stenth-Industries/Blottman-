@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion, type HTMLMotionProps } from "motion/react";
+import { m, useReducedMotion, type HTMLMotionProps } from "motion/react";
 
 type Props = {
   children: React.ReactNode;
@@ -18,7 +18,7 @@ export default function Reveal({ children, delay = 0, className, ...rest }: Prop
   }
 
   return (
-    <motion.div
+    <m.div
       className={className}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -27,6 +27,6 @@ export default function Reveal({ children, delay = 0, className, ...rest }: Prop
       {...rest}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

@@ -1,15 +1,18 @@
+import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
 import Reveal from "@/components/Reveal";
 import StatsStrip from "@/components/StatsStrip";
 import AttentionBanner from "@/components/AttentionBanner";
-import Expertise from "@/components/Expertise";
-import Process from "@/components/Process";
-import Portfolio from "@/components/Portfolio";
-import GoogleReviews from "@/components/GoogleReviews";
-import Faq from "@/components/Faq";
-import QuoteForm from "@/components/QuoteForm";
-import FloatingActions from "@/components/FloatingActions";
-import NoInsuranceBanner from "@/components/NoInsuranceBanner";
+
+// Below-fold: code-split so their JS doesn't block the hero paint.
+const Expertise = dynamic(() => import("@/components/Expertise"));
+const Process = dynamic(() => import("@/components/Process"));
+const Portfolio = dynamic(() => import("@/components/Portfolio"));
+const GoogleReviews = dynamic(() => import("@/components/GoogleReviews"));
+const Faq = dynamic(() => import("@/components/Faq"));
+const QuoteForm = dynamic(() => import("@/components/QuoteForm"));
+const FloatingActions = dynamic(() => import("@/components/FloatingActions"));
+const NoInsuranceBanner = dynamic(() => import("@/components/NoInsuranceBanner"));
 
 // Single conversion-focused landing page — no site header or footer.
 // Styled after gardewilson.com.au: black + gold, heavy condensed headlines.

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { m, useReducedMotion, type Variants } from "motion/react";
 import CtaButton from "./CtaButton";
 import { BENEFITS, PHONE_DISPLAY, PHONE_TEL } from "@/lib/content";
 
@@ -39,13 +39,13 @@ export default function Hero() {
       {/* warm gold light — reduced so it doesn't overpower */}
       <div className="pointer-events-none absolute -right-40 -top-40 h-[28rem] w-[28rem] rounded-full bg-gold/8 blur-[130px]" />
       <div className="section relative z-10 grid max-w-[1180px] items-center gap-12 py-16 sm:py-24 lg:grid-cols-[1.15fr_0.85fr]">
-        <motion.div
+        <m.div
           className="lg:-ml-16 xl:-ml-28"
           variants={container}
           initial={reduce ? false : "hidden"}
           animate="show"
         >
-          <motion.div variants={item}>
+          <m.div variants={item}>
             <Image
               src="/logo.png"
               alt="Blottman Legal Services"
@@ -54,26 +54,26 @@ export default function Hero() {
               priority
               className="mb-6 h-auto w-[100px] sm:w-[120px]"
             />
-          </motion.div>
-          <motion.p variants={item} className="eyebrow text-sm">
+          </m.div>
+          <m.p variants={item} className="eyebrow text-sm">
             Ontario Traffic-Ticket Defence
-          </motion.p>
-          <motion.h1 variants={item} className="display mt-5 text-[clamp(2.25rem,9vw,3rem)] sm:text-7xl">
+          </m.p>
+          <m.h1 variants={item} className="display mt-5 text-[clamp(2.25rem,9vw,3rem)] sm:text-7xl">
             Fight your ticket.
             <br />
             Protect your <span className="text-gold-sheen">record.</span>
-          </motion.h1>
+          </m.h1>
 
-          <motion.ul variants={item} className="mt-8 grid gap-3 sm:grid-cols-2">
+          <m.ul variants={item} className="mt-8 grid gap-3 sm:grid-cols-2">
             {BENEFITS.map((b) => (
               <li key={b} className="flex items-start gap-2.5 text-base text-white/85">
                 <Check />
                 <span>{b}</span>
               </li>
             ))}
-          </motion.ul>
+          </m.ul>
 
-          <motion.div variants={item} className="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+          <m.div variants={item} className="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
             <CtaButton href="#quote">Get a Free Case Review</CtaButton>
             <a
               href={`tel:${PHONE_TEL}`}
@@ -87,12 +87,12 @@ export default function Hero() {
                 {PHONE_DISPLAY}
               </span>
             </a>
-          </motion.div>
+          </m.div>
 
           {/* Mobile-only: Leslie's photo + quote. The desktop portrait sidebar is
               hidden on phones (lg:block), so this brings the face + trust message
               — the strongest conversion element — to mobile visitors. */}
-          <motion.figure variants={item} className="mt-10 lg:hidden">
+          <m.figure variants={item} className="mt-10 lg:hidden">
             <div className="flex items-center gap-4">
               <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-gold/25 ring-1 ring-inset ring-white/10">
                 <Image
@@ -115,11 +115,11 @@ export default function Hero() {
               It can affect your insurance, your driving record, and your future. Before you pay
               a ticket or let a deadline pass, take the time to understand your rights.&rdquo;
             </blockquote>
-          </motion.figure>
-        </motion.div>
+          </m.figure>
+        </m.div>
 
         {/* Leslie — real, unedited photo blended into the hero with CSS only */}
-        <motion.div
+        <m.div
           className="relative ml-auto hidden w-full max-w-[330px] lg:block"
           initial={reduce ? false : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -163,7 +163,7 @@ export default function Hero() {
               &mdash; Leslie Rivas
             </figcaption>
           </figure>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

@@ -2,7 +2,7 @@
 
 import type { CSSProperties } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { m, useReducedMotion, type Variants } from "motion/react";
 import SectionCta from "./SectionCta";
 import { EXPERTISE } from "@/lib/content";
 
@@ -43,7 +43,7 @@ export default function Expertise() {
       <div className="pointer-events-none absolute -left-44 top-1/2 h-[30rem] w-[30rem] -translate-y-1/2 rounded-full bg-gold/8 blur-[140px]" />
       <div className="pointer-events-none absolute -right-44 top-1/2 h-[30rem] w-[30rem] -translate-y-1/2 rounded-full bg-gold/8 blur-[140px]" />
       <div className="section relative z-10 max-w-[1180px]">
-        <motion.div
+        <m.div
           className="max-w-2xl"
           initial={reduce ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -54,9 +54,9 @@ export default function Expertise() {
           <h2 className="h-section mt-4 text-white">
             Every ticket has a <span className="text-gold-sheen">defence.</span>
           </h2>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-ink-line bg-ink-line sm:grid-cols-2 lg:grid-cols-3"
           variants={container}
           initial={reduce ? false : "hidden"}
@@ -64,7 +64,7 @@ export default function Expertise() {
           viewport={{ once: true, margin: "-80px" }}
         >
           {EXPERTISE.map((card, i) => (
-            <motion.div
+            <m.div
               key={card.title}
               variants={item}
               className="group relative overflow-hidden bg-ink p-5"
@@ -95,20 +95,20 @@ export default function Expertise() {
                 </>
               )}
               <div className={`relative z-10 ${card.image ? "sm:max-w-[58%]" : ""}`}>
-                <motion.span
+                <m.span
                   variants={numberItem}
                   className="inline-block origin-left font-display text-2xl text-gold/60 transition-all duration-300 group-hover:scale-110 group-hover:text-gold"
                 >
                   {String(i + 1).padStart(2, "0")}
-                </motion.span>
+                </m.span>
                 <h3 className="mt-4 font-display text-xl uppercase tracking-tight text-white [text-shadow:0_1px_10px_rgba(12,12,12,0.6)]">
                   {card.title}
                 </h3>
                 <p className="mt-2 text-base leading-relaxed text-white/70 [text-shadow:0_1px_8px_rgba(12,12,12,0.6)]">{card.blurb}</p>
               </div>
-            </motion.div>
+            </m.div>
           ))}
-        </motion.div>
+        </m.div>
 
         <SectionCta />
       </div>

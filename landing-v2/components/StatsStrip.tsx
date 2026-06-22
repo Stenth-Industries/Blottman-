@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useReducedMotion, type Variants } from "motion/react";
+import { m, useInView, useReducedMotion, type Variants } from "motion/react";
 
 // Premium trust strip below the hero. Dark, minimal, gold used lightly.
 // Claims are legally safe — no win-rate or outcome guarantees.
@@ -27,7 +27,7 @@ export default function StatsStrip() {
   return (
     <section className="border-y border-ink-line bg-ink">
       <div className="section">
-        <motion.div
+        <m.div
           className="grid grid-cols-2 lg:grid-cols-4"
           variants={container}
           initial={reduce ? false : "hidden"}
@@ -35,7 +35,7 @@ export default function StatsStrip() {
           viewport={{ once: true, margin: "-80px" }}
         >
           {STATS.map((s) => (
-            <motion.div
+            <m.div
               key={s.label}
               variants={item}
               className="px-6 py-9 text-center border-ink-line [&:nth-child(even)]:border-l [&:nth-child(n+3)]:border-t lg:[&:nth-child(n+2)]:border-l lg:[&:nth-child(n+3)]:border-t-0"
@@ -45,9 +45,9 @@ export default function StatsStrip() {
               </p>
               <span className="mx-auto mt-3 block h-px w-7 bg-gold/50" />
               <p className="mt-3 text-xs uppercase tracking-[0.18em] text-white/55">{s.label}</p>
-            </motion.div>
+            </m.div>
           ))}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );
