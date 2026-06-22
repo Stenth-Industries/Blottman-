@@ -51,6 +51,29 @@ body {
   }
 }
 
+/* Hero entrance — pure CSS so it runs at first paint, NOT gated on the motion JS
+   bundle. The LCP headline itself is deliberately NOT animated (it must paint in
+   the initial HTML); only the supporting lines rise in. Staggered via inline
+   animation-delay in Hero.tsx. */
+@keyframes heroRise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.hero-rise {
+  animation: heroRise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise {
+    animation: none;
+  }
+}
+
 /* Continuous "brushed-metal" sheen sweep for the primary gold CTAs. Runs on its
    own (no hover) so it also draws the eye on mobile/touch — e.g. the sticky Call
    bar. A quick sweep followed by a long idle pause keeps it subtle, not flashy. */

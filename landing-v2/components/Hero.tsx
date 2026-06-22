@@ -1,21 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { m, useReducedMotion, type Variants } from "motion/react";
+import { m, useReducedMotion } from "motion/react";
 import CtaButton from "./CtaButton";
 import { BENEFITS, PHONE_DISPLAY, PHONE_TEL } from "@/lib/content";
 
-// Staggered entrance: each child rises + fades in sequence.
-const container: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.08 } },
-};
-const item: Variants = {
-  hidden: { opacity: 0, y: 18 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
-};
-
 // Dark, bold hero. No site header/nav — this is a focused conversion page.
+//
+// PERF: the left column entrance is pure CSS (.hero-rise), not motion/react, so
+// it paints from the initial HTML instead of waiting on the JS bundle to hydrate.
+// The <h1> (the mobile LCP element) is intentionally NOT animated so it paints
+// immediately. Only the desktop-only portrait below still uses motion.
 export default function Hero() {
   const reduce = useReducedMotion();
 
@@ -41,41 +36,39 @@ export default function Hero() {
       {/* warm gold light — reduced so it doesn't overpower */}
       <div className="pointer-events-none absolute -right-40 -top-40 h-[28rem] w-[28rem] rounded-full bg-gold/8 blur-[130px]" />
       <div className="section relative z-10 grid max-w-[1180px] items-center gap-12 py-16 sm:py-24 lg:grid-cols-[1.15fr_0.85fr]">
-        <m.div
-          className="lg:-ml-16 xl:-ml-28"
-          variants={container}
-          initial={reduce ? false : "hidden"}
-          animate="show"
-        >
-          <m.div variants={item}>
-            <Image
-              src="/logo.png"
-              alt="Blottman Legal Services"
-              width={480}
-              height={535}
-              priority
-              className="mb-6 h-auto w-[100px] sm:w-[120px]"
-            />
-          </m.div>
-          <m.p variants={item} className="eyebrow text-sm">
+        <div className="lg:-ml-16 xl:-ml-28">
+          <Image
+            src="/logo.png"
+            alt="Blottman Legal Services"
+            width={480}
+            height={535}
+            priority
+            className="mb-6 h-auto w-[100px] sm:w-[120px]"
+          />
+          <p className="hero-rise eyebrow text-sm" style={{ animationDelay: "0.05s" }}>
             Ontario Traffic-Ticket Defence
-          </m.p>
-          <m.h1 variants={item} className="display mt-5 text-[clamp(2.25rem,9vw,3rem)] sm:text-7xl">
+          </p>
+          {/* LCP element — paints immediately from the initial HTML, no entrance
+              animation, so Largest Contentful Paint isn't gated on JS. */}
+          <h1 className="display mt-5 text-[clamp(2.25rem,9vw,3rem)] sm:text-7xl">
             Fight your ticket.
             <br />
             Protect your <span className="text-gold-sheen">record.</span>
-          </m.h1>
+          </h1>
 
-          <m.ul variants={item} className="mt-8 grid gap-3 sm:grid-cols-2">
+          <ul className="hero-rise mt-8 grid gap-3 sm:grid-cols-2" style={{ animationDelay: "0.17s" }}>
             {BENEFITS.map((b) => (
               <li key={b} className="flex items-start gap-2.5 text-base text-white/85">
                 <Check />
                 <span>{b}</span>
               </li>
             ))}
-          </m.ul>
+          </ul>
 
-          <m.div variants={item} className="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+          <div
+            className="hero-rise mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center"
+            style={{ animationDelay: "0.29s" }}
+          >
             <CtaButton href="#quote">Get a Free Case Review</CtaButton>
             <a
               href={`tel:${PHONE_TEL}`}
@@ -89,12 +82,12 @@ export default function Hero() {
                 {PHONE_DISPLAY}
               </span>
             </a>
-          </m.div>
+          </div>
 
           {/* Mobile-only: Leslie's photo + quote. The desktop portrait sidebar is
               hidden on phones (lg:block), so this brings the face + trust message
               — the strongest conversion element — to mobile visitors. */}
-          <m.figure variants={item} className="mt-10 lg:hidden">
+          <figure className="hero-rise mt-10 lg:hidden" style={{ animationDelay: "0.41s" }}>
             <div className="flex items-center gap-4">
               <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-gold/25 ring-1 ring-inset ring-white/10">
                 <Image
@@ -117,8 +110,8 @@ export default function Hero() {
               It can affect your insurance, your driving record, and your future. Before you pay
               a ticket or let a deadline pass, take the time to understand your rights.&rdquo;
             </blockquote>
-          </m.figure>
-        </m.div>
+          </figure>
+        </div>
 
         {/* Leslie — real, unedited photo blended into the hero with CSS only */}
         <m.div
