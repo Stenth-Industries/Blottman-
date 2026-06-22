@@ -17,7 +17,7 @@ export default function FloatingActions() {
         <a
           href={`tel:${PHONE_TEL}`}
           aria-label="Call Blottman Legal now"
-          className={`${pill} btn-sheen bg-gold-sheen text-ink shadow-[0_8px_24px_rgba(231,172,64,0.35)] hover:shadow-[0_12px_32px_rgba(231,172,64,0.5)]`}
+          className={`${pill} btn-sheen bg-gold-sheen text-ink shadow-xl shadow-black/50`}
         >
           <PhoneIcon className="transition-transform duration-200 group-hover:rotate-12" />
           <span>Call Us</span>
