@@ -22,14 +22,16 @@ export default function Hero() {
   return (
     <section className="relative overflow-hidden bg-ink text-white">
       {/* Ontario courthouse atmosphere — slightly blurred so it reads as background, not focus */}
+      {/* Pre-optimized 20KB WebP served directly (unoptimized) so the LCP isn't
+          gated on a cold /_next/image round-trip after each deploy. */}
       <Image
         src="/courthouse-bg.webp"
         alt=""
         aria-hidden="true"
         fill
         priority
+        unoptimized
         sizes="100vw"
-        quality={45}
         className="pointer-events-none object-cover object-center blur-[1px]"
       />
       {/* left-to-right darkening: left very dark for the headline, right darkened ~30% behind Leslie */}
