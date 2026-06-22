@@ -2,7 +2,32 @@ import type { Metadata, Viewport } from "next";
 import { Anton, Poppins } from "next/font/google";
 import Script from "next/script";
 import MotionProvider from "@/components/MotionProvider";
+import { PHONE_TEL, GOOGLE_RATING } from "@/lib/content";
 import "./globals.css";
+
+const SITE_URL = "https://blottman.ca";
+const SITE_TITLE = "Fight Your Traffic Ticket | Blottman Law — Ontario";
+const SITE_DESCRIPTION =
+  "Licensed Ontario paralegal. We fight speeding, careless, stunt-driving and other traffic tickets to protect your record and insurance. Free case review.";
+
+// LegalService structured data — local-SEO signal (name, phone, area served,
+// service type) rendered on every page so Google can identify the business.
+const businessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LegalService",
+  name: "Blottman Law",
+  description: SITE_DESCRIPTION,
+  url: SITE_URL,
+  telephone: PHONE_TEL,
+  priceRange: "$$",
+  areaServed: { "@type": "AdministrativeArea", name: "Ontario, Canada" },
+  address: { "@type": "PostalAddress", addressRegion: "ON", addressCountry: "CA" },
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: GOOGLE_RATING.rating,
+    reviewCount: GOOGLE_RATING.reviews,
+  },
+};
 
 // Anton ≈ the heavy condensed "Thunder" display face used on gardewilson.com.au
 const anton = Anton({
@@ -20,9 +45,25 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Fight Your Traffic Ticket | Blottman Law — Ontario",
-  description:
-    "Licensed Ontario paralegal. We fight speeding, careless, stunt-driving and other traffic tickets to protect your record and insurance. Free case review.",
+  metadataBase: new URL(SITE_URL),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "Blottman Law",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    locale: "en_CA",
+    images: [{ url: "/logo.png", alt: "Blottman Law" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: ["/logo.png"],
+  },
 };
 
 // Match the mobile browser chrome to the black theme (no white flash on load).
@@ -44,6 +85,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${anton.variable} ${poppins.variable}`}>
       <body className="font-sans">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd) }}
+        />
         <MotionProvider>{children}</MotionProvider>
         {GADS_ID && (
           <>

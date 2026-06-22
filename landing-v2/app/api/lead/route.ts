@@ -39,8 +39,8 @@ export async function POST(req: NextRequest) {
     ticket_b64: "",
   };
 
-  if (!lead.name || !lead.phone || !lead.email) {
-    return bad("Please fill in your name, phone and email.");
+  if (!lead.name || !lead.phone || !lead.email || !lead.message) {
+    return bad("Please fill in your name, phone, email and a brief message.");
   }
 
   // Optional ticket photo → base64 so the script can attach it to the email.
