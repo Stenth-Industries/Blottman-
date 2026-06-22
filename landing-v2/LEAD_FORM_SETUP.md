@@ -1,113 +1,56 @@
-# Quote-form lead capture — setup (Google Apps Script, no email provider)
+# Quote-form lead capture — setup
 
-The form (`components/QuoteForm.tsx`) posts to `app/api/lead/route.ts`, which forwards
-the lead to **one Google Apps Script web app**. That script:
+The form (`components/QuoteForm.tsx`) posts to `app/api/lead/route.ts`, which:
 
-1. **Logs the lead to a Google Sheet** (your running "mini-CRM").
-2. **Emails the lead** to you via your Google account (`MailApp`) — no Resend, no API keys.
-3. Attaches the optional **ticket photo** (passed through as base64).
+1. **Emails the lead** to Leslie (+ optional cc) — via Resend.
+2. **Logs it to a Google Sheet** — the zero-cost "mini-CRM" (optional).
+3. **Fires the Google Ads conversion** on success (optional).
+4. **Captures the `gclid`** so leads can be tied to the ad later (offline conversion import for booked consults).
 
-The route also captures the **`gclid`** (for later offline-conversion import) and a
-honeypot blocks spam. The Google Ads conversion fires on success once configured.
+Spam is handled by a honeypot field. The optional ticket photo is attached to the email (max 6 MB).
 
-> Until `LEAD_WEBHOOK_URL` is set the form still works — leads are written to the server
-> console instead of delivered. Set it in `.env.local` (local) and in Vercel (production).
+> Until the env vars are set the form still works — leads just get written to the server console instead of delivered. Set the vars in `.env.local` (local) and in your host's env settings (e.g. Vercel → Project → Settings → Environment Variables). Copy `.env.local.example` to start.
 
 ---
 
-## 1. Create the Sheet
+## 1. Email (Resend) — required for leads to actually arrive
 
-New Google Sheet (signed in as **info@stenth.com**). First row = headers:
+1. Create a free account at a.
+2. **Add & verify a domain** (`blottman.com`) under Domains, or skip for testing and send from `onboarding@resend.dev`.
+3. Create an API key → set `RESEND_API_KEY`.
+4. Set `LEAD_TO_EMAIL` to Leslie's email (comma-separate for several). Optional `LEAD_CC_EMAIL=info@stenth.com`.
+5. Set `LEAD_FROM_EMAIL` to a verified-domain address (e.g. `Blottman Leads <leads@blottman.com>`); omit while testing to use `onboarding@resend.dev`.
 
-```
-ts | name | phone | email | message | gclid | page | ticket
-```
+## 2. Google Sheet log (optional but recommended)
 
-## 2. Add the Apps Script
+1. New Google Sheet. Header row: `ts | name | phone | email | message | gclid | page | ticket`.
+2. Extensions → **Apps Script**, paste:
 
-In the Sheet: **Extensions → Apps Script**. Delete the stub and paste:
+   ```js
+   function doPost(e) {
+     const d = JSON.parse(e.postData.contents);
+     const sh = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+     sh.appendRow([d.ts, d.name, d.phone, d.email, d.message, d.gclid, d.page, d.ticket]);
+     return ContentService.createTextOutput(JSON.stringify({ ok: true }))
+       .setMimeType(ContentService.MimeType.JSON);
+   }
+   ```
 
-```js
-// Where leads are emailed. Comma-separate for several; cc optional.
-const TO_EMAIL = "info@stenth.com";
-const CC_EMAIL = ""; // e.g. "leslie@example.com" when you add her
+3. Deploy → **New deployment** → type **Web app** → Execute as *me*, Who has access *Anyone* → copy the URL.
+4. Set `GOOGLE_SHEET_WEBHOOK_URL` to that URL.
 
-function doPost(e) {
-  try {
-    const d = JSON.parse(e.postData.contents);
-    const sh = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
-    sh.appendRow([d.ts, d.name, d.phone, d.email, d.message, d.gclid, d.page, d.ticket_name || ""]);
+This sheet is your running lead log — add a "Booked?" column to mark consults (feeds the $500 OCI later).
 
-    const body =
-      "New traffic-ticket lead\n\n" +
-      "Name:    " + d.name + "\n" +
-      "Phone:   " + d.phone + "\n" +
-      "Email:   " + d.email + "\n" +
-      "Message: " + (d.message || "—") + "\n" +
-      "gclid:   " + (d.gclid || "—") + "\n" +
-      "Page:    " + (d.page || "—") + "\n";
+## 3. Google Ads conversion (optional)
 
-    const msg = {
-      to: TO_EMAIL,
-      subject: "New case review request — " + d.name,
-      body: body,
-      name: "Blottman Law Leads",
-      replyTo: d.email || TO_EMAIL,
-    };
-    if (CC_EMAIL) msg.cc = CC_EMAIL;
-    if (d.ticket_b64) {
-      msg.attachments = [
-        Utilities.newBlob(Utilities.base64Decode(d.ticket_b64), d.ticket_mime, d.ticket_name),
-      ];
-    }
-    MailApp.sendEmail(msg);
+In Google Ads, open the existing **`Submit Lead Form`** conversion action (id `7173263227`). Use its tag snippet to read:
 
-    return ok({ ok: true });
-  } catch (err) {
-    return ok({ ok: false, error: String(err) });
-  }
-}
+- `NEXT_PUBLIC_GADS_ID` = the `AW-XXXXXXXXXX` tag id.
+- `NEXT_PUBLIC_GADS_CONVERSION` = the `send_to` value `AW-XXXXXXXXXX/yyyyyyyyyyyyy` (id **and** label).
 
-function ok(obj) {
-  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
-}
-```
+Once set, a successful submit fires `gtag('event','conversion', {send_to: …})` and the action finally counts (it's been firing 0 because its tag was never installed). This gives PMAX/Search a *real* lead signal instead of the codeless "Contact Us".
 
-## 3. Deploy it
+## Test
 
-- **Deploy → New deployment** → gear icon → **Web app**.
-- **Execute as:** Me (info@stenth.com).
-- **Who has access:** **Anyone**.
-- **Deploy** → approve the permission prompt (it needs Sheets + send-email; click *Advanced → Go to project → Allow*).
-- Copy the **Web app URL** (ends in `/exec`).
-
-## 4. Wire it up
-
-- `landing-v2/.env.local` → `LEAD_WEBHOOK_URL=<the /exec URL>`
-- Vercel → Project → Settings → Environment Variables → add the same `LEAD_WEBHOOK_URL`
-  for **Production** + **Preview**, then **redeploy**.
-
-## 5. Test
-
-```
-cd landing-v2 && npm run dev
-```
-Submit the form → row appears in the Sheet **and** a "Blottman Law Leads" email arrives at
-info@stenth.com. (No URL set? The lead prints to the terminal — nothing breaks.)
-
----
-
-### Notes
-- **Quota:** ~100 emails/day on consumer Gmail, 1,500 on Workspace — plenty for leads.
-- **Edits to the script:** after changing the code you must **Deploy → Manage deployments →
-  edit → Version: New version** for the change to go live (or the `/exec` URL keeps the old code).
-- **Adding Leslie later:** just set `CC_EMAIL` (or add to `TO_EMAIL`) in the script and redeploy —
-  no app change needed.
-- **Booked consults / $500 OCI:** add a "Booked?" column to the Sheet to mark real consults;
-  with the captured gclid that feeds offline conversion import later.
-
-## Google Ads conversion (optional, later)
-
-From the existing **`Submit Lead Form`** action (id `7173263227`) in Google Ads, set in Vercel:
-`NEXT_PUBLIC_GADS_ID` (`AW-XXXXXXXXXX`) and `NEXT_PUBLIC_GADS_CONVERSION` (`AW-…/label`). On a
-successful submit the form fires `gtag('event','conversion', …)` so the action finally counts.
+- `npm run dev`, submit the form. With no env set, check the terminal for `[lead] … email skipped` + the payload.
+- With Resend set, the email should arrive; check Resend's dashboard logs if not.

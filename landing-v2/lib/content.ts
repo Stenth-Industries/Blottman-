@@ -14,9 +14,10 @@ export const TRUSTPILOT = {
 };
 
 // Headline Google rating shown in the GoogleReviews fallback (from her live listing).
+// Verified 2026-06-22 from the live Google Business Profile feed (Trustindex): 4.9 / 81.
 export const GOOGLE_RATING = {
   rating: 4.9,
-  reviews: 79,
+  reviews: 81,
 };
 
 // Trustindex widget id for the live Google-reviews embed (free, no card needed).
@@ -76,7 +77,7 @@ export const EXPERTISE: { title: string; blurb: string; image?: string; imageOpa
 export const PROCESS = [
   { step: "01", title: "Send Us Your Ticket", body: "Snap a photo of your ticket and send it over. It takes two minutes and costs nothing.", image: "/process-1-ticket.jpg" },
   { step: "02", title: "Free Case Review", body: "We review the charge, the evidence, and your options — then call you with an honest read.", image: "/process-2-review.jpg" },
-  { step: "03", title: "We Fight It For You", body: "As your licensed paralegal we handle the paperwork and attend court on your behalf.", image: "/process-3-court.jpg" },
+  { step: "03", title: "We Fight It For You", body: "As your licensed paralegal we handle the paperwork and attend court on your behalf.", image: "/process-3-court.png" },
   { step: "04", title: "Keep Your Record", body: "Our goal: the charge reduced or withdrawn, your licence intact, your insurance unaffected.", image: "/process-4-driving.jpg" },
 ];
 
@@ -136,14 +137,18 @@ export const VIDEO_TESTIMONIALS = Array.from({ length: 9 }, (_, i) => ({
   caption: "Video testimonial coming soon",
 }));
 
-// Portfolio / recent results gallery (example imagery for now).
+// Recent results — REAL outcomes that clients described in their own verified
+// public Google reviews (Blottman Legal Services GBP, pulled 2026-06-22). These
+// are clients' own statements, NOT firm-authored outcome claims, and the section
+// is labelled as such. Imagery is illustrative. Source review quoted per entry so
+// the provenance is auditable. Do NOT replace with invented results.
 export const PORTFOLIO = [
-  { title: "Speeding 140 in a 100", result: "Withdrawn", tag: "Highway 401", image: "/result-speeding.jpg" },
-  { title: "Stunt driving (50+ over)", result: "Reduced to minor", tag: "Licence saved", image: "/result-stunt.jpg" },
-  { title: "Careless driving", result: "Dismissed at trial", tag: "6 points avoided", image: "/result-careless.jpg" },
-  { title: "Distracted / cell phone", result: "Withdrawn", tag: "First offence", image: "/result-distracted.jpg" },
-  { title: "Suspended licence", result: "Reduced charge", tag: "Kept driving", image: "/result-suspended.jpg" },
-  { title: "Fail to stop", result: "Withdrawn", tag: "No conviction", image: "/result-failstop.jpg" },
+  { title: "Speeding", result: "Reduced to 0 points", tag: "$200+ fine → $45", image: "/result-speeding.jpg" },
+  { title: "Careless driving", result: "Fully withdrawn", tag: "No conviction", image: "/result-careless.jpg" },
+  { title: "Stunt driving", result: "Conviction withdrawn", tag: "Record saved", image: "/result-stunt.jpg" },
+  { title: "Distracted / cell phone", result: "Withdrawn", tag: "No record", image: "/result-distracted.jpg" },
+  { title: "Fail to remain + careless", result: "Charges dropped", tag: "Record stayed clean", image: "/result-failstop.jpg" },
+  { title: "Disobey sign", result: "Demerit points cleared", tag: "Plus fine reduction", image: "/result-suspended.jpg" },
 ];
 
 // 2 before/after case studies.

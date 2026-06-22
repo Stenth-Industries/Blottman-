@@ -1,21 +1,105 @@
 import Link from "next/link";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/content";
 
+// What's actually at stake on a "drive with no insurance" charge in Ontario.
+// Source: Compulsory Automobile Insurance Act, R.S.O. 1990, c. C.25, s. 2 — public
+// statute, factual (NOT a results claim), so no LSO marketing-rule concern.
+const STAKES: { top: React.ReactNode; bottom: React.ReactNode; body: string; icon: "fine" | "suspend" | "impound" }[] = [
+  {
+    top: <span className="font-display text-[2.5rem] uppercase leading-none tracking-tight text-gold-sheen">Up to $25,000</span>,
+    bottom: <span className="font-sans text-[13px] font-semibold uppercase tracking-[0.15em] text-white">In Fines</span>,
+    body: "First offence runs $5,000–$25,000, plus a 25% surcharge. A second conviction can reach $50,000.",
+    icon: "fine",
+  },
+  {
+    top: <span className="font-sans text-[13px] font-semibold uppercase tracking-[0.15em] text-white">Licence Suspension</span>,
+    bottom: <span className="font-display text-[2.5rem] uppercase leading-none tracking-tight text-gold-sheen">Up to 1 Year</span>,
+    body: "Your driver's licence can be suspended on conviction — putting your job and daily life at risk.",
+    icon: "suspend",
+  },
+  {
+    top: <span className="font-sans text-[13px] font-semibold uppercase tracking-[0.15em] text-white">Vehicle Impoundment</span>,
+    bottom: <span className="font-display text-[2.5rem] uppercase leading-none tracking-tight text-gold-sheen">Plates Seized</span>,
+    body: "Your vehicle's licence plates can be impounded, leaving you without a legal way to drive.",
+    icon: "impound",
+  },
+];
+
 // Dark "before you pay your ticket" banner — driving-with-no-insurance intent.
 // Sits after the Expertise grid. Black + gold theme, mirrors the site's section styling.
 export default function NoInsuranceBanner() {
   return (
-    <section className="bg-ink py-16 text-white sm:py-20">
-      <div className="section max-w-4xl text-center">
+    <section className="relative overflow-hidden bg-ink py-16 text-white sm:py-24">
+      {/* Background Image with seamless top/bottom fades and vignette */}
+      <div className="pointer-events-none absolute inset-0">
+        <img
+          src="/abstract_siren_bg.png"
+          alt=""
+          aria-hidden="true"
+          className="h-full w-full object-cover object-center opacity-25 brightness-75 mix-blend-lighten"
+        />
+        {/* Soft edge vignette to focus the center and darken the edges heavily */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(12,12,12,0.95)_100%)]" />
+        {/* Fade into the background color at top and bottom */}
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-ink via-ink/80 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink via-ink/90 to-transparent" />
+      </div>
+
+      {/* Off-axis background document (ticket) to create massive depth */}
+      <div
+        className="pointer-events-none absolute right-0 top-1/2 w-[800px] -translate-y-1/2 translate-x-[65%] rotate-12 opacity-5 mix-blend-luminosity"
+        aria-hidden="true"
+      >
+        <img
+          src="/process-1-ticket.jpg"
+          alt=""
+          className="h-auto w-full rounded-3xl"
+        />
+      </div>
+
+      {/* Large vertical typography (Luxury fashion style) */}
+      <div
+        className="pointer-events-none absolute -left-48 top-1/2 flex -translate-y-1/2 -rotate-90 select-none items-center whitespace-nowrap opacity-[0.02]"
+        aria-hidden="true"
+      >
+        <span className="display text-[clamp(8rem,20vw,16rem)] text-white">
+          Ontario No Insurance Defence
+        </span>
+      </div>
+
+      <div className="section relative z-10 max-w-5xl text-center">
         <p className="eyebrow justify-center">Driving With No Insurance</p>
         <h2 className="h-section mt-4">
           Charged With Driving With No Insurance in{" "}
           <span className="text-gold-sheen">Ontario?</span>
         </h2>
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/70">
-          The decisions you make now could affect your driving record, insurance premiums,
-          and future options. Before paying your ticket, speak with Blottman Legal Services
-          to understand your rights and the options available to you.
+          Under Ontario&apos;s Compulsory Automobile Insurance Act the penalties are severe — and they
+          escalate fast. Before you pay your ticket, understand what&apos;s actually at stake.
+        </p>
+
+        {/* What's at stake — factual statutory penalties, mirrors the Expertise card grid */}
+        <div className="mt-14 grid grid-cols-1 gap-5 text-left sm:grid-cols-3">
+          {STAKES.map((s) => (
+            <div
+              key={s.icon}
+              className="card bg-ink/40 p-8 ring-1 ring-inset ring-white/5 backdrop-blur-xl transition-all duration-300 hover:bg-ink/60 hover:ring-white/10"
+            >
+              <span className="mb-6 grid h-12 w-12 place-items-center rounded-xl border border-gold/30 bg-ink-soft/50 text-gold shadow-inner">
+                <StakeIcon name={s.icon} />
+              </span>
+              <div className="flex flex-col gap-1">
+                {s.top}
+                {s.bottom}
+              </div>
+              <p className="mt-4 text-[13.5px] leading-relaxed text-white/85">{s.body}</p>
+            </div>
+          ))}
+        </div>
+
+        <p className="mx-auto mt-10 max-w-2xl text-base leading-relaxed text-white/70">
+          Blottman Legal Services works to reduce the charge, lower the fine, and protect your
+          licence. Speak with us before paying — once you pay, you&apos;ve pleaded guilty.
         </p>
 
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -34,5 +118,51 @@ export default function NoInsuranceBanner() {
         </div>
       </div>
     </section>
+  );
+}
+
+// Icons from Lucide (lucide.dev, ISC license) — inlined as paths so there's no
+// runtime dependency or bundle cost.
+function StakeIcon({ name }: { name: "fine" | "suspend" | "impound" }) {
+  const common = {
+    viewBox: "0 0 24 24",
+    className: "h-[22px] w-[22px]",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 2,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    "aria-hidden": true as const,
+  };
+  if (name === "fine") {
+    // Lucide "circle-dollar-sign"
+    return (
+      <svg {...common}>
+        <circle cx="12" cy="12" r="10" />
+        <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
+        <path d="M12 18V6" />
+      </svg>
+    );
+  }
+  if (name === "suspend") {
+    // Lucide "id-card" (the driver's licence)
+    return (
+      <svg {...common}>
+        <path d="M16 10h2" />
+        <path d="M16 14h2" />
+        <path d="M6.17 15a3 3 0 0 1 5.66 0" />
+        <circle cx="9" cy="11" r="2" />
+        <rect x="2" y="5" width="20" height="14" rx="2" />
+      </svg>
+    );
+  }
+  // Lucide "car"
+  return (
+    <svg {...common}>
+      <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
+      <circle cx="7" cy="17" r="2" />
+      <path d="M9 17h6" />
+      <circle cx="17" cy="17" r="2" />
+    </svg>
   );
 }

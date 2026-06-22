@@ -29,7 +29,7 @@ const config: Config = {
         sans: ["var(--font-poppins)", "system-ui", "sans-serif"],
       },
       maxWidth: {
-        content: "1400px",
+        content: "1536px",
       },
       backgroundImage: {
         // Metallic-gold ramp lifted from gardewilson.com.au — the pale champagne
