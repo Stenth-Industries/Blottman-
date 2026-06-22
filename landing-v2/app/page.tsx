@@ -10,6 +10,19 @@ import Faq from "@/components/Faq";
 import QuoteForm from "@/components/QuoteForm";
 import FloatingActions from "@/components/FloatingActions";
 import NoInsuranceBanner from "@/components/NoInsuranceBanner";
+import { FAQS } from "@/lib/content";
+
+// FAQPage structured data — makes the FAQ eligible for Google rich results.
+// Generated from the same FAQS array the Faq component renders, so it never drifts.
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map(({ q, a }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: a },
+  })),
+};
 
 // Single conversion-focused landing page — no site header or footer.
 // Styled after gardewilson.com.au: black + gold, heavy condensed headlines.
@@ -23,6 +36,10 @@ import NoInsuranceBanner from "@/components/NoInsuranceBanner";
 export default function Home() {
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <Hero />
       <StatsStrip />
       <Reveal><AttentionBanner /></Reveal>

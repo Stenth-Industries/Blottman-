@@ -20,7 +20,7 @@ import {
 export default function GoogleReviews() {
   return (
     <section className="bg-ink py-16 sm:py-24">
-      <div className="section max-w-[1250px]">
+      <div className="section">
         <div className="max-w-2xl">
           <p className="eyebrow">Google Reviews</p>
           <h2 className="h-section mt-4 text-white">
