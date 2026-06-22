@@ -27,12 +27,15 @@ export default function Expertise() {
   return (
     <section className="relative overflow-hidden bg-ink py-16 text-white sm:py-24">
       {/* full-section background — kept very faint behind everything (not inside the cards) */}
+      {/* Faint (0.67 opacity), below-fold decorative backdrop — low quality is
+          invisible here but saves ~50 KiB off the 84 KiB default. */}
       <Image
         src="/what-we-fight-bg-3.webp"
         alt=""
         aria-hidden="true"
         fill
         sizes="100vw"
+        quality={45}
         className="pointer-events-none object-cover opacity-[0.67]"
       />
       {/* horizontal overlay: near-black through the centre behind the grid, lighter at the edges so the road shows only there */}

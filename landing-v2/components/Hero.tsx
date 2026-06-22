@@ -37,12 +37,16 @@ export default function Hero() {
       <div className="pointer-events-none absolute -right-40 -top-40 h-[28rem] w-[28rem] rounded-full bg-gold/8 blur-[130px]" />
       <div className="section relative z-10 grid max-w-[1180px] items-center gap-12 py-16 sm:py-24 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="lg:-ml-16 xl:-ml-28">
+          {/* sizes caps the served width to the ~120px display slot — without it
+              next/image shipped the 1080px variant (53.9 KiB) on the critical
+              path. priority image, so this directly frees LCP bandwidth. */}
           <Image
             src="/logo.png"
             alt="Blottman Legal Services"
             width={480}
             height={535}
             priority
+            sizes="120px"
             className="mb-6 h-auto w-[100px] sm:w-[120px]"
           />
           <p className="hero-rise eyebrow text-sm" style={{ animationDelay: "0.05s" }}>
