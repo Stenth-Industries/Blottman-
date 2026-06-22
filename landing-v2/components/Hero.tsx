@@ -23,7 +23,7 @@ export default function Hero() {
     <section className="relative overflow-hidden bg-ink text-white">
       {/* Ontario courthouse atmosphere — slightly blurred so it reads as background, not focus */}
       <Image
-        src="/courthouse-bg.png"
+        src="/courthouse-bg.webp"
         alt=""
         aria-hidden="true"
         fill
@@ -96,7 +96,7 @@ export default function Hero() {
             <div className="flex items-center gap-4">
               <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-gold/25 ring-1 ring-inset ring-white/10">
                 <Image
-                  src="/leslie-office.png"
+                  src="/leslie-office.webp"
                   alt="Leslie Rivas — licensed Ontario paralegal, Blottman Law"
                   fill
                   sizes="80px"
@@ -131,7 +131,7 @@ export default function Hero() {
             <div className="absolute -inset-4 rounded-[2.25rem] bg-gold/15 blur-3xl" />
             <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-[rgba(232,176,65,0.22)] bg-ink-soft shadow-[0_35px_90px_-30px_rgba(0,0,0,0.85)] ring-1 ring-inset ring-white/[0.07]">
               <Image
-                src="/leslie-office.png"
+                src="/leslie-office.webp"
                 alt="Leslie Rivas — licensed Ontario paralegal, Blottman Law"
                 fill
                 priority

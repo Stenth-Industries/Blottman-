@@ -28,7 +28,7 @@ export default function Expertise() {
     <section className="relative overflow-hidden bg-ink py-16 text-white sm:py-24">
       {/* full-section background — kept very faint behind everything (not inside the cards) */}
       <Image
-        src="/what-we-fight-bg-3.jpg"
+        src="/what-we-fight-bg-3.webp"
         alt=""
         aria-hidden="true"
         fill
