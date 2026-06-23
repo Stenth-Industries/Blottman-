@@ -1,5 +1,17 @@
 # ⏰ Reminders — Blottman Law Ads
 
+## 🔴 June 24, 2026 — Check blottman.ca migration test (broad campaign)
+On Jun 23 the 2 enabled RSAs in **Traffic ticket lawyer broad** (`23039650759`) were
+repointed from blottman.com → **blottman.ca** (staged test before migrating all campaigns).
+**Run:** `python code/check_broad_tomorrow.py` — confirm both ads are **APPROVED**, serving,
+clicks land on blottman.ca, and a conversion shows. Sitelinks left on blottman.com (mismatch
+accepted for the test). **If approved + clean → migrate the rest** (other Search campaigns + PMAX).
+**If disapproved → read the policy reason** before rolling out further.
+
+To act: open Claude Code in `E:\Blottman-law` and say *"check the blottman.ca migration."*
+
+---
+
 ## 🔵 ~June 15, 2026 — Reassess PMAX taper (Step 3)
 After raising **PMAX - Blottman Max** to $50/day on Jun 10, check whether it held ~$50 CPA at the new budget.
 
