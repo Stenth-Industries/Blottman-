@@ -71,7 +71,7 @@ export default function Expertise() {
             <m.div
               key={card.title}
               variants={item}
-              className="group relative flex min-h-[280px] flex-col justify-end overflow-hidden rounded-2xl border border-white/10 bg-ink shadow-lg transition-all duration-500 hover:border-white/20 hover:shadow-[0_18px_36px_-14px_rgba(255,255,255,0.12)] sm:min-h-[300px]"
+              className="group relative flex min-h-[280px] flex-col justify-end overflow-hidden rounded-2xl border border-white/10 bg-ink shadow-lg transition-all duration-500 hover:-translate-y-2 hover:border-gold/30 hover:shadow-[0_20px_40px_-15px_rgba(231,172,64,0.15)] sm:min-h-[300px]"
             >
               {/* Charge photo */}
               <Image
@@ -79,7 +79,7 @@ export default function Expertise() {
                 alt={card.title}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover grayscale contrast-110 brightness-90 transition-transform duration-700 group-hover:scale-105"
+                className="object-cover grayscale contrast-110 brightness-90 transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100"
               />
               {/* Legibility gradient + gold hover wash */}
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-ink/85 to-ink/10" />
@@ -88,14 +88,14 @@ export default function Expertise() {
               {/* Index number */}
               <m.span
                 variants={numberItem}
-                className="absolute right-5 top-4 font-display text-4xl leading-none text-white/15 transition-colors duration-300 group-hover:text-white/50"
+                className="absolute right-5 top-4 font-display text-[2.5rem] leading-none text-gold drop-shadow-[0_4px_12px_rgba(0,0,0,1)]"
               >
                 {String(i + 1).padStart(2, "0")}
               </m.span>
 
               {/* Title + blurb */}
               <div className="relative z-10 p-6">
-                <h3 className="font-display text-xl tracking-wide bg-gold-sheen-hover bg-clip-text text-white transition-colors duration-300 group-hover:text-transparent [text-shadow:0_2px_12px_rgba(0,0,0,0.85)]">
+                <h3 className="font-display text-xl uppercase tracking-tight text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.85)]">
                   {card.title}
                 </h3>
                 <p className="mt-2 text-[13.5px] leading-relaxed text-white/75 [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
