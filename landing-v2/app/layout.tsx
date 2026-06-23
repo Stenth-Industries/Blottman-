@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Anton, Poppins } from "next/font/google";
 import Script from "next/script";
 import MotionProvider from "@/components/MotionProvider";
-import { PHONE_TEL, GOOGLE_RATING } from "@/lib/content";
+import { PHONE_TEL, PHONE_DISPLAY, GOOGLE_RATING } from "@/lib/content";
 import "./globals.css";
 
 const SITE_URL = "https://blottman.ca";
@@ -76,6 +76,10 @@ export const viewport: Viewport = {
 // Google tag (gtag.js) — loads only when NEXT_PUBLIC_GADS_ID is set, so dev/
 // preview stay clean. Needed for the QuoteForm's Google Ads conversion to fire.
 const GADS_ID = process.env.NEXT_PUBLIC_GADS_ID;
+// "Calls From Website" number-swap label (AW-…/label). When set, gtag replaces
+// the displayed PHONE_DISPLAY with a Google forwarding number for ad visitors so
+// website calls ≥60s are tracked as conversions. Office line still rings normally.
+const GADS_CALL_CONVERSION = process.env.NEXT_PUBLIC_GADS_CALL_CONVERSION;
 
 export default function RootLayout({
   children,
@@ -97,7 +101,11 @@ export default function RootLayout({
               {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', '${GADS_ID}');`}
+gtag('config', '${GADS_ID}');${
+                GADS_CALL_CONVERSION
+                  ? `\ngtag('config', '${GADS_CALL_CONVERSION}', { 'phone_conversion_number': '${PHONE_DISPLAY}' });`
+                  : ""
+              }`}
             </Script>
           </>
         )}
