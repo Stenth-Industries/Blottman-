@@ -15,11 +15,18 @@ export default function Process() {
           <h2 className="h-section mt-4 text-white">
             How we <span className="text-gold-sheen">fight for you.</span>
           </h2>
+          {/* Mobile swipe hint */}
+          <div className="mt-6 flex items-center gap-2 text-gold/60 sm:hidden">
+            <svg className="h-5 w-5 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+            <span className="font-sans text-xs uppercase tracking-widest">Swipe to explore</span>
+          </div>
         </div>
 
-        <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+        <div className="mt-16 grid auto-cols-[85%] grid-flow-col snap-x snap-mandatory overflow-x-auto pb-8 sm:auto-cols-auto sm:grid-flow-row sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-4 gap-4 sm:gap-8">
           {PROCESS.map((p, index) => (
-            <div key={p.step} className="group relative flex flex-col">
+            <div key={p.step} className="group relative flex snap-center flex-col">
               <div className="card relative flex-1 border-white/5 bg-ink-soft/40 transition-all duration-500 hover:-translate-y-2 hover:border-gold/30 hover:bg-ink-soft hover:shadow-[0_20px_40px_-15px_rgba(231,172,64,0.15)]">
                 {/* Image Container — clipping only the top corners so the badge below can overflow safely if needed */}
                 <div className="relative aspect-[4/3] overflow-hidden rounded-t-2xl bg-ink">

@@ -56,12 +56,19 @@ export default function Expertise() {
           <h2 className="h-section mt-4 text-white">
             Every ticket has a <span className="text-gold-sheen">defence.</span>
           </h2>
+          {/* Mobile swipe hint */}
+          <div className="mt-6 flex items-center gap-2 text-gold/60 sm:hidden">
+            <svg className="h-5 w-5 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+            <span className="font-sans text-xs uppercase tracking-widest">Swipe to explore</span>
+          </div>
         </m.div>
 
         {/* Full-width image tiles — uses the snapshot photos and spreads the 9
             charges horizontally (3 across) instead of one tall text column. */}
         <m.div
-          className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-12 grid auto-cols-[85%] grid-flow-col snap-x snap-mandatory overflow-x-auto pb-8 sm:auto-cols-auto sm:grid-flow-row sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-3 gap-4"
           variants={container}
           initial={reduce ? false : "hidden"}
           whileInView="show"
@@ -71,7 +78,7 @@ export default function Expertise() {
             <m.div
               key={card.title}
               variants={item}
-              className="group relative flex min-h-[280px] flex-col justify-end overflow-hidden rounded-2xl border border-white/10 bg-ink shadow-lg transition-all duration-500 hover:-translate-y-2 hover:border-gold/30 hover:shadow-[0_20px_40px_-15px_rgba(231,172,64,0.15)] sm:min-h-[300px]"
+              className="group relative flex snap-center min-h-[280px] flex-col justify-end overflow-hidden rounded-2xl border border-white/10 bg-ink shadow-lg transition-all duration-500 hover:-translate-y-2 hover:border-gold/30 hover:shadow-[0_20px_40px_-15px_rgba(231,172,64,0.15)] sm:min-h-[300px]"
             >
               {/* Charge photo */}
               <Image

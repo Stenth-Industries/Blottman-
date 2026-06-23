@@ -26,6 +26,13 @@ export default function GoogleReviews() {
           <h2 className="h-section mt-4 text-white">
             What our <span className="text-gold-sheen">clients say.</span>
           </h2>
+          {/* Mobile swipe hint */}
+          <div className="mt-6 flex items-center gap-2 text-gold/60 sm:hidden">
+            <svg className="h-5 w-5 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+            <span className="font-sans text-xs uppercase tracking-widest">Swipe to explore</span>
+          </div>
         </div>
 
         {TRUSTINDEX_WIDGET_ID ? (
@@ -106,9 +113,9 @@ function SampleReviews() {
         </div>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
+      <div className="mt-8 grid auto-cols-[85%] grid-flow-col snap-x snap-mandatory overflow-x-auto pb-8 sm:auto-cols-auto sm:grid-flow-row sm:grid-cols-2 sm:overflow-visible sm:pb-0 md:grid-cols-3 gap-5">
         {GOOGLE_SAMPLE_REVIEWS.slice(0, 6).map((r, i) => (
-          <figure key={`${r.author}-${i}`} className="card flex flex-col gap-4 p-6">
+          <figure key={`${r.author}-${i}`} className="card flex snap-center flex-col gap-4 p-6">
             <div className="flex items-center justify-between">
               <Stars rating={r.rating} color="#e7ac40" />
               <GoogleG className="h-4 w-4" />
