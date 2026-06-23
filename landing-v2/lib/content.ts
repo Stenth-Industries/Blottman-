@@ -67,22 +67,71 @@ export const BENEFITS = [
   "Licensed Ontario paralegal, 500+ tickets handled",
 ];
 
-// What we fight — numbered practice-area grid (Garde Wilson "Expertise" pattern).
-export const EXPERTISE: { title: string; blurb: string; image?: string; imageOpacity?: number }[] = [
-  { title: "Speeding & Stunt Driving", blurb: "Built to protect your licence, record, and insurance rates when the stakes are high.", image: "/offence-speeding.png", imageOpacity: 0.9 },
-  { title: "Careless Driving", blurb: "A serious charge with up to 6 points. We fight to have it reduced or withdrawn.", image: "/offence-careless.png", imageOpacity: 0.72 },
-  { title: "Distracted / Cell Phone", blurb: "Big fines and points for one tap. Often beatable, especially first offence.", image: "/offence-distracted.png", imageOpacity: 0.68 },
-  { title: "Suspended Licence", blurb: "Driving while suspended carries heavy penalties. We protect your record.", image: "/offence-suspended.png", imageOpacity: 0.42 },
-  { title: "Demerit Points & Insurance", blurb: "Convictions follow you for years. We keep your abstract — and your rates — clean.", image: "/offence-demerit.png", imageOpacity: 0.42 },
-  { title: "Fail to Stop / Remain", blurb: "From stop signs to collisions, we build the defence the charge calls for.", image: "/offence-fail-stop.png", imageOpacity: 0.4 },
+// ---------------------------------------------------------------------------
+// Per-ticket SKAG landing pages. Each entry is one keyword-matched page (e.g.
+// /speeding) that reuses the shared sections but swaps the hero headline + the
+// intro copy so the page mirrors the search term (SKAG message-match). To ship
+// a new page: add an entry here + a 3-line route at app/<slug>/page.tsx.
+// ---------------------------------------------------------------------------
+export type TicketPage = {
+  slug: string;
+  metaTitle: string;
+  metaDescription: string;
+  eyebrow: string;        // hero eyebrow label
+  titleLine1: string;     // hero H1, line 1 (carries the matched keyword)
+  titleLine2: string;     // hero H1, line 2 lead-in
+  titleHighlight: string; // hero H1, gold emphasis word
+  benefits: string[];     // hero skim bullets
+  introEyebrow: string;
+  introHeading: string;
+  introBody: string;
+};
+
+export const TICKET_PAGES: Record<string, TicketPage> = {
+  speeding: {
+    slug: "speeding",
+    metaTitle: "Fight Your Speeding Ticket | Blottman Legal Services — Ontario",
+    metaDescription:
+      "Charged with speeding in Ontario? A licensed paralegal fights your speeding ticket — protecting your record, demerit points and insurance. Free case review.",
+    eyebrow: "Ontario Speeding-Ticket Defence",
+    titleLine1: "Fight your speeding ticket.",
+    titleLine2: "Protect your",
+    titleHighlight: "record.",
+    benefits: [
+      "Fight the demerit points a speeding conviction adds",
+      "Most clients never set foot in court",
+      "We work to protect your record and insurance rates",
+      "Licensed Ontario paralegal, 500+ tickets handled",
+    ],
+    introEyebrow: "Speeding Tickets",
+    introHeading: "Charged with speeding in Ontario?",
+    introBody:
+      "A speeding ticket is more than a fine. A conviction adds demerit points, stays on your record, and can raise your insurance for years — and the higher the alleged speed, the steeper the penalty. We review the officer's evidence, the radar or lidar reliability, and the disclosure for the weaknesses that help us fight your speeding charge. In most cases, you never have to set foot in court.",
+  },
+};
+
+// What we fight — practice-area grid mirroring blottman.com's "Trusted Legal
+// Experts" cards (same 9 charges + wording). Source copy says "our lawyers";
+// kept paralegal-accurate here ("we"/"our team") since Leslie is a licensed
+// Ontario paralegal. Order/wording follow the existing site per client request.
+export const EXPERTISE: { title: string; blurb: string; image: string }[] = [
+  { title: "Driving Under Suspension", blurb: "Protect your licence, avoid costly fines, and regain control — our suspension defence works to keep your record clean and your future secure.", image: "/result-suspended.jpg" },
+  { title: "Driving With No Experience", blurb: "Don't let inexperience cost you — we work to minimize penalties, protect your record, and fight for your driving freedom.", image: "/inexperienced-driver-lhd.png" },
+  { title: "Failure To Stop", blurb: "One mistake shouldn't wreck your record — our team fights tickets, reduces penalties, and helps you keep your insurance rates low.", image: "/result-failstop.jpg" },
+  { title: "Unsafe Turn", blurb: "We challenge unsafe turn charges head-on — fighting points, safeguarding your licence, and protecting you from years of higher insurance premiums.", image: "/unsafe-turn-real.png" },
+  { title: "Stunt Driving", blurb: "Serious charge? We defend aggressively — challenging licence suspensions, steep fines, and criminal records to protect your freedom and driving future.", image: "/result-stunt.jpg" },
+  { title: "Careless Driving", blurb: "We fight careless driving charges — working to reduce fines, avoid demerit points, and protect your driving record with a strong, persuasive defence.", image: "/result-careless.jpg" },
+  { title: "Speeding Ticket", blurb: "Beat your speeding ticket — our defence works to reduce fines, fight licence points, and save you money by keeping insurance rates low.", image: "/result-speeding.jpg" },
+  { title: "Cell Phone Ticket", blurb: "From minor infractions to serious tickets — we protect your licence, work to reduce penalties, and save you money long-term.", image: "/result-distracted.jpg" },
+  { title: "Traffic Violations", blurb: "We fight traffic violations fiercely, working to minimize consequences, protect your record, and keep you on the road without penalties.", image: "/process-1-ticket.jpg" },
 ];
 
 // How it works — numbered step process (Garde Wilson "What happens" pattern).
 export const PROCESS = [
-  { step: "01", title: "Send Us Your Ticket", body: "Snap a photo of your ticket and send it over. It takes two minutes and costs nothing.", image: "/process-1-ticket.jpg" },
+  { step: "01", title: "Send Us a Message", body: "Tell us what happened and send us a quick message. It takes two minutes and costs nothing.", image: "/process-1-ticket.jpg" },
   { step: "02", title: "Free Case Review", body: "We review the charge, the evidence, and your options — then call you with an honest read.", image: "/process-2-review.jpg" },
   { step: "03", title: "We Fight It For You", body: "As your licensed paralegal we handle the paperwork and attend court on your behalf.", image: "/process-3-court.png" },
-  { step: "04", title: "Keep Your Record", body: "Our goal: the charge reduced or withdrawn, your licence intact, your insurance unaffected.", image: "/process-4-driving.jpg" },
+  { step: "04", title: "Keep Your Record", body: "Our goal: protect your licence, your record, and your insurance rate every step of the way.", image: "/process-4-driving.jpg" },
 ];
 
 // Real verified Google reviews, pulled from blottman.com (Trustindex Google widget).
@@ -141,51 +190,13 @@ export const VIDEO_TESTIMONIALS = Array.from({ length: 9 }, (_, i) => ({
   caption: "Video testimonial coming soon",
 }));
 
-// Recent results — REAL outcomes that clients described in their own verified
-// public Google reviews (Blottman Legal Services GBP, pulled 2026-06-22). These
-// are clients' own statements, NOT firm-authored outcome claims, and the section
-// is labelled as such. Imagery is illustrative. Source review quoted per entry so
-// the provenance is auditable. Do NOT replace with invented results.
-export const PORTFOLIO = [
-  { 
-    title: "Hand-held Device / Cell Phone", 
-    result: "Completely Withdrawn", 
-    tag: "Client Anthony S. facing a hand-held device charge. Ticket withdrawn with 0 demerit points and no fine.", 
-    image: "/result-distracted.jpg" 
-  },
-  { 
-    title: "Careless Driving", 
-    result: "Fully Withdrawn", 
-    tag: "Client Daniel T. facing major demerit points for careless driving. Charge completely withdrawn.", 
-    image: "/result-careless.jpg" 
-  },
-  { 
-    title: "Stunt Driving", 
-    result: "Reduced to 0 Points", 
-    tag: "Client Emal S. facing a severe stunt driving charge. Reduced to a minor speeding ticket with 0 demerit points.", 
-    image: "/result-stunt.jpg" 
-  },
-  { 
-    title: "Fail to Stop / Sign", 
-    result: "Zero Points", 
-    tag: "Client Ajeet S. facing a fail-to-stop at a stop sign charge. Resolved entirely with zero demerit points.", 
-    image: "/result-failstop.jpg" 
-  },
-  { 
-    title: "Multiple Severe Tickets", 
-    result: "Tickets Cleared", 
-    tag: "Client Eleane R.'s family facing a 'bouquet' of serious tickets. Able to get off with little or nothing.", 
-    image: "/result-suspended.jpg" 
-  },
-  { 
-    title: "Speeding", 
-    result: "Major Reduction", 
-    tag: "Client Al C. facing significant traffic infractions. Secured the best possible outcome and saved the driving record.", 
-    image: "/result-speeding.jpg" 
-  },
-];
+// NOTE: the "Recent Results / snapshot of outcomes" PORTFOLIO section was removed
+// (2026-06-23) at the client's request — publicizing specific client charges and
+// outcomes breaches Law Society of Ontario paralegal advertising rules. Do NOT
+// reintroduce per-client result cards. Genuine third-party Google reviews (below)
+// are kept; firm-authored outcome claims are not.
 
-// 2 before/after case studies.
+// 2 before/after case studies (dormant — not rendered; kept for reference only).
 export const CASE_STUDIES = [
   {
     title: "From licence suspension to back on the road",
@@ -215,7 +226,7 @@ export const CASE_STUDIES = [
 export const FAQS = [
   {
     q: "Is it even worth fighting my ticket?",
-    a: "Almost always. Paying a ticket is a guilty plea — it adds demerit points and can raise your insurance for years. We often get charges reduced or withdrawn for less than the long-term cost of paying.",
+    a: "Almost always. Paying a ticket is a guilty plea — it adds demerit points and can raise your insurance for years. We often resolve charges for less than the long-term cost of paying.",
   },
   {
     q: "Do I have to go to court?",
@@ -235,6 +246,6 @@ export const FAQS = [
   },
   {
     q: "How fast can you help?",
-    a: "Send us your ticket today and we'll review it and call you back. The sooner we start, the more options you have.",
+    a: "Send us a message today and we'll review your charge and call you back. The sooner we start, the more options you have.",
   },
 ];

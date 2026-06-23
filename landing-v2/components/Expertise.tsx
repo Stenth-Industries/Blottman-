@@ -1,6 +1,5 @@
 "use client";
 
-import type { CSSProperties } from "react";
 import Image from "next/image";
 import { m, useReducedMotion, type Variants } from "motion/react";
 import SectionCta from "./SectionCta";
@@ -45,7 +44,7 @@ export default function Expertise() {
       {/* warm gold glow on the far left and far right edges (slightly reduced) */}
       <div className="pointer-events-none absolute -left-44 top-1/2 h-[30rem] w-[30rem] -translate-y-1/2 rounded-full bg-gold/8 blur-[140px]" />
       <div className="pointer-events-none absolute -right-44 top-1/2 h-[30rem] w-[30rem] -translate-y-1/2 rounded-full bg-gold/8 blur-[140px]" />
-      <div className="section relative z-10 max-w-[1180px]">
+      <div className="section relative z-10">
         <m.div
           className="max-w-2xl"
           initial={reduce ? false : { opacity: 0, y: 20 }}
@@ -59,8 +58,10 @@ export default function Expertise() {
           </h2>
         </m.div>
 
+        {/* Full-width image tiles — uses the snapshot photos and spreads the 9
+            charges horizontally (3 across) instead of one tall text column. */}
         <m.div
-          className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-ink-line bg-ink-line sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
           variants={container}
           initial={reduce ? false : "hidden"}
           whileInView="show"
@@ -70,44 +71,36 @@ export default function Expertise() {
             <m.div
               key={card.title}
               variants={item}
-              className="group relative overflow-hidden bg-ink p-5"
-              style={
-                card.image
-                  ? ({
-                      "--img-o": card.imageOpacity ?? 0.18,
-                      "--img-oh": (card.imageOpacity ?? 0.18) + 0.1,
-                    } as CSSProperties)
-                  : undefined
-              }
+              className="group relative flex min-h-[280px] flex-col justify-end overflow-hidden rounded-2xl border border-white/10 bg-ink shadow-lg transition-all duration-500 hover:border-white/20 hover:shadow-[0_18px_36px_-14px_rgba(255,255,255,0.12)] sm:min-h-[300px]"
             >
-              {card.image && (
-                <>
-                  {/* subtle right-side background texture (already a dark photo) */}
-                  <div className="pointer-events-none absolute inset-y-0 right-0 w-2/3">
-                    <Image
-                      src={card.image}
-                      alt=""
-                      aria-hidden="true"
-                      fill
-                      sizes="(max-width: 1024px) 60vw, 25vw"
-                      className="object-cover object-center opacity-[var(--img-o)]"
-                    />
-                  </div>
-                  {/* strong dark gradient on the left so the text area stays clean; image stays visible on the right */}
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink from-[38%] via-ink/65 to-ink/5" />
-                </>
-              )}
-              <div className={`relative z-10 ${card.image ? "sm:max-w-[58%]" : ""}`}>
-                <m.span
-                  variants={numberItem}
-                  className="inline-block origin-left font-display text-2xl text-gold/60 transition-all duration-300 group-hover:scale-110 group-hover:text-gold"
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </m.span>
-                <h3 className="mt-4 font-display text-xl uppercase tracking-tight text-white [text-shadow:0_1px_10px_rgba(12,12,12,0.6)]">
+              {/* Charge photo */}
+              <Image
+                src={card.image}
+                alt={card.title}
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover grayscale contrast-110 brightness-90 transition-transform duration-700 group-hover:scale-105"
+              />
+              {/* Legibility gradient + gold hover wash */}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-ink/85 to-ink/10" />
+              <div className="pointer-events-none absolute inset-0 bg-white/0 transition-colors duration-500 group-hover:bg-white/[0.03]" />
+
+              {/* Index number */}
+              <m.span
+                variants={numberItem}
+                className="absolute right-5 top-4 font-display text-4xl leading-none text-white/15 transition-colors duration-300 group-hover:text-white/50"
+              >
+                {String(i + 1).padStart(2, "0")}
+              </m.span>
+
+              {/* Title + blurb */}
+              <div className="relative z-10 p-6">
+                <h3 className="font-display text-xl tracking-wide bg-gold-sheen-hover bg-clip-text text-white transition-colors duration-300 group-hover:text-transparent [text-shadow:0_2px_12px_rgba(0,0,0,0.85)]">
                   {card.title}
                 </h3>
-                <p className="mt-2 text-base leading-relaxed text-white/70 [text-shadow:0_1px_8px_rgba(12,12,12,0.6)]">{card.blurb}</p>
+                <p className="mt-2 text-[13.5px] leading-relaxed text-white/75 [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
+                  {card.blurb}
+                </p>
               </div>
             </m.div>
           ))}

@@ -8,6 +8,12 @@ clicks land on blottman.ca, and a conversion shows. Sitelinks left on blottman.c
 accepted for the test). **If approved + clean → migrate the rest** (other Search campaigns + PMAX).
 **If disapproved → read the policy reason** before rolling out further.
 
+> **Jun 23 update (Anshul):** hit a *"One website per ad group / This ad can't run"* disapproval —
+> the 2 PAUSED ads in the ad group were still on blottman.com, and Google's "one website per ad group"
+> rule counts paused ads too, so the .ca/.com mix flagged the whole group. **Fixed** by repointing the
+> 2 paused ads to blottman.ca (`code/fix_paused_ad_domains.py`). ⚠️ **When migrating the rest, sweep
+> PAUSED ads too** in every campaign or you'll re-trigger this. Sitelinks still on .com — migrate those too.
+
 To act: open Claude Code in `E:\Blottman-law` and say *"check the blottman.ca migration."*
 
 ---

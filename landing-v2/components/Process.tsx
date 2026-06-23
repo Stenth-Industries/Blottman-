@@ -13,7 +13,7 @@ export default function Process() {
         <div className="max-w-2xl">
           <p className="eyebrow">How It Works</p>
           <h2 className="h-section mt-4 text-white">
-            From ticket to <span className="text-gold-sheen">resolved.</span>
+            How we <span className="text-gold-sheen">fight for you.</span>
           </h2>
         </div>
 
@@ -45,7 +45,7 @@ export default function Process() {
                   <p className="mt-3 text-[14.5px] leading-relaxed text-white/65">
                     {p.step === "01" ? (
                       <>
-                        Snap a photo of your ticket and send it over. <strong className="font-semibold text-white">It takes two minutes and costs nothing.</strong>
+                        Tell us what happened and send us a quick message. <strong className="font-semibold text-white">It takes two minutes and costs nothing.</strong>
                       </>
                     ) : (
                       p.body
@@ -58,7 +58,7 @@ export default function Process() {
         </div>
 
         <div className="mt-16">
-          <SectionCta label="Send Us Your Ticket" />
+          <SectionCta label="Send Us a Message" />
         </div>
       </div>
     </section>

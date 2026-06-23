@@ -577,3 +577,35 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   tweaks: `Hero.tsx` image quality/size fixes + `next.config.mjs` AVIF + 1yr image cache TTL.
   ⚠️ Reminder: the Apps Script itself must be re-pasted + redeployed in the editor for `.gs` changes to
   go live (the repo file is just the source copy, not linked to the live script).
+- **2026-06-23** (Anshul): **Fixed "One website per ad group" / "This ad can't run" disapproval on
+  `Traffic ticket lawyer broad`** (`23039650759`, ad group `186398312300` 'Traffic Ticket Legal
+  Services'). Root cause = the Jun-23 blottman.ca migration test repointed only the **2 ENABLED** RSAs
+  (`812451424746`, `812455198290`) to **blottman.ca** but left **2 PAUSED** ads (`774748697421` the
+  old 98%/DUI ad, `812451172230` superseded court RSA) on **blottman.com**. Google's 'one website per
+  ad group' rule counts active AND paused ads → the .ca/.com mix disapproved the whole ad group, incl.
+  the live ads. FIX (API): repointed both paused ads to blottman.ca so all 4 share one TLD (they stay
+  PAUSED; reversible). No keyword-level final URLs in this ad group. Disapproval re-checks in hrs–~1
+  business day; verify with `python code/check_broad_tomorrow.py` (enabled ads → APPROVED/serving).
+  ⚠️ **MIGRATION LESSON for Akash:** every other campaign will hit this same disapproval the moment its
+  enabled ads go .ca if any paused .com ads remain — **sweep paused ads too** during the full rollout.
+  Sitelinks are still on blottman.com (campaign-level, don't trigger this rule, but migrate them too).
+  Script: `code/fix_paused_ad_domains.py` (reusable — edit CAMPAIGN_ID/PAUSED_ADS/NEW_URL).
+- **2026-06-23** (Anshul): **landing-v2 (blottman.ca) LSO-compliance edits per client (Les, WhatsApp).**
+  Les flagged the new site for Law Society of Ontario paralegal-advertising breaches. Applied:
+  **(1) Removed "upload your ticket"** everywhere (LSO: can't review a ticket without conflict check +
+  signed retainer) — deleted the file-upload dropzone in `QuoteForm.tsx`, the upload-handling in
+  `app/api/lead/route.ts` (form is now a plain contact submission), the privacy-page upload bullet, and
+  reworded Process step 1 / CTA from "Send Us Your Ticket"/"Snap a photo of your ticket" → "Send Us a
+  Message"/"Tell us what happened". **(2) Removed the "snapshot of outcomes" section** (publicizing
+  client outcomes breaches LSO) — dropped `<Portfolio/>` from `page.tsx` + `TicketLanding.tsx`, deleted
+  `components/Portfolio.tsx` and the `PORTFOLIO` data in `lib/content.ts`. **(3) Removed firm-authored
+  "withdrawn" outcome claims** (Process step 4, FAQ, speeding SKAG page, Careless Driving card).
+  **(4) Practice-area grid now mirrors blottman.com's 9 "Trusted Legal Experts" cards** (Driving Under
+  Suspension, Driving With No Experience, Failure To Stop, Unsafe Turn, Stunt Driving, Careless Driving,
+  Speeding Ticket, Cell Phone Ticket, Traffic Violations) with the other site's wording — except
+  swapped "our lawyers" → "we/our team" (she's a **paralegal**, not a lawyer) and **did NOT** import
+  their "We Win 98% Of Cases" heading (outcome guarantee = the same claim that got the ads flagged).
+  ‹DECISION PENDING› genuine third-party **Google reviews** that mention "withdrawn" were **kept** (the
+  other site shows them too; third-party reviews are generally allowed) — confirm with Les if she wants
+  those scrubbed as well. `tsc --noEmit` clean. ⚠️ **NOT yet deployed** — needs Vercel redeploy of
+  landing-v2; the `LEAD_WEBHOOK_URL` env note from Jun-21 still applies.

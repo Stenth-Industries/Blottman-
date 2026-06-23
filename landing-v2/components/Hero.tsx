@@ -11,7 +11,24 @@ import { BENEFITS, PHONE_DISPLAY, PHONE_TEL } from "@/lib/content";
 // it paints from the initial HTML instead of waiting on the JS bundle to hydrate.
 // The <h1> (the mobile LCP element) is intentionally NOT animated so it paints
 // immediately. Only the desktop-only portrait below still uses motion.
-export default function Hero() {
+//
+// Props are optional and default to the generic homepage copy, so <Hero /> is
+// unchanged. The per-ticket SKAG pages pass keyword-matched headline + benefits.
+type HeroProps = {
+  eyebrow?: string;
+  titleLine1?: string;
+  titleLine2?: string;
+  titleHighlight?: string;
+  benefits?: string[];
+};
+
+export default function Hero({
+  eyebrow = "Ontario Traffic-Ticket Defence",
+  titleLine1 = "Fight your ticket.",
+  titleLine2 = "Protect your",
+  titleHighlight = "record.",
+  benefits = BENEFITS,
+}: HeroProps = {}) {
   const reduce = useReducedMotion();
 
   return (
@@ -50,18 +67,18 @@ export default function Hero() {
             className="mb-6 h-auto w-[100px] sm:w-[120px]"
           />
           <p className="hero-rise eyebrow text-sm" style={{ animationDelay: "0.05s" }}>
-            Ontario Traffic-Ticket Defence
+            {eyebrow}
           </p>
           {/* LCP element — paints immediately from the initial HTML, no entrance
               animation, so Largest Contentful Paint isn't gated on JS. */}
           <h1 className="display mt-5 text-[clamp(2.25rem,9vw,3rem)] sm:text-7xl">
-            Fight your ticket.
+            {titleLine1}
             <br />
-            Protect your <span className="text-gold-sheen">record.</span>
+            {titleLine2} <span className="text-gold-sheen">{titleHighlight}</span>
           </h1>
 
           <ul className="hero-rise mt-8 grid gap-3 sm:grid-cols-2" style={{ animationDelay: "0.17s" }}>
-            {BENEFITS.map((b) => (
+            {benefits.map((b) => (
               <li key={b} className="flex items-start gap-2.5 text-base text-white/85">
                 <Check />
                 <span>{b}</span>

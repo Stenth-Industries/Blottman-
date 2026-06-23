@@ -39,8 +39,7 @@ export default function PrivacyPolicy() {
             <p>When you submit our free case review form, we collect the information you provide, which may include:</p>
             <ul className="mt-3 list-disc space-y-1.5 pl-5">
               <li>Your name, phone number, and email address;</li>
-              <li>Details about your charge or ticket, and any message you send us;</li>
-              <li>An optional photo of your ticket, if you choose to upload one.</li>
+              <li>Details about your charge or ticket, and any message you send us.</li>
             </ul>
             <p className="mt-3">
               We also automatically receive limited technical information through advertising and analytics tools,
