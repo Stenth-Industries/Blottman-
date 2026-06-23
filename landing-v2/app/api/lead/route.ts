@@ -11,7 +11,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-const MAX_FILE_BYTES = 6 * 1024 * 1024; // 6 MB ticket photo cap
+// 4 MB cap — Vercel rejects request bodies over ~4.5 MB before this route runs,
+// so keep the ticket photo (plus form fields) safely under that platform limit.
+const MAX_FILE_BYTES = 4 * 1024 * 1024;
 
 export async function POST(req: NextRequest) {
   let form: FormData;
@@ -48,7 +50,7 @@ export async function POST(req: NextRequest) {
   const file = form.get("ticket");
   if (file instanceof File && file.size > 0) {
     if (file.size > MAX_FILE_BYTES) {
-      return bad("Ticket image is too large (max 6 MB).");
+      return bad("Ticket image is too large (max 4 MB).");
     }
     const buf = Buffer.from(await file.arrayBuffer());
     lead.ticket_name = file.name || "ticket";

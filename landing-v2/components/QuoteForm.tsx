@@ -19,7 +19,30 @@ declare global {
 export default function QuoteForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
+  const [fileName, setFileName] = useState("");
   const gclid = useRef("");
+
+  // Vercel rejects request bodies over ~4.5 MB before our route runs, so guard
+  // client-side with a friendly message instead of a silent failed submit.
+  const MAX_FILE_BYTES = 4 * 1024 * 1024;
+
+  function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.currentTarget.files?.[0];
+    if (!f) {
+      setFileName("");
+      return;
+    }
+    if (f.size > MAX_FILE_BYTES) {
+      setError("That image is over 4 MB. Please pick a smaller photo, or email it to us after submitting.");
+      setStatus("error");
+      e.currentTarget.value = "";
+      setFileName("");
+      return;
+    }
+    if (status === "error") setStatus("idle");
+    setError("");
+    setFileName(f.name);
+  }
 
   // Capture the Google click id from the landing URL so the lead can be tied
   // back to the ad later (offline conversion import for booked consults).
@@ -163,16 +186,29 @@ export default function QuoteForm() {
                   <span className="flex items-baseline justify-between text-[11px] font-semibold uppercase tracking-widest text-white/50">
                     Upload your ticket <span className="text-white/30 normal-case tracking-normal font-normal">(optional)</span>
                   </span>
-                  <label className="group relative flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-white/20 bg-white/[0.01] px-6 py-8 text-center transition-all hover:border-gold/60 hover:bg-gold/[0.03]">
-                    <svg viewBox="0 0 24 24" className="mb-3 h-7 w-7 text-white/50 transition-colors group-hover:text-gold" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-                    </svg>
-                    <span className="text-[13px] font-semibold text-white/90">Click to upload your ticket</span>
-                    <span className="mt-1.5 text-[11px] text-white/50">JPG, PNG, or PDF (max 6 MB)</span>
+                  <label className={`group relative flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-6 py-8 text-center transition-all ${fileName ? "border-gold/60 bg-gold/[0.05]" : "border-white/20 bg-white/[0.01] hover:border-gold/60 hover:bg-gold/[0.03]"}`}>
+                    {fileName ? (
+                      <>
+                        <svg viewBox="0 0 24 24" className="mb-3 h-7 w-7 text-gold" fill="none" stroke="currentColor" strokeWidth="1.5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+                        <span className="max-w-full truncate text-[13px] font-semibold text-gold">{fileName}</span>
+                        <span className="mt-1.5 text-[11px] text-white/50">Click to choose a different file</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg viewBox="0 0 24 24" className="mb-3 h-7 w-7 text-white/50 transition-colors group-hover:text-gold" fill="none" stroke="currentColor" strokeWidth="1.5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                        </svg>
+                        <span className="text-[13px] font-semibold text-white/90">Click to upload your ticket</span>
+                        <span className="mt-1.5 text-[11px] text-white/50">JPG, PNG, or PDF (max 4 MB)</span>
+                      </>
+                    )}
                     <input
                       name="ticket"
                       type="file"
                       accept="image/*,.pdf"
+                      onChange={handleFile}
                       className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
                     />
                   </label>
