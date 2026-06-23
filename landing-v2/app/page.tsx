@@ -31,8 +31,9 @@ const faqJsonLd = {
 //
 // NOTE: LogoBar ("as featured in"), VideoTestimonials, CaseStudies and Trustpilot were removed
 // pending REAL content (their files remain in /components for later). Reviews use Kushagra's
-// GoogleReviews component (live Trustindex Google-reviews widget). ⚠️ Portfolio data in
-// lib/content.ts is still placeholder and must be swapped for genuine outcomes before go-live.
+// GoogleReviews component (live Trustindex Google-reviews widget). Portfolio data in
+// lib/content.ts is now REAL — verified client outcomes quoted from public Google reviews
+// (replaced the old placeholders 2026-06-22).
 export default function Home() {
   return (
     <main>
