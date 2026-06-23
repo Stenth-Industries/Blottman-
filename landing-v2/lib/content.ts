@@ -7,6 +7,10 @@
 export const PHONE_DISPLAY = "(647) 794-7750";
 export const PHONE_TEL = "+16477947750";
 
+// Business identity — used in the footer, privacy policy, and legal copy.
+export const BUSINESS_NAME = "Blottman Legal Services";
+export const CONTACT_EMAIL = "legal@blottman.com";
+
 // Trust widget numbers (placeholder Trustpilot data).
 export const TRUSTPILOT = {
   rating: 4.7,

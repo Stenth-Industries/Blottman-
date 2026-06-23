@@ -10,6 +10,7 @@ import Faq from "@/components/Faq";
 import QuoteForm from "@/components/QuoteForm";
 import FloatingActions from "@/components/FloatingActions";
 import NoInsuranceBanner from "@/components/NoInsuranceBanner";
+import Footer from "@/components/Footer";
 import { FAQS } from "@/lib/content";
 
 // FAQPage structured data — makes the FAQ eligible for Google rich results.
@@ -51,6 +52,7 @@ export default function Home() {
       <Reveal><GoogleReviews /></Reveal>
       <Reveal><Faq /></Reveal>
       <Reveal><QuoteForm /></Reveal>
+      <Footer />
       <FloatingActions />
     </main>
   );
