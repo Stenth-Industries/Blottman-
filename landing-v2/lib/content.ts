@@ -85,6 +85,18 @@ export type TicketPage = {
   introEyebrow: string;
   introHeading: string;
   introBody: string;
+  // Optional offence illustration shown beside the intro (OffenseDetails).
+  image?: string;
+  bgImage?: string;
+  // Rich "Potential Penalties" cards rendered by OffenseDetails. Penalty data is
+  // sourced from blottman.com's per-offence pages (HTA/CAIA sections, demerit
+  // points, fines, suspensions) — facts kept, the site's "#1 lawyer / 98%"
+  // marketing claims deliberately dropped for LSO compliance.
+  consequences?: { icon?: "fine" | "suspend" | "impound" | "points" | "insurance" | "record" | "jail"; titleValue: string; titleLabel: string; description: string }[];
+  // Legacy flat penalty list (kept for reference; not currently rendered — the
+  // OffenseDetails component renders `consequences` instead).
+  penaltiesHeading?: string;
+  penalties?: string[];
 };
 
 export const TICKET_PAGES: Record<string, TicketPage> = {
@@ -106,7 +118,287 @@ export const TICKET_PAGES: Record<string, TicketPage> = {
     introEyebrow: "Speeding Tickets",
     introHeading: "Charged with speeding in Ontario?",
     introBody:
-      "A speeding ticket is more than a fine. A conviction adds demerit points, stays on your record, and can raise your insurance for years — and the higher the alleged speed, the steeper the penalty. We review the officer's evidence, the radar or lidar reliability, and the disclosure for the weaknesses that help us fight your speeding charge. In most cases, you never have to set foot in court.",
+      "Speeding is more than just a fine. A conviction stays on your record, adds demerit points, and can raise your insurance for years.",
+        bgImage: "/speeding_dark_bg.png",
+    consequences: [
+      { icon: "points", titleValue: "Up to 6", titleLabel: "Demerit Points", description: "Up to 6 points added to your record, depending on your speed." },
+      { icon: "insurance", titleValue: "Up to 3 Years", titleLabel: "Insurance Increases", description: "Your premiums can spike for up to 3 years." },
+      { icon: "fine", titleValue: "Hundreds", titleLabel: "In Fines", description: "Fines scale with your speed, potentially costing hundreds of dollars." }
+    ],
+    penaltiesHeading: "A speeding conviction can result in:",
+    penalties: [
+      "Demerit points on your record",
+      "A possible licence suspension",
+      "Insurance premiums that can stay high for years",
+    ],
+  },
+
+  "careless-driving": {
+    slug: "careless-driving",
+    metaTitle: "Fight a Careless Driving Charge | Blottman Legal Services — Ontario",
+    metaDescription:
+      "Charged with careless driving in Ontario? A licensed paralegal fights the charge to protect your record, demerit points and insurance. Free case review.",
+    eyebrow: "Ontario Careless-Driving Defence",
+    titleLine1: "Fight your careless driving charge.",
+    titleLine2: "Protect your",
+    titleHighlight: "record.",
+    benefits: [
+      "Careless driving can carry 6 demerit points — we fight to avoid them",
+      "Most clients never set foot in court",
+      "We work to protect your record and insurance rates",
+      "Licensed Ontario paralegal, 500+ tickets handled",
+    ],
+    introEyebrow: "Careless Driving",
+    introHeading: "Charged with careless driving in Ontario?",
+    introBody:
+      "Careless driving is the most serious non-criminal driving charge in Ontario. A conviction can ruin your record, spike your insurance, and potentially lead to jail time.",
+        bgImage: "/careless_dark_bg.png",
+    consequences: [
+      { titleValue: "6", titleLabel: "Demerit Points", description: "Careless driving carries a heavy penalty that severely impacts your record." },
+      { icon: "suspend", titleValue: "Up to 2 Years", titleLabel: "Licence Suspension", description: "You face a potential suspension of your driver's licence for up to 2 years." },
+      { titleValue: "Up to $2,000", titleLabel: "Fines & Jail Time", description: "Fines range from $400 to $2,000, with a possibility of up to 6 months in jail." }
+    ],
+    penaltiesHeading: "A careless driving conviction can result in:",
+    penalties: [
+      "6 demerit points",
+      "A licence suspension of up to 2 years",
+      "A fine between $400 and $2,000",
+      "Up to 6 months of imprisonment",
+    ],
+  },
+
+  "stunt-driving": {
+    slug: "stunt-driving",
+    metaTitle: "Fight a Stunt Driving Charge | Blottman Legal Services — Ontario",
+    metaDescription:
+      "Charged with stunt driving in Ontario? A licensed paralegal fights the charge — your licence, your insurance, your record. Free, confidential case review.",
+    eyebrow: "Ontario Stunt-Driving Defence",
+    titleLine1: "Fight your stunt driving charge.",
+    titleLine2: "Protect your",
+    titleHighlight: "licence.",
+    benefits: [
+      "Stunt driving brings an immediate roadside suspension and impound — we fight back",
+      "Most clients never set foot in court",
+      "We work to protect your record and insurance rates",
+      "Licensed Ontario paralegal, 500+ tickets handled",
+    ],
+    introEyebrow: "Stunt Driving",
+    introHeading: "Charged with stunt driving or racing in Ontario?",
+    introBody:
+      "A stunt driving charge means an immediate roadside suspension and vehicle impoundment. If convicted, the long-term impact on your life and insurance is devastating.",
+    bgImage: "/stunt_driving_bg.png",
+    consequences: [
+      { titleValue: "30 Days", titleLabel: "Licence Suspension", description: "A 30-day licence suspension and a 14-day vehicle impound the day you're charged — before any trial." },
+      { titleValue: "$2,000–$10,000", titleLabel: "Fine & Jail", description: "On conviction under s.172(2), with up to 6 months in jail on a first offence and harsher penalties for repeats." },
+      { titleValue: "1 to 3 Years", titleLabel: "Suspension", description: "A conviction carries a long licence suspension and major insurance fallout — often cancellation or massive premium hikes." }
+    ],
+    penaltiesHeading: "Under s.172(2), a stunt driving conviction can result in:",
+    penalties: [
+      "A fine of $2,000 to $10,000",
+      "A licence suspension of 1 to 3 years",
+      "Up to 6 months in jail on a first conviction",
+      "Harsher penalties, including longer jail time, for repeat offences",
+    ],
+  },
+
+  "fail-to-stop": {
+    slug: "fail-to-stop",
+    metaTitle: "Fight a Fail to Stop Ticket | Blottman Legal Services — Ontario",
+    metaDescription:
+      "Got a fail to stop at a stop sign ticket in Ontario? A licensed paralegal fights it to protect your demerit points, record and insurance. Free case review.",
+    eyebrow: "Ontario Fail-to-Stop Defence",
+    titleLine1: "Fight your fail to stop ticket.",
+    titleLine2: "Protect your",
+    titleHighlight: "record.",
+    benefits: [
+      "A fail-to-stop conviction adds demerit points — we work to keep them off",
+      "Most clients never set foot in court",
+      "We work to protect your record and insurance rates",
+      "Licensed Ontario paralegal, 500+ tickets handled",
+    ],
+    introEyebrow: "Fail to Stop",
+    introHeading: "Ticketed for failing to stop in Ontario?",
+    introBody:
+      "Failing to stop at a sign or red light might feel minor, but it adds demerit points and can quietly increase your insurance premiums at renewal.",
+        bgImage: "/careless_dark_bg.png",
+    consequences: [
+      { icon: "points", titleValue: "3", titleLabel: "Demerit Points", description: "A conviction automatically adds 3 points to your driving record." },
+      { titleValue: "Increases", titleLabel: "Insurance Impact", description: "Considered a minor conviction, but can still lead to increased premiums." },
+      { titleValue: "Set Fine", titleLabel: "Traffic Fines", description: "You will face a set fine along with a victim surcharge." }
+    ],
+    penaltiesHeading: "Under s.136(1), a fail to stop conviction can result in:",
+    penalties: [
+      "3 demerit points",
+      "A set fine",
+      "Higher insurance premiums at renewal",
+    ],
+  },
+
+  "disobey-sign": {
+    slug: "disobey-sign",
+    metaTitle: "Fight a Disobey Sign Ticket | Blottman Legal Services — Ontario",
+    metaDescription:
+      "Charged with disobeying a sign in Ontario? A licensed paralegal fights the ticket to protect your demerit points, record and insurance. Free case review.",
+    eyebrow: "Ontario Disobey-Sign Defence",
+    titleLine1: "Fight your disobey sign ticket.",
+    titleLine2: "Protect your",
+    titleHighlight: "record.",
+    benefits: [
+      "A disobey-sign conviction adds demerit points — we work to keep them off",
+      "Most clients never set foot in court",
+      "We work to protect your record and insurance rates",
+      "Licensed Ontario paralegal, 500+ tickets handled",
+    ],
+    introEyebrow: "Disobey Sign",
+    introHeading: "Ticketed for disobeying a sign in Ontario?",
+    introBody:
+      "Disobeying a sign adds demerit points to your driving record. Paying the ticket is an automatic guilty plea—fight it to protect your abstract.",
+        bgImage: "/disobey_dark_bg.png",
+    consequences: [
+      { icon: "points", titleValue: "2 to 3", titleLabel: "Demerit Points", description: "Most disobey sign tickets carry 2 to 3 demerit points." },
+      { icon: "record", titleValue: "3 Years", titleLabel: "On Your Record", description: "The conviction stays on your abstract for three years." },
+      { icon: "fine", titleValue: "Set Fine", titleLabel: "Fines & Surcharges", description: "A standard fine applies upon conviction." }
+    ],
+    penaltiesHeading: "A disobey sign conviction can result in:",
+    penalties: [
+      "3 demerit points",
+      "A set fine",
+      "Higher insurance premiums at renewal",
+    ],
+  },
+
+  "no-insurance": {
+    slug: "no-insurance",
+    metaTitle: "Fight a No Insurance Ticket | Blottman Legal Services — Ontario",
+    metaDescription:
+      "Charged with driving with no insurance in Ontario? Fines start in the thousands. A licensed paralegal fights the charge — free, confidential case review.",
+    eyebrow: "Ontario No-Insurance Defence",
+    titleLine1: "Fight your no insurance ticket.",
+    titleLine2: "Protect your",
+    titleHighlight: "wallet.",
+    benefits: [
+      "No-insurance fines can start in the thousands — we fight to reduce the damage",
+      "Most clients never set foot in court",
+      "We work to protect your record and insurance options",
+      "Licensed Ontario paralegal, 500+ tickets handled",
+    ],
+    introEyebrow: "Driving With No Insurance",
+    introHeading: "Charged with driving with no insurance in Ontario?",
+    introBody:
+      "Driving without insurance carries staggering fines starting in the thousands of dollars, plus the real risk of a licence suspension.",
+        bgImage: "/abstract_siren_bg.png",
+    consequences: [
+      { icon: "fine", titleValue: "Up to $25,000", titleLabel: "In Fines", description: "A first conviction ranges from $5,000 to $25,000 (rising to $10,000–$50,000 for a subsequent one), plus a 25% surcharge." },
+      { icon: "suspend", titleValue: "Up to 1 Year", titleLabel: "Licence Suspension", description: "Your licence can be suspended for up to one year." },
+      { icon: "impound", titleValue: "Up to 3 Months", titleLabel: "Vehicle Impound", description: "Your vehicle may be impounded for up to 3 months." }
+    ],
+    penaltiesHeading: "A no insurance conviction can result in:",
+    penalties: [
+      "A fine of $5,000 to $25,000 on a first conviction",
+      "A fine of $10,000 to $50,000 on a subsequent conviction",
+      "A licence suspension of up to 1 year",
+    ],
+  },
+
+  "driving-under-suspension": {
+    slug: "driving-under-suspension",
+    metaTitle: "Fight a Driving Under Suspension Charge | Blottman Legal Services",
+    metaDescription:
+      "Charged with driving under suspension in Ontario? A licensed paralegal fights the charge — your licence, your record, your future. Free case review.",
+    eyebrow: "Ontario Suspended-Driving Defence",
+    titleLine1: "Fight your driving under suspension charge.",
+    titleLine2: "Protect your",
+    titleHighlight: "licence.",
+    benefits: [
+      "Driving under suspension can mean more fines, a longer suspension and impound — we fight it",
+      "Most clients never set foot in court",
+      "We work to protect your record and insurance rates",
+      "Licensed Ontario paralegal, 500+ tickets handled",
+    ],
+    introEyebrow: "Driving Under Suspension",
+    introHeading: "Charged with driving under suspension in Ontario?",
+    introBody:
+      "Driving while suspended is heavily penalized. You face a mandatory further 6-month suspension, steep fines, and even potential jail time.",
+        bgImage: "/no_licence_dark_bg.png",
+    consequences: [
+      { titleValue: "6 Months", titleLabel: "Further Suspension", description: "A mandatory additional 6-month licence suspension." },
+      { titleValue: "7 Days", titleLabel: "Vehicle Impoundment", description: "Immediate 7-day impoundment of the vehicle you were driving." },
+      { titleValue: "Up to $5,000", titleLabel: "Fines & Jail Time", description: "Fines starting at $1,000, with potential for up to 6 months in jail." }
+    ],
+    penaltiesHeading: "A drive under suspension conviction can result in:",
+    penalties: [
+      "A fine of $1,000 to $5,000",
+      "Up to 6 months of imprisonment",
+      "An additional 6-month licence suspension",
+    ],
+  },
+
+  "no-licence": {
+    slug: "no-licence",
+    metaTitle: "Fight a No Licence Ticket | Blottman Legal Services — Ontario",
+    metaDescription:
+      "Charged with driving without a licence in Ontario? A licensed paralegal fights the ticket to protect your record and insurance. Free, confidential review.",
+    eyebrow: "Ontario No-Licence Defence",
+    titleLine1: "Fight your no licence ticket.",
+    titleLine2: "Protect your",
+    titleHighlight: "record.",
+    benefits: [
+      "A no-licence conviction can follow your record — we work to limit the impact",
+      "Most clients never set foot in court",
+      "We work to protect your record and insurance rates",
+      "Licensed Ontario paralegal, 500+ tickets handled",
+    ],
+    introEyebrow: "Driving Without a Licence",
+    introHeading: "Charged with driving without a licence in Ontario?",
+    introBody:
+      "Driving without a valid licence stays on your driving record and can severely affect your future ability to get insured.",
+        bgImage: "/no_licence_dark_bg.png",
+    consequences: [
+      { titleValue: "From $200", titleLabel: "In Fines", description: "Tickets for driving without a valid licence carry fines starting at $200." },
+      { titleValue: "Rate Hikes", titleLabel: "Insurance Consequences", description: "Can cause issues with your policy or lead to rate increases." },
+      { titleValue: "On Record", titleLabel: "No Demerit Points", description: "While there are no points, the conviction still appears on your abstract." }
+    ],
+    penaltiesHeading: "A no licence charge can result in:",
+    penalties: [
+      "Significant fines",
+      "A court date",
+      "A possible driving prohibition",
+      "Lasting damage to your driving record",
+    ],
+  },
+
+  "cell-phone": {
+    slug: "cell-phone",
+    metaTitle: "Fight a Cell Phone Ticket | Blottman Legal Services — Ontario",
+    metaDescription:
+      "Got a distracted driving or hand-held cell phone ticket in Ontario? A licensed paralegal fights it to protect your record and insurance. Free case review.",
+    eyebrow: "Ontario Distracted-Driving Defence",
+    titleLine1: "Fight your cell phone ticket.",
+    titleLine2: "Protect your",
+    titleHighlight: "record.",
+    benefits: [
+      "A distracted driving conviction adds demerit points and can suspend your licence — we fight it",
+      "Most clients never set foot in court",
+      "We work to protect your record and insurance rates",
+      "Licensed Ontario paralegal, 500+ tickets handled",
+    ],
+    introEyebrow: "Cell Phone / Distracted Driving",
+    introHeading: "Charged with distracted driving in Ontario?",
+    introBody:
+      "Distracted driving carries brutal penalties in Ontario, including steep fines, heavy demerit points, and an immediate licence suspension.",
+        bgImage: "/cell_phone_dark_bg.png",
+    consequences: [
+      { icon: "points", titleValue: "3", titleLabel: "Demerit Points", description: "A conviction adds 3 demerit points to your driving record." },
+      { icon: "suspend", titleValue: "3 Days", titleLabel: "Immediate Suspension", description: "A 3-day licence suspension for first-time fully licensed drivers." },
+      { icon: "fine", titleValue: "Up to $1,000", titleLabel: "In Fines", description: "A hefty fine if convicted or if you lose at trial." }
+    ],
+    penaltiesHeading: "A handheld device conviction can result in:",
+    penalties: [
+      "A monetary fine",
+      "A 3-day driver's licence suspension",
+      "3 demerit points",
+      "Higher penalties for repeat offences",
+    ],
   },
 };
 

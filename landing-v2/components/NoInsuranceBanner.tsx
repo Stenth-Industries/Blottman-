@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { m, useReducedMotion } from "motion/react";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/content";
 
 // What's actually at stake on a "drive with no insurance" charge in Ontario.
@@ -28,6 +31,8 @@ const STAKES: { top: React.ReactNode; bottom: React.ReactNode; body: string; ico
 // Dark "before you pay your ticket" banner — driving-with-no-insurance intent.
 // Sits after the Expertise grid. Black + gold theme, mirrors the site's section styling.
 export default function NoInsuranceBanner() {
+  const reduce = useReducedMotion();
+
   return (
     <section className="relative overflow-hidden bg-ink py-16 text-white sm:py-24">
       {/* Background Image with seamless top/bottom fades and vignette */}
@@ -80,20 +85,25 @@ export default function NoInsuranceBanner() {
 
         {/* What's at stake — factual statutory penalties, mirrors the Expertise card grid */}
         <div className="mt-14 grid grid-cols-1 gap-5 text-left sm:grid-cols-3">
-          {STAKES.map((s) => (
-            <div
+          {STAKES.map((s, i) => (
+            <m.div
               key={s.icon}
-              className="card bg-ink/40 p-8 ring-1 ring-inset ring-white/5 backdrop-blur-xl transition-all duration-300 hover:bg-ink/60 hover:ring-white/10"
+              initial={reduce ? false : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
             >
-              <span className="mb-6 grid h-12 w-12 place-items-center rounded-xl border border-gold/30 bg-ink-soft/50 text-gold shadow-inner">
-                <StakeIcon name={s.icon} />
-              </span>
-              <div className="flex flex-col gap-1">
-                {s.top}
-                {s.bottom}
+              <div className="card h-full bg-ink/40 p-8 ring-1 ring-inset ring-white/5 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 hover:bg-ink/60 hover:ring-white/10 hover:shadow-[0_12px_32px_rgba(255,255,255,0.04)]">
+                <span className="mb-6 grid h-12 w-12 place-items-center rounded-xl border border-gold/30 bg-ink-soft/50 text-gold shadow-inner">
+                  <StakeIcon name={s.icon} />
+                </span>
+                <div className="flex flex-col gap-1">
+                  {s.top}
+                  {s.bottom}
+                </div>
+                <p className="mt-4 text-[13.5px] leading-relaxed text-white/85">{s.body}</p>
               </div>
-              <p className="mt-4 text-[13.5px] leading-relaxed text-white/85">{s.body}</p>
-            </div>
+            </m.div>
           ))}
         </div>
 
@@ -102,19 +112,33 @@ export default function NoInsuranceBanner() {
           licence. Speak with us before paying — once you pay, you&apos;ve pleaded guilty.
         </p>
 
-        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <div className="mx-auto mt-12 flex w-full max-w-3xl flex-col items-center justify-between gap-6 rounded-2xl bg-ink/40 p-6 shadow-2xl ring-1 ring-inset ring-white/10 backdrop-blur-xl sm:flex-row sm:p-8">
+          <a
+            href={`tel:${PHONE_TEL}`}
+            className="group flex w-full items-center justify-center gap-4 text-left sm:w-auto sm:justify-start"
+          >
+            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-white/20 bg-white/5 text-white transition-colors group-hover:border-white/30 group-hover:bg-white/10">
+              <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M6.6 10.8a15.5 15.5 0 006.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 013 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1z"
+                />
+              </svg>
+            </span>
+            <div>
+              <span className="block text-[11px] font-semibold uppercase tracking-[0.15em] text-white/50">Call for a free review</span>
+              <span className="text-lg font-medium text-white underline decoration-white/30 decoration-2 underline-offset-4 transition-colors group-hover:decoration-white">{PHONE_DISPLAY}</span>
+            </div>
+          </a>
+
+          <div className="hidden h-12 w-px bg-white/10 sm:block"></div>
+
           <Link
             href="#quote"
-            className="btn-sheen inline-flex items-center justify-center rounded-full bg-gold-sheen px-8 py-4 text-[13px] font-semibold uppercase tracking-[0.12em] text-ink shadow-[0_8px_24px_rgba(231,172,64,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_rgba(231,172,64,0.5)] focus:outline-none focus:ring-2 focus:ring-gold/60"
+            className="btn-sheen inline-flex w-full items-center justify-center rounded-xl bg-gold-sheen px-8 py-4 text-[13px] font-semibold uppercase tracking-[0.12em] text-ink transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(231,172,64,0.35)] focus:outline-none focus:ring-2 focus:ring-gold/60 sm:w-auto"
           >
             Speak With Blottman Legal
           </Link>
-          <a
-            href={`tel:${PHONE_TEL}`}
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-gold/50 px-8 py-4 text-[13px] font-semibold uppercase tracking-[0.12em] text-gold transition-all duration-200 hover:-translate-y-0.5 hover:bg-gold/10 focus:outline-none focus:ring-2 focus:ring-gold/60"
-          >
-            Call {PHONE_DISPLAY}
-          </a>
         </div>
       </div>
     </section>

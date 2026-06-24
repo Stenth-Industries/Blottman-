@@ -609,3 +609,78 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   other site shows them too; third-party reviews are generally allowed) — confirm with Les if she wants
   those scrubbed as well. `tsc --noEmit` clean. ⚠️ **NOT yet deployed** — needs Vercel redeploy of
   landing-v2; the `LEAD_WEBHOOK_URL` env note from Jun-21 still applies.
+- **2026-06-24** (Anshul): **Fixed `Traffic ticket lawyer broad` (`23039650759`) disapproval → migrated
+  the ad group to blottman.ca per client (wants .ca as the main landing page).** Client said "still not
+  approved." Diagnosed (read-only `code/approval_status.py`): all 4 ads (2 ENABLED `812451424746`,
+  `812455198290` + 2 PAUSED `774748697421`, `812451172230`) were **DISAPPROVED `ONE_WEBSITE_PER_AD_GROUP`**.
+  Root cause = the **Jun-23 .ca migration left the ad group mixed**: ads on blottman.ca but all **10
+  campaign sitelinks + the lead form still on blottman.com** subpages → two domains in one ad group →
+  whole group (incl. live ads) disapproved. (Confirms the Jun-23 lesson AND that **campaign-level
+  sitelinks DO count** toward this rule, contra the Jun-23 note's assumption.) No keyword-level final
+  URLs. Both domains resolve HTTP 200, but **blottman.ca (landing-v2) has only 3 routes** (`/`,
+  `/speeding`, `/privacy`) — a single landing funnel, so the .com subpage sitelinks (`/hov-ticket/`,
+  `/traffic-violations/`, `/careless-driving-lawyer-paralegal`, etc.) **can't** be repointed to .ca
+  (would 404). **USER DECISION:** scope = broad campaign only; **remove** its sitelinks. FIX (API,
+  `code/migrate_broad_to_ca.py`): (1) repointed all 4 ads → `https://blottman.ca/`; (2) unlinked the 10
+  .com sitelinks; (3) unlinked the **shared lead form** `371903420556` from broad (it was the last .com
+  ref → `blottman.com/`; broad gets ~0 form impr so zero cost — the lead-form ASSET is untouched and
+  still serves on the 3 other .com Search campaigns). **Verified: broad ad group now 100% blottman.ca,
+  0 URL-bearing assets remain, ads flipped DISAPPROVED → REVIEW_IN_PROGRESS.** Re-check ~Jun 25 with
+  `code/approval_status.py` (expect APPROVED). ⚠️ **Rest of the account is STILL on blottman.com** (Higher
+  Value, Lower Value, Traffic ticket lawyer — ~30 ads + their sitelinks). A full account→.ca migration is
+  a bigger move and blocked by the same constraint: .ca only has 3 pages, so per-ticket SKAG ads would all
+  land on the generic .ca homepage (weak message-match). NOTE: I briefly ran `repoint_to_home.py`-style
+  revert-to-.com first (`revert_broad_to_com.py`) before the user clarified they want .ca — superseded by
+  the .ca migration. Minor open item: paused ad `763345345409` in *Lower Value - New* →
+  `blottman.com/no-licence-ticket` is `DESTINATION_NOT_WORKING` (404, paused so not serving — clean up
+  later). Scripts: `approval_status.py`, `migrate_broad_to_ca.py` (+ unused `revert_broad_to_com.py`).
+- **2026-06-24** (Anshul): **Built the blottman.ca landing pages needed for the full .com→.ca migration.**
+  Inventoried every landing URL the account uses (`code/url_inventory.py`, read-only): PMAX (BMX +
+  Blottman New pM) both serve only the homepage → trivially covered by `blottman.ca/`; the Search
+  campaigns send traffic to ~11 distinct (and redundant) .com subpages. **Created 8 new SEO + conversion
+  landing pages in landing-v2**, one canonical page per charge, all reusing the proven `/speeding`
+  template (`<TicketLanding>` + a `TICKET_PAGES` entry in `lib/content.ts` + a 3-line `app/<slug>/page.tsx`).
+  New routes: **`/careless-driving`, `/stunt-driving`, `/fail-to-stop`, `/disobey-sign`, `/no-insurance`,
+  `/driving-under-suspension`, `/no-licence`, `/cell-phone`** (plus existing `/speeding`). Copy is
+  LSO-compliant (paralegal-accurate, no "lawyer", no outcome guarantees/“98%”, uses "we work to"/"in most
+  cases"), each with unique meta title/description, hero, and an indexable intro citing the relevant HTA
+  section. **No images added** (client will supply — template reuses shared section images, so pages
+  render fine without new art). `tsc --noEmit` clean. **NOT deployed and NOT added to any campaign yet**
+  (per user). ⚠️ Needs Vercel redeploy of landing-v2 to go live on blottman.ca, then verify each route
+  returns 200, THEN run the per-campaign migration (repoint ads+paused ads+sitelinks together per the
+  Jun-23 one-website lesson). **Slug map for that migration** (old .com path → new .ca route): careless-driving-ticket→/careless-driving;
+  stunt-driving-ticket / stunt-driving-ticket-lawyer / traffic-tickets/stunt-driving→/stunt-driving;
+  fail-to-stop-ticket-lawyer→/fail-to-stop; disobey-sign-ticket→/disobey-sign; drive-no-insurance→/no-insurance;
+  drive-under-suspension→/driving-under-suspension; no-licence-ticket→/no-licence; speeding-ticket→/speeding;
+  cell-phone (core practice area, was on removed broad sitelinks)→/cell-phone; contact-us / “Get Help Now”
+  sitelink→ map to `blottman.ca/` (home has the form). Files: `lib/content.ts`, `app/<slug>/page.tsx` ×8.
+  **UPDATE (same day):** per client, pulled the REAL charge content from blottman.com's per-offence pages
+  (scraped via firecrawl) into each landing page — factual HTA/CAIA sections, demerit points, fines,
+  suspensions, jail terms. Added an optional `penalties[]` + `penaltiesHeading` block to the `TicketPage`
+  type and a styled "A conviction can result in:" list in `TicketLanding`'s intro. Each page's introBody now
+  cites the governing section (speeding s.128, careless s.130, stunt s.172(2), fail-to-stop s.136(1), disobey
+  sign s.182, no-insurance CAIA s.2, drive-under-suspension s.53, no-licence s.32, cell-phone s.78.1) with
+  the .com penalty figures. **Deliberately DROPPED the .com marketing claims** ("#1 Lawyer", "98% success
+  rate", "lawyers", "Talk to a Lawyer") — kept paralegal-accurate + LSO-compliant. `tsc --noEmit` clean.
+  Still NOT deployed / NOT in any campaign.
+- **2026-06-24** (Anshul): **CLIENT DIRECTIVE — multi-page rollout ON HOLD (Leslie, email).** Les: "once
+  I start seeing traction and its consistency, we can discuss the multiple pages. I service all of Ontario.
+  Once we get to where we want to be in terms of branching out, we can discuss." **DECISION: park the 8
+  per-offence landing pages — built + LSO-clean + tsc-green, but DO NOT deploy them to live ad traffic or
+  attach them to any campaign yet.** Gate is *consistent traction on the current setup first*; she greenlights
+  the branch-out later. Nothing to revert — the pages were never wired to campaigns; the only live .ca change
+  is the broad campaign → `blottman.ca/` HOMEPAGE (disapproval fix, not the multi-page plan). Her "I service
+  all of Ontario" reconfirms the all-Ontario PRESENCE geo targeting is correct (keep it). ⚠️ AKASH: do NOT
+  push the per-campaign .ca migration / flip the SKAG pages live until Les explicitly approves branching out.
+  When she does, it's mechanical (slug map above).
+- **2026-06-24** (Anshul): **Lever-2 budget reallocation toward the engine (total UNCHANGED $100/day).**
+  14-day read: **PMAX - Blottman Max produced ALL 11 stenth calls** ($45/day); the 4 Search/extra
+  campaigns spent ~$55/day for **0 verified calls** (Contact Us form-fills only). Also surfaced the
+  biggest free lever: **46% of all calls are <30s (519 short/missed vs 616 qualifying)** = missed/voicemail
+  → flagged to Les as a speed-to-answer fix (her action, costs nothing). Applied (`code/reallocate_to_bmx.py`,
+  reversible — old values in script): **BMX $45→$65**, TTL $20→$12, Lower Value-New $15→$8, broad $10→$5;
+  Higher Value-New $5 + Blottman New pM $5 unchanged. Rationale: concentrate spend on the only call source
+  + feed PMAX more call data to shrink the spiky zero-days (consistency = Les's gate before the multi-page
+  branch-out). **WATCH 3–4 days: if BMX cost-per-call worsens, revert** (BMX budget res `14910424501`;
+  TTL `14912690384`; Lower Value `14746029755`; broad `14945220177`). Snapshot context: last 7d = 9 stenth
+  calls, ALL GTA, all ≥30s incl. a 267s consult — quality excellent, consistency not yet rock-solid.

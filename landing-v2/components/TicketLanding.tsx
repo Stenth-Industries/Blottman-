@@ -1,14 +1,13 @@
 import Hero from "@/components/Hero";
 import Reveal from "@/components/Reveal";
 import StatsStrip from "@/components/StatsStrip";
-import Expertise from "@/components/Expertise";
 import Process from "@/components/Process";
 import GoogleReviews from "@/components/GoogleReviews";
 import Faq from "@/components/Faq";
 import QuoteForm from "@/components/QuoteForm";
 import FloatingActions from "@/components/FloatingActions";
-import NoInsuranceBanner from "@/components/NoInsuranceBanner";
 import Footer from "@/components/Footer";
+import OffenseDetails from "@/components/OffenseDetails";
 import { FAQS, type TicketPage } from "@/lib/content";
 
 // FAQPage JSON-LD (same FAQs as the homepage) so each ticket page is eligible
@@ -39,9 +38,9 @@ export default function TicketLanding({ page }: { page: TicketPage }) {
         benefits={page.benefits}
       />
       <StatsStrip />
-      <Reveal><TicketIntro page={page} /></Reveal>
-      <Reveal><Expertise /></Reveal>
-      <Reveal><NoInsuranceBanner /></Reveal>
+      {/* Replaced generic TicketIntro with rich OffenseDetails */}
+      <Reveal><OffenseDetails page={page} /></Reveal>
+      {/* Removed <Expertise /> and <NoInsuranceBanner /> to keep SKAG pages strictly standalone */}
       <Reveal><Process /></Reveal>
       <Reveal><GoogleReviews /></Reveal>
       <Reveal><Faq /></Reveal>
@@ -49,19 +48,5 @@ export default function TicketLanding({ page }: { page: TicketPage }) {
       <Footer />
       <FloatingActions />
     </main>
-  );
-}
-
-// Charge-specific intro block — the message-match copy that mirrors the search
-// term and gives the page unique, indexable content.
-function TicketIntro({ page }: { page: TicketPage }) {
-  return (
-    <section className="bg-ink py-16 text-white sm:py-24">
-      <div className="section max-w-3xl">
-        <p className="eyebrow">{page.introEyebrow}</p>
-        <h2 className="h-section mt-4 text-white">{page.introHeading}</h2>
-        <p className="mt-6 text-[15px] leading-relaxed text-white/70">{page.introBody}</p>
-      </div>
-    </section>
   );
 }
