@@ -684,3 +684,14 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   branch-out). **WATCH 3–4 days: if BMX cost-per-call worsens, revert** (BMX budget res `14910424501`;
   TTL `14912690384`; Lower Value `14746029755`; broad `14945220177`). Snapshot context: last 7d = 9 stenth
   calls, ALL GTA, all ≥30s incl. a 267s consult — quality excellent, consistency not yet rock-solid.
+- **2026-06-24** (Anshul): **Lever-2b — account-level content-label exclusions (trim PMAX junk Display reach).**
+  Goal: steer BMX away from cheap Display/Discover/YouTube impressions (the 18k-impr spike days) toward its
+  Search/Maps call placements. API path = `customer_negative_criterion` (CONTENT_LABEL), service writable.
+  Added 8 via `code/add_content_exclusions.py` (reversible): **BELOW_THE_FOLD** (biggest — kills
+  unseen below-fold impressions), BRAND_SUITABILITY_GAMES_FIGHTING, BRAND_SUITABILITY_GAMES_MATURE,
+  VIDEO_RATING_DV_MA, TRAGEDY, SOCIAL_ISSUES, EMBEDDED_VIDEO, JUVENILE. Now **12 total** (4 pre-existing:
+  PARKED_DOMAIN, SEXUALLY_SUGGESTIVE, PROFANITY, LIVE_STREAMING_VIDEO). **ACCOUNT-WIDE** (all 6 enabled
+  campaigns' Display/Video/Discover serving) — does NOT touch Search/Maps/calls. ⚠️ **Inventory type
+  (Expanded→Standard) is NOT API-settable — UI only**: Tools → Content suitability → Inventory type →
+  Standard (still TODO by hand). Verify junk shrinks in 3–4 days via Insights → "Where ads showed".
+  Script: `add_content_exclusions.py`.
