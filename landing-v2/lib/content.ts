@@ -24,12 +24,14 @@ export const GOOGLE_RATING = {
   reviews: 81,
 };
 
-// Trustindex widget id for the live Google-reviews embed (free, no card needed).
-// ⚠️ Left EMPTY on purpose: the live widget surfaces the newest Google entries, many
-// of which are rating-only ("left a rating", no text) and look empty to visitors.
-// We instead render the curated written reviews below so every card has real words.
-// Put the widget id back here to re-enable the live embed.
-export const TRUSTINDEX_WIDGET_ID = "72966a67489d59447446e251b7d";
+// Trustindex widget id for the live Google-reviews embed.
+// ⚠️ Left EMPTY on purpose (2026-06-25): the Trustindex free trial expired and now
+// requires a paid plan. We don't need it — GoogleReviews.tsx falls back to our OWN
+// on-brand reviews section (dark/gold cards, Google badge, 4.9/81 rating) populated
+// from the real verified GOOGLE_SAMPLE_REVIEWS below. This also avoids Trustindex's
+// rating-only ("left a rating", no text) entries that look empty to visitors.
+// Only put a widget id back here if you re-subscribe and want the live auto-updating embed.
+export const TRUSTINDEX_WIDGET_ID = "";
 
 // REAL verified written Google reviews from blottman.com. These are shown directly
 // (not just as a fallback) so the section always displays reviews with actual words,
