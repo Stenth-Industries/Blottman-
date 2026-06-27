@@ -113,7 +113,7 @@ export default function Hero({
               <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-gold/25 ring-1 ring-inset ring-white/10">
                 <Image
                   src="/leslie-office.webp"
-                  alt="Leslie Rivas — licensed Ontario paralegal, Blottman Law"
+                  alt="Leslie Rivas — Blottman Legal Services, Ontario traffic ticket defence"
                   fill
                   sizes="80px"
                   className="object-cover object-top"
@@ -148,7 +148,7 @@ export default function Hero({
             <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-[rgba(232,176,65,0.22)] bg-ink-soft shadow-[0_35px_90px_-30px_rgba(0,0,0,0.85)] ring-1 ring-inset ring-white/[0.07]">
               <Image
                 src="/leslie-office.webp"
-                alt="Leslie Rivas — licensed Ontario paralegal, Blottman Law"
+                alt="Leslie Rivas — Blottman Legal Services, Ontario traffic ticket defence"
                 fill
                 priority
                 sizes="330px"

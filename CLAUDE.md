@@ -766,5 +766,10 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
 - **2026-06-27** (Anshul): **Business name confirmed by client = "Blottman Legal Services"** (matches the
   logo + legal entity), NOT "Blottman Law" (the colloquial brand used loosely in these notes). Use
   **Blottman Legal Services** for the Search business-name asset / Advertiser Verification (UI step —
-  not API-creatable). ⚠️ Minor inconsistency to consider: the landing-v2 site title/brand still reads
-  "Blottman Law" — align to "Blottman Legal Services" if the client wants brand consistency (not yet changed).
+  not API-creatable). **DONE (same day, client approved): renamed the landing-v2 site brand "Blottman Law"
+  → "Blottman Legal Services"** everywhere — title/siteName/JSON-LD name/OG alt in `layout.tsx`, all 9
+  per-offence `page.tsx` siteNames, Hero alt (also dropped "paralegal"), README, content.ts comment, AND
+  the `lead-webhook.gs` email copy/signature (10 refs). **Left the 2 verbatim client Google reviews in
+  `content.ts` untouched** (lines 40/437 — can't alter a real testimonial). `tsc` clean. ⚠️ Needs Vercel
+  redeploy (landing-v2) to go live; AND the `lead-webhook.gs` change only takes effect after re-pasting +
+  redeploying the live Apps Script (repo .gs is just the source copy).

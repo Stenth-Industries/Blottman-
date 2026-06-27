@@ -1,4 +1,4 @@
-// ── Blottman Law — lead webhook (Google Apps Script) ──────────────────────────
+// ── Blottman Legal Services — lead webhook (Google Apps Script) ──────────────────────────
 // Paste this into the Sheet's Apps Script editor (Extensions → Apps Script),
 // Save, then Deploy → New deployment → Web app (Execute as: Me, Access: Anyone).
 // It logs each lead to the Sheet AND emails it from your Google account.
@@ -10,8 +10,8 @@ const TO_EMAIL = "info@stenth.com";
 const CC_EMAIL = ""; // e.g. "leslie@example.com" when you add her
 
 // Auto-reply sent to the person who filled out the form.
-const REPLY_FROM_NAME = "Blottman Law";
-const REPLY_SUBJECT = "We've got your case — Blottman Law";
+const REPLY_FROM_NAME = "Blottman Legal Services";
+const REPLY_SUBJECT = "We've got your case — Blottman Legal Services";
 const PHONE_DISPLAY = "(647) 794-7750";
 const PHONE_TEL = "+16477947750";
 const SITE_URL = "https://blottman.ca";
@@ -47,7 +47,7 @@ function doPost(e) {
       to: TO_EMAIL,
       subject: "New case review request — " + d.name,
       body: body,
-      name: "Blottman Law Leads",
+      name: "Blottman Legal Services Leads",
       replyTo: d.email || TO_EMAIL,
     };
     if (CC_EMAIL) msg.cc = CC_EMAIL;
@@ -102,7 +102,7 @@ function testAutoReply() {
 function autoReplyText(firstName) {
   return (
     "Hi " + firstName + ",\n\n" +
-    "Thank you for contacting Blottman Law. We've received your request for a " +
+    "Thank you for contacting Blottman Legal Services. We've received your request for a " +
     "free case review, and a member of our team will get back to you, usually " +
     "within one business day.\n\n" +
     "In the meantime, we recommend not paying the fine or pleading guilty until " +
@@ -112,7 +112,7 @@ function autoReplyText(firstName) {
     "reply to this email.\n\n" +
     "Warm regards,\n" +
     "Leslie Rivas\n" +
-    "Blottman Law\n" +
+    "Blottman Legal Services\n" +
     SITE_URL + "\n"
   );
 }
@@ -127,7 +127,7 @@ function autoReplyHtml(firstName) {
 
       // ── Header ──
       '<tr><td style="padding:28px 36px;border-bottom:3px solid #e7ac40;">' +
-        '<div style="font:700 18px/1.2 Georgia,\'Times New Roman\',serif;color:#1a1a1a;">Blottman Law</div>' +
+        '<div style="font:700 18px/1.2 Georgia,\'Times New Roman\',serif;color:#1a1a1a;">Blottman Legal Services</div>' +
         '<div style="font:400 13px/1.2 Arial,Helvetica,sans-serif;color:#777;margin-top:4px;">Ontario Traffic-Ticket Defence</div>' +
       '</td></tr>' +
 
@@ -135,7 +135,7 @@ function autoReplyHtml(firstName) {
       '<tr><td style="padding:32px 36px 8px 36px;">' +
         '<p style="font:400 16px/1.6 Arial,Helvetica,sans-serif;color:#1a1a1a;margin:0 0 16px 0;">Hi ' + firstName + ',</p>' +
         '<p style="font:400 15px/1.65 Arial,Helvetica,sans-serif;color:#3a3a3a;margin:0 0 16px 0;">' +
-          'Thank you for contacting Blottman Law. We\'ve received your request for a free case review, ' +
+          'Thank you for contacting Blottman Legal Services. We\'ve received your request for a free case review, ' +
           'and a member of our team will get back to you, usually within one business day.</p>' +
         '<p style="font:400 15px/1.65 Arial,Helvetica,sans-serif;color:#3a3a3a;margin:0 0 16px 0;">' +
           'In the meantime, we recommend not paying the fine or pleading guilty until we\'ve had a chance ' +
@@ -150,13 +150,13 @@ function autoReplyHtml(firstName) {
       '<tr><td style="padding:16px 36px 32px 36px;">' +
         '<p style="font:400 15px/1.6 Arial,Helvetica,sans-serif;color:#1a1a1a;margin:0;">Warm regards,<br>' +
           '<strong>Leslie Rivas</strong><br>' +
-          '<span style="color:#777;">Blottman Law</span></p>' +
+          '<span style="color:#777;">Blottman Legal Services</span></p>' +
       '</td></tr>' +
 
       // ── Footer ──
       '<tr><td style="padding:20px 36px;border-top:1px solid #eeeeee;background:#fafafa;border-radius:0 0 8px 8px;">' +
         '<div style="font:400 12px/1.6 Arial,Helvetica,sans-serif;color:#888;">' +
-          'Blottman Law &nbsp;&middot;&nbsp; ' + PHONE_DISPLAY + ' &nbsp;&middot;&nbsp; ' +
+          'Blottman Legal Services &nbsp;&middot;&nbsp; ' + PHONE_DISPLAY + ' &nbsp;&middot;&nbsp; ' +
           '<a href="' + SITE_URL + '" style="color:#b8860b;text-decoration:none;">blottman.ca</a><br>' +
           '<span style="color:#aaa;">You received this email because you requested a free case review at blottman.ca.</span>' +
         '</div>' +

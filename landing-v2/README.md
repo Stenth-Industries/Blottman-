@@ -1,4 +1,4 @@
-# Blottman Law — Landing Page v2 (Next.js)
+# Blottman Legal Services — Landing Page v2 (Next.js)
 
 A single, conversion-focused landing page for the Ontario traffic-ticket campaigns.
 Built with **Next.js (App Router) + TypeScript + Tailwind**. No site header/footer — it's

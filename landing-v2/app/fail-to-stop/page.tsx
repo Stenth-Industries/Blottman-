@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: `/${page.slug}`,
-    siteName: "Blottman Law",
+    siteName: "Blottman Legal Services",
     title: page.metaTitle,
     description: page.metaDescription,
     locale: "en_CA",

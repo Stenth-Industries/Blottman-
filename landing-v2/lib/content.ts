@@ -1,6 +1,6 @@
 // ---------------------------------------------------------------------------
 // All page text/data lives here so copy is easy to find and edit in one place.
-// Content is for Blottman Law — Ontario traffic-ticket defence (v2 landing page).
+// Content is for Blottman Legal Services — Ontario traffic-ticket defence (v2 landing page).
 // ---------------------------------------------------------------------------
 
 // Phone number requested for the page. tel: link strips formatting.

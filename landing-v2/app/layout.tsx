@@ -6,7 +6,7 @@ import { PHONE_TEL, PHONE_DISPLAY, GOOGLE_RATING } from "@/lib/content";
 import "./globals.css";
 
 const SITE_URL = "https://blottman.ca";
-const SITE_TITLE = "Ontario Traffic Ticket Defence — Protect Your Record | Blottman Law";
+const SITE_TITLE = "Ontario Traffic Ticket Defence — Protect Your Record | Blottman Legal Services";
 const SITE_DESCRIPTION =
   "Fight speeding, careless, stunt-driving and other Ontario traffic tickets. We work to protect your driving record and insurance rates. Free case review.";
 
@@ -15,7 +15,7 @@ const SITE_DESCRIPTION =
 const businessJsonLd = {
   "@context": "https://schema.org",
   "@type": "LegalService",
-  name: "Blottman Law",
+  name: "Blottman Legal Services",
   description: SITE_DESCRIPTION,
   url: SITE_URL,
   telephone: PHONE_TEL,
@@ -52,11 +52,11 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: SITE_URL,
-    siteName: "Blottman Law",
+    siteName: "Blottman Legal Services",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     locale: "en_CA",
-    images: [{ url: "/logo.png", alt: "Blottman Law" }],
+    images: [{ url: "/logo.png", alt: "Blottman Legal Services" }],
   },
   twitter: {
     card: "summary_large_image",
