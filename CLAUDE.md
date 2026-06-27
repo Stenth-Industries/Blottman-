@@ -763,3 +763,8 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   business logo (the gold one). Gotcha logged: removed campaign_assets still appear in unfiltered GAQL
   (status=REMOVED) and re-removing them returns RESOURCE_NOT_FOUND — filter `campaign_asset.status=
   ENABLED` to read true state.
+- **2026-06-27** (Anshul): **Business name confirmed by client = "Blottman Legal Services"** (matches the
+  logo + legal entity), NOT "Blottman Law" (the colloquial brand used loosely in these notes). Use
+  **Blottman Legal Services** for the Search business-name asset / Advertiser Verification (UI step —
+  not API-creatable). ⚠️ Minor inconsistency to consider: the landing-v2 site title/brand still reads
+  "Blottman Law" — align to "Blottman Legal Services" if the client wants brand consistency (not yet changed).

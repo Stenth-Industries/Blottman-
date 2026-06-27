@@ -21,14 +21,16 @@ Steps:
 > cut her head / risked a framing disapproval. Square is the primary format and
 > valid on its own.
 
-## 2. Business name "Blottman Law"
+## 2. Business name "Blottman Legal Services"
 
 `business_name_asset` isn't an API-creatable field — business name is tied to
-**Advertiser Verification / Account-level brand**, set in the UI.
+**Advertiser Verification / Account-level brand**, set in the UI. The correct
+business name is **Blottman Legal Services** (matches the logo + legal entity),
+NOT "Blottman Law".
 
 Steps:
 1. Google Ads → **Admin** (or **Tools**) → **Business identity / Advertiser
-   verification** → confirm the verified business name is **Blottman Law**.
+   verification** → set/confirm the verified business name = **Blottman Legal Services**.
 2. The business **logo** is already linked (`ad-images/blottman_logo_black_1200.png` —
    the gold scales-of-justice mark from landing-v2 on brand-black). Once the verified
    business name is set, the name + logo render together on the ad.
