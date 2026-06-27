@@ -739,3 +739,20 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   open: PMAX (BMX) asset-group headlines reportedly say "Lawyer" — separate from this RSA sweep. Next:
   once .ca Submit Lead Form accumulates volume, switch Search bid Maximize Clicks → Maximize Conversions.
   Also website title/description/favicon edits committed (landing-v2) — need Vercel redeploy.
+- **2026-06-27** (Anshul): **Consolidated Search — keywords + visual identity (a/b from the "fully
+  maximised?" audit).** **(A) Keywords:** expanded thin SKAGs from **36 → 77** positive keywords (~7-8/
+  ad group, was as low as 2 on Disobey Sign); curated PHRASE per offence, deduped (`expand_keywords.py`).
+  Left existing 'paralegal' *keywords* in place (search targeting is invisible to users; people do search
+  it) — the no-'paralegal' rule is for COPY only. **(B) Visual identity:** account's only logo was
+  literally **`fb ad.jpg`** + NO business name. Linked a proper **square logo** (scales-of-justice,
+  `ad-images/blottman_logo_square_1200.png`) as BUSINESS_LOGO to the campaign (API ✓). **2 items are
+  UI-ONLY** (see `add-search-image-UI.md`): **(1) Leslie's office photo** as a Search image asset —
+  cropped to 1:1 `ad-images/leslie_square_1200.png`, but Search rejects image assets via API
+  (`FIELD_TYPE_INCOMPATIBLE_WITH_CAMPAIGN_TYPE`) → upload via Assets→Images by hand; **(2) business name
+  'Blottman Law'** — `business_name_asset` not API-creatable, set via Advertiser Verification UI. Used
+  square-only for Leslie (1.91:1 landscape cut her head / framing-disapproval risk). Scripts:
+  `expand_keywords.py`, `add_brand_image_assets.py` (logo OK, image/name fail-and-report). ⚠️ STILL the
+  biggest gap vs X-Copper = real brand creative from Leslie (multiple landscape/square/portrait + video);
+  one office photo is a start. Search now ~maximised on everything API-controllable; remaining levers are
+  UI image upload, business-name verification, broad match (after Max Conversions), and ongoing search-
+  term mining.
