@@ -6,9 +6,9 @@ import { PHONE_TEL, PHONE_DISPLAY, GOOGLE_RATING } from "@/lib/content";
 import "./globals.css";
 
 const SITE_URL = "https://blottman.ca";
-const SITE_TITLE = "Ontario Traffic Ticket Defence — Protect Your Record | Blottman Legal Services";
+const SITE_TITLE = "Ontario Traffic Ticket Defence, Protect Your Record | Blottman Legal Services";
 const SITE_DESCRIPTION =
-  "Fight speeding, careless, stunt-driving and other Ontario traffic tickets. We work to protect your driving record and insurance rates. Free case review.";
+  "Fight speeding, careless, stunt driving and other Ontario traffic tickets. We work to protect your driving record and insurance rates. Free case review.";
 
 // LegalService structured data — local-SEO signal (name, phone, area served,
 // service type) rendered on every page so Google can identify the business.
