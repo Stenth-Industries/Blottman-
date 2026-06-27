@@ -756,3 +756,10 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   one office photo is a start. Search now ~maximised on everything API-controllable; remaining levers are
   UI image upload, business-name verification, broad match (after Max Conversions), and ongoing search-
   term mining.
+- **2026-06-27** (Anshul): **Swapped Search business logo → gold mark on black** per client. Took
+  `landing-v2/public/logo.png` (gold scales-of-justice + "Blottman Legal Services"), composited centered
+  on brand-black `#0c0c0c` at 1200×1200 (`ad-images/blottman_logo_black_1200.png`), created the IMAGE
+  asset + linked BUSINESS_LOGO, removed the old scales-on-black link. Final = exactly ONE ENABLED
+  business logo (the gold one). Gotcha logged: removed campaign_assets still appear in unfiltered GAQL
+  (status=REMOVED) and re-removing them returns RESOURCE_NOT_FOUND — filter `campaign_asset.status=
+  ENABLED` to read true state.

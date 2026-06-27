@@ -29,9 +29,9 @@ Steps:
 Steps:
 1. Google Ads → **Admin** (or **Tools**) → **Business identity / Advertiser
    verification** → confirm the verified business name is **Blottman Law**.
-2. The business **logo** is already linked (`ad-images/blottman_logo_square_1200.png`,
-   scales-of-justice mark). Once the verified business name is set, the name + logo
-   render together on the ad.
+2. The business **logo** is already linked (`ad-images/blottman_logo_black_1200.png` —
+   the gold scales-of-justice mark from landing-v2 on brand-black). Once the verified
+   business name is set, the name + logo render together on the ad.
 3. NOTE: the account's old account-level "logo" was literally `fb ad.jpg` (a random
    image) — the proper square logo is now linked at the campaign level and overrides it.
 
