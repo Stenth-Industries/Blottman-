@@ -716,3 +716,26 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   hourly recheck running `code/go_live_search.py` (only flips when all ads APPROVED; aborts on any
   disapproval). Scripts: `build_consolidated_search.py`, `go_live_search.py` (+ blueprint
   `search-consolidation-plan.md`). Reusable build script for future SKAG campaigns.
+- **2026-06-27** (Anshul): **Auto-flip CONFIRMED — consolidated Search is LIVE.** `go_live_search.py`
+  fired: `Search - Ontario Traffic Tickets (Consolidated)` (`23971101309`) ENABLED + 4 old Search
+  campaigns PAUSED. Enabled budgets = BMX $65 + Search $30 + Blottman New pM $5 = **$100/day**. All 10
+  RSAs APPROVED. Verified Contact Us is correctly **observe-only** (0 bid-conv on PMAX; 66/30d in
+  all-conv only — it does NOT feed bidding; stop quoting it as a "lead").
+- **2026-06-27** (Anshul): **Consolidated Search hardened — extension stack + ad strength + paralegal
+  sweep + bid change.** Audit showed the new campaign was bare (0 extensions, 3 POOR ad groups, Manual
+  CPC, 28% IS / **69% lost to rank**). Actions: **(1) Built full extension stack** (`build_search_
+  extensions.py`): 10 sitelinks → blottman.ca offence pages, 10 callouts, 2 structured-snippet headers
+  (Services/Types), call asset (647-794-7750), re-attached lead form `371903420556`. All LSO-safe (no
+  lawyer/paralegal, no win-rate/guarantee). **(2) Strengthened 3 POOR ad groups** (No Licence/Cell
+  Phone/General) — had 1 keyword headline + 14 shared generics; swapped 3 generics→offence keyword
+  headlines each (`strengthen_poor_rsas.py`). **(3) Removed 'paralegal' from ALL 10 live ad groups**
+  per client (`Licensed Ontario Paralegal`→`Licensed in Ontario`; paralegal-free descriptions;
+  `sweep_paralegal_live.py`). **(4) Switched bid Manual CPC → Maximize Clicks** (TARGET_SPEND, $8 cpc
+  ceiling) to buy impression share while QS builds — **budget UNCHANGED $30/day** per client
+  (`maxclicks_search.py`). RSAs re-enter review; strength recomputes. ⚠️ **OPEN — paused-legacy junk:**
+  45 RSAs contain 'paralegal' but most are in PAUSED old campaigns paired with worse claims (**"We Are
+  Actual Lawyers, Not Paralegals" ×13**, "98% Win Rate", "Lawyer") — a token swap would WORSEN them, so
+  they were NOT touched. They need a holistic rewrite or pause/delete (Akash's creative lane). Also still
+  open: PMAX (BMX) asset-group headlines reportedly say "Lawyer" — separate from this RSA sweep. Next:
+  once .ca Submit Lead Form accumulates volume, switch Search bid Maximize Clicks → Maximize Conversions.
+  Also website title/description/favicon edits committed (landing-v2) — need Vercel redeploy.
