@@ -7,3 +7,7 @@ __pycache__/
 *.pyo
 desktop.ini
 .tmp.driveupload/
+
+# stray screenshot drops
+image.png
+image copy*.png

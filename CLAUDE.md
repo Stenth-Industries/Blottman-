@@ -695,3 +695,24 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   (Expanded→Standard) is NOT API-settable — UI only**: Tools → Content suitability → Inventory type →
   Standard (still TODO by hand). Verify junk shrinks in 3–4 days via Insights → "Where ads showed".
   Script: `add_content_exclusions.py`.
+- **2026-06-26** (Anshul): **Built the CONSOLIDATED SKAG Search campaign** (`search-consolidation-plan.md`)
+  to replace the 4 fragmented Search campaigns. Diagnosis that drove it: the 4 live Search campaigns
+  spent ~$1,000/mo for **0 verified calls** — all "conversions" are untrusted Contact Us; QS stuck at
+  **1–3** so they lose **60–72% of auctions to RANK** (only 12–18% impr share). Root cause = a dozen
+  intents dumped on a homepage (no message-match). FIX = one campaign, **one offence per ad group (SKAG)**,
+  each landing on its **matching blottman.ca page** (verified all 10 routes return HTTP 200). Created
+  **`Search - Ontario Traffic Tickets (Consolidated)`** (id **`23971101309`**, **PAUSED**, Manual CPC,
+  **$30/day**, Search-only/Display OFF, **Ontario PRESENCE**, both shared neg lists attached). 10 ad
+  groups (Speeding/Careless/Stunt/Cell Phone/Fail-to-Stop/Disobey-Sign/No-Insurance/Suspension/No-Licence/
+  General) → matching `/`-routes, phrase+exact kw from real winning search terms, 1 RSA each (offence
+  pinned H1, LSO-clean: paralegal not "lawyer", **no 98%/guarantees**). **Conversion tracking already
+  code-complete in landing-v2** (`QuoteForm.tsx` fires `Submit Lead Form` on submit; gtag confirmed LIVE
+  on .ca — `AW-11165656868` loading), so Search finally gets a REAL signal. **GO-LIVE = a 2-part flip
+  once ads clear review:** enable `23971101309` + **PAUSE the 4 old Search campaigns** (TTL `23002273381`,
+  broad `23039650759`, Lower Value-New `22780000236`, Higher Value-New `22780001277`) to keep $100/day
+  (BMX $65 + new Search $30 + pM $5). ⚠️ **AKASH: do NOT touch those 4 old campaigns or their budgets —
+  they get paused on the flip.** Per user: proceed WITHOUT pre-asking Leslie (pages LSO-clean), show her
+  the deliverable after. As of build time all 10 RSAs = REVIEW_IN_PROGRESS. **Auto-flip armed**: scheduled
+  hourly recheck running `code/go_live_search.py` (only flips when all ads APPROVED; aborts on any
+  disapproval). Scripts: `build_consolidated_search.py`, `go_live_search.py` (+ blueprint
+  `search-consolidation-plan.md`). Reusable build script for future SKAG campaigns.
