@@ -124,7 +124,7 @@ export default function QuickForm({ defaultCharge = "" }: { defaultCharge?: stri
               aria-label="Phone number"
               autoComplete="tel"
               inputMode="tel"
-              pattern="[0-9()+\-.\s]{7,}"
+              pattern="[0-9\(\)\+\-\.\s]{7,}"
               title="Please enter a valid phone number"
               className={input}
             />

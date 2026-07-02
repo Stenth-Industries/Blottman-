@@ -813,6 +813,14 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   number — React reused the step-1 phone `<input>` DOM node for step-2's email (same tree position +
   type, and email was uncontrolled). Fix: `key="quick-step-1"/"quick-step-2"` on the two step
   `<form>`s (forces remount) + made name/email controlled state so Edit→back doesn't wipe them.
+  **FULL RE-VERIFY (same day):** ran a real-Chrome e2e suite (puppeteer-core + installed Chrome,
+  scratchpad `qf-test.js`) — 13/13 pass: preselect on all 9 SKAG pages, step-2 email empty after
+  phone (the bug), Edit round-trip persists all 4 values, submit→thank-you (honeypot-filled so no
+  real lead sent), hero CTA scroll, card→page nav, footer nav, zero JS page errors. Also caught +
+  fixed en route: QuickForm phone `pattern` regex was invalid under Chrome's strict v-flag parsing
+  (unescaped `()` in char class → console error + validation silently skipped) → escaped to
+  `[0-9\(\)\+\-\.\s]{7,}`. All 11 routes 200; `/api/lead` 400s on missing name/phone, honeypot
+  silently drops. tsc clean.
   ⚠️ **NOT LIVE until Vercel redeploy of landing-v2.**
 - **2026-07-01** (Anshul): **BMX watch window CLOSED — reallocation holding, no revert.** Read-only pulse
   (`leads.py`, `campaign_status.py`, `call_quality.py`, `yesterday_review.py` + 7d cost query). 3 campaigns
