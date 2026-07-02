@@ -773,3 +773,23 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   `content.ts` untouched** (lines 40/437 — can't alter a real testimonial). `tsc` clean. ⚠️ Needs Vercel
   redeploy (landing-v2) to go live; AND the `lead-webhook.gs` change only takes effect after re-pasting +
   redeploying the live Apps Script (repo .gs is just the source copy).
+- **2026-07-02** (Anshul): **Promoted competitor negatives to shared Master Negatives** (`12109076551`,
+  now 88 keywords). Trigger: `excopper` impressions showed Jul-1 on the new consolidated Search campaign —
+  the Jun-11 competitor negatives lived only at campaign level on the now-PAUSED broad campaign. Added 4
+  PHRASE: `amar traffic tickets`, `benito zappia`, `ex copper`, `excopper` (the exact single-token variant
+  that leaked — `xcopper`/`x copper` were already in the list but don't token-match `excopper`). List
+  confirmed attached to all 3 enabled campaigns (BMX, Blottman New pM, Search Consolidated). Pulse same
+  day: Jul-1 was a 0-lead Canada-Day dip (BMX 121 impr/$7.98) but Jul-2 mid-day already 2,201 impr/$81/3
+  leads — no action needed. Answer-rate leak persists (7 of last 10 calls <30s, 1 MISSED) — still Leslie's
+  speed-to-answer fix. Script: `code/promote_competitor_negs.py` (idempotent, skips existing).
+- **2026-07-01** (Anshul): **BMX watch window CLOSED — reallocation holding, no revert.** Read-only pulse
+  (`leads.py`, `campaign_status.py`, `call_quality.py`, `yesterday_review.py` + 7d cost query). 3 campaigns
+  enabled at $100/day: BMX $65 + Search Consolidated $30 (LEARNING) + Blottman New pM $5. **BMX 7-day:
+  $423.73 spend (~$60.5/day actual — now UNDER its $65 budget, no longer spiking to $70) / 8 stenth conv =
+  ~$53/conversion** ≈ its historical ~$50 CPA → the Jun-24 $45→$65 bump bought volume at flat efficiency,
+  NOT worsening → **decision: keep BMX $65, watch window closed.** Call quality clean: 7 qualifying (≥30s)
+  BMX calls, 6 GTA + 1 northern-ON (249), zero out-of-province/junk. **Search + Blottman New pM spent ~$149/7d
+  for 0 stenth calls** (Search converts via form only — logged its FIRST `Submit Lead Form` this week, the
+  payoff of the .ca consolidation). Last 7d totals: 8 stenth + 1 lead form + 21 Contact Us (observe-only).
+  ⚠️ Only soft spot = **answer rate**: 7 of BMX's 15 calls this week were <30s (several 3–8s hang-ups) =
+  leads already paid for that die at pickup → Leslie's speed-to-answer lever, costs nothing. No mutations.

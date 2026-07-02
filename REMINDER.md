@@ -1,5 +1,34 @@
 # ⏰ Reminders — Blottman Law Ads
 
+## 🔴 ~July 5, 2026 — Check .ca form signal → then repoint PMAX to blottman.ca
+**Decision gate for repointing PMAX (BMX + Blottman New pM) from blottman.com → blottman.ca.**
+Today (Jun 28) PMAX asset groups all land on **`https://blottman.com/`** (old site, FUE OFF), so PMAX
+only feeds the untrusted "Contact Us" codeless signal — its sole trusted signal is calls (stenth). The
+new **Search – Ontario Traffic Tickets (Consolidated)** (`23971101309`, live Jun 27) lands on
+**blottman.ca**, where the form fires a real Google Ads conversion.
+
+**VERIFIED Jun 28 (Anshul):** the .ca form→conversion path is fully wired in production —
+blottman.ca returns 200, loads gtag `AW-11165656868`, and the form-conversion send_to
+`AW-11165656868/RcgyCPuevdwaEKTOmcwp` is baked into the live JS bundle. `QuoteForm.tsx` fires
+`gtag('event','conversion', {send_to})` on successful submit. Env vars confirmed set in Vercel prod
+(gtag loading live = `NEXT_PUBLIC_GADS_ID` + `NEXT_PUBLIC_GADS_CONVERSION` present). Code is good —
+the only open question is whether real submissions register as the **`Submit Lead Form`** action
+(`7173263227`) in Google Ads.
+
+**On ~Jul 5, run:** `python code/leads.py` and `python code/yesterday_review.py` — look for
+**`Submit Lead Form` conversions** appearing from the consolidated Search campaign (Search should have
+exited LEARNING by ~Jul 4–5).
+- **If ≥ ~5 Submit Lead Form conversions have logged** (proves .ca tracking works end-to-end) AND BMX
+  is stable → **repoint PMAX asset groups to `https://blottman.ca/`** (one move, on a quiet day, NO
+  budget/bid changes — it resets PMAX learning). This lets PMAX optimize toward real form leads, not
+  just the codeless Contact Us.
+- **If 0 form conversions** → do NOT repoint PMAX; debug why the .ca form action isn't registering
+  (submit a live test lead on blottman.ca, watch the action in Google Ads) before moving PMAX.
+
+To act: open Claude Code in `E:\Blottman-law` and say *"check the .ca form signal."*
+
+---
+
 ## 🔴 June 24, 2026 — Check blottman.ca migration test (broad campaign)
 On Jun 23 the 2 enabled RSAs in **Traffic ticket lawyer broad** (`23039650759`) were
 repointed from blottman.com → **blottman.ca** (staged test before migrating all campaigns).
