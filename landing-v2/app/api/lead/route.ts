@@ -38,8 +38,10 @@ export async function POST(req: NextRequest) {
     ts: new Date().toISOString(),
   };
 
-  if (!lead.name || !lead.phone || !lead.email || !lead.message) {
-    return bad("Please fill in your name, phone, email and a brief message.");
+  // Only name + phone are required — Leslie calls leads back, so email and a
+  // written message are optional (fewer required fields = fewer abandons).
+  if (!lead.name || !lead.phone) {
+    return bad("Please fill in your name and phone number.");
   }
 
   const url = process.env.LEAD_WEBHOOK_URL;

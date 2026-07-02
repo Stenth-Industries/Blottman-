@@ -90,7 +90,9 @@ export default function Hero({
             className="hero-rise mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center"
             style={{ animationDelay: "0.29s" }}
           >
-            <CtaButton href="#quote">Get a Free Case Review</CtaButton>
+            {/* Points at the QuickForm strip right below the hero (was #quote at
+                the page bottom) — the shortest path from ad click to lead. */}
+            <CtaButton href="#free-review">Get a Free Case Review</CtaButton>
             <a
               href={`tel:${PHONE_TEL}`}
               className="inline-flex items-center gap-2.5 text-sm font-semibold text-white hover:text-gold"

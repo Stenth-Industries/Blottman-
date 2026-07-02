@@ -69,6 +69,35 @@ export const BENEFITS = [
   "Licensed Ontario paralegal, 500+ tickets handled",
 ];
 
+// Charge-type dropdown shared by both lead forms (QuickForm + QuoteForm).
+// `value` is what lands in the lead email / Sheet; `label` is what the visitor sees.
+export const CHARGE_OPTIONS: { value: string; label: string }[] = [
+  { value: "Speeding", label: "Speeding" },
+  { value: "Stunt Driving", label: "Stunt Driving" },
+  { value: "Careless Driving", label: "Careless Driving" },
+  { value: "Distracted Driving", label: "Distracted / Cell Phone" },
+  { value: "Suspended Licence", label: "Suspended Licence" },
+  { value: "No Insurance", label: "No Insurance" },
+  { value: "No Licence", label: "No / Expired Licence" },
+  { value: "Disobey Sign", label: "Disobey Sign / Red Light" },
+  { value: "Fail to Remain", label: "Fail to Remain / Stop" },
+  { value: "Other", label: "Other" },
+];
+
+// Maps a SKAG page slug to its CHARGE_OPTIONS value so the hero QuickForm
+// arrives pre-selected with the charge the visitor searched for.
+export const SLUG_CHARGE: Record<string, string> = {
+  speeding: "Speeding",
+  "stunt-driving": "Stunt Driving",
+  "careless-driving": "Careless Driving",
+  "cell-phone": "Distracted Driving",
+  "driving-under-suspension": "Suspended Licence",
+  "no-insurance": "No Insurance",
+  "no-licence": "No Licence",
+  "disobey-sign": "Disobey Sign",
+  "fail-to-stop": "Fail to Remain",
+};
+
 // ---------------------------------------------------------------------------
 // Per-ticket SKAG landing pages. Each entry is one keyword-matched page (e.g.
 // /speeding) that reuses the shared sections but swaps the hero headline + the
@@ -408,15 +437,18 @@ export const TICKET_PAGES: Record<string, TicketPage> = {
 // Experts" cards (same 9 charges + wording). Source copy says "our lawyers";
 // kept paralegal-accurate here ("we"/"our team") since Leslie is a licensed
 // Ontario paralegal. Order/wording follow the existing site per client request.
-export const EXPERTISE: { title: string; blurb: string; image: string }[] = [
-  { title: "Driving Under Suspension", blurb: "Protect your licence, avoid costly fines, and regain control — our suspension defence works to keep your record clean and your future secure.", image: "/result-suspended.jpg" },
-  { title: "Driving With No Experience", blurb: "Don't let inexperience cost you — we work to minimize penalties, protect your record, and fight for your driving freedom.", image: "/inexperienced-driver-lhd.png" },
-  { title: "Failure To Stop", blurb: "One mistake shouldn't wreck your record — our team fights tickets, reduces penalties, and helps you keep your insurance rates low.", image: "/result-failstop.jpg" },
+// `href` links a card to its dedicated landing page (app/<slug>/page.tsx).
+// Cards without a matching page (Unsafe Turn, the generic Traffic Violations)
+// omit it and fall back to the hero QuickForm anchor in the Expertise component.
+export const EXPERTISE: { title: string; blurb: string; image: string; href?: string }[] = [
+  { title: "Driving Under Suspension", blurb: "Protect your licence, avoid costly fines, and regain control — our suspension defence works to keep your record clean and your future secure.", image: "/result-suspended.jpg", href: "/driving-under-suspension" },
+  { title: "Driving With No Experience", blurb: "Don't let inexperience cost you — we work to minimize penalties, protect your record, and fight for your driving freedom.", image: "/inexperienced-driver-lhd.png", href: "/no-licence" },
+  { title: "Failure To Stop", blurb: "One mistake shouldn't wreck your record — our team fights tickets, reduces penalties, and helps you keep your insurance rates low.", image: "/result-failstop.jpg", href: "/fail-to-stop" },
   { title: "Unsafe Turn", blurb: "We challenge unsafe turn charges head-on — fighting points, safeguarding your licence, and protecting you from years of higher insurance premiums.", image: "/unsafe-turn-real.png" },
-  { title: "Stunt Driving", blurb: "Serious charge? We defend aggressively — challenging licence suspensions, steep fines, and criminal records to protect your freedom and driving future.", image: "/result-stunt.jpg" },
-  { title: "Careless Driving", blurb: "We fight careless driving charges — working to reduce fines, avoid demerit points, and protect your driving record with a strong, persuasive defence.", image: "/result-careless.jpg" },
-  { title: "Speeding Ticket", blurb: "Beat your speeding ticket — our defence works to reduce fines, fight licence points, and save you money by keeping insurance rates low.", image: "/result-speeding.jpg" },
-  { title: "Cell Phone Ticket", blurb: "From minor infractions to serious tickets — we protect your licence, work to reduce penalties, and save you money long-term.", image: "/result-distracted.jpg" },
+  { title: "Stunt Driving", blurb: "Serious charge? We defend aggressively — challenging licence suspensions, steep fines, and criminal records to protect your freedom and driving future.", image: "/result-stunt.jpg", href: "/stunt-driving" },
+  { title: "Careless Driving", blurb: "We fight careless driving charges — working to reduce fines, avoid demerit points, and protect your driving record with a strong, persuasive defence.", image: "/result-careless.jpg", href: "/careless-driving" },
+  { title: "Speeding Ticket", blurb: "Beat your speeding ticket — our defence works to reduce fines, fight licence points, and save you money by keeping insurance rates low.", image: "/result-speeding.jpg", href: "/speeding" },
+  { title: "Cell Phone Ticket", blurb: "From minor infractions to serious tickets — we protect your licence, work to reduce penalties, and save you money long-term.", image: "/result-distracted.jpg", href: "/cell-phone" },
   { title: "Traffic Violations", blurb: "We fight traffic violations fiercely, working to minimize consequences, protect your record, and keep you on the road without penalties.", image: "/process-1-ticket.jpg" },
 ];
 

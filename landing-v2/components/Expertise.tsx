@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { m, useReducedMotion, type Variants } from "motion/react";
 import SectionCta from "./SectionCta";
 import { EXPERTISE } from "@/lib/content";
@@ -108,7 +109,21 @@ export default function Expertise() {
                 <p className="mt-2 text-[13.5px] leading-relaxed text-white/75 [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
                   {card.blurb}
                 </p>
+                <p className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-gold [text-shadow:0_1px_10px_rgba(0,0,0,0.9)] transition-transform duration-300 group-hover:translate-x-0.5">
+                  {card.href ? "Learn more" : "Free case review"}
+                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12l-7.5 7.5M21 12H3" />
+                  </svg>
+                </p>
               </div>
+
+              {/* Whole card is clickable — its landing page when one exists,
+                  otherwise straight to the hero QuickForm. */}
+              <Link
+                href={card.href ?? "#free-review"}
+                aria-label={`${card.title} — ${card.href ? "learn more" : "get a free case review"}`}
+                className="absolute inset-0 z-20 rounded-2xl focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gold/60"
+              />
             </m.div>
           ))}
         </m.div>

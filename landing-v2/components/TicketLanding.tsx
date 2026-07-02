@@ -4,11 +4,12 @@ import StatsStrip from "@/components/StatsStrip";
 import Process from "@/components/Process";
 import GoogleReviews from "@/components/GoogleReviews";
 import Faq from "@/components/Faq";
+import QuickForm from "@/components/QuickForm";
 import QuoteForm from "@/components/QuoteForm";
 import FloatingActions from "@/components/FloatingActions";
 import Footer from "@/components/Footer";
 import OffenseDetails from "@/components/OffenseDetails";
-import { FAQS, type TicketPage } from "@/lib/content";
+import { FAQS, SLUG_CHARGE, type TicketPage } from "@/lib/content";
 
 // FAQPage JSON-LD (same FAQs as the homepage) so each ticket page is eligible
 // for rich results too.
@@ -37,6 +38,7 @@ export default function TicketLanding({ page }: { page: TicketPage }) {
         titleHighlight={page.titleHighlight}
         benefits={page.benefits}
       />
+      <QuickForm defaultCharge={SLUG_CHARGE[page.slug] ?? ""} />
       <StatsStrip />
       {/* Replaced generic TicketIntro with rich OffenseDetails */}
       <Reveal><OffenseDetails page={page} /></Reveal>

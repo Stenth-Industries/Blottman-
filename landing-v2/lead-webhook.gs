@@ -5,9 +5,17 @@
 //
 // Sheet header row (row 1): ts | name | phone | email | charge | message | gclid | page | ticket
 
+// Leslie's inbox (the firm). Used both as a lead recipient and as the
+// "from" address on the auto-reply to leads.
+// ⚠️ For the auto-reply to actually send FROM this address, it must be added as a
+// verified "Send mail as" alias in the Google account that runs this script
+// (Gmail → Settings → Accounts → "Send mail as" → Add another email address).
+// Until then MailApp ignores an unknown `from` (or errors), so verify it first.
+const LESLIE_EMAIL = "legal@blottman.com";
+
 // Where leads are emailed. Comma-separate for several; cc optional.
-const TO_EMAIL = "info@stenth.com";
-const CC_EMAIL = ""; // e.g. "leslie@example.com" when you add her
+const TO_EMAIL = "info@stenth.com, " + LESLIE_EMAIL;
+const CC_EMAIL = "";
 
 // Auto-reply sent to the person who filled out the form.
 const REPLY_FROM_NAME = "Blottman Legal Services";
@@ -67,7 +75,8 @@ function doPost(e) {
         body: autoReplyText(firstName),       // plain-text fallback
         htmlBody: autoReplyHtml(firstName),   // the pretty version
         name: REPLY_FROM_NAME,
-        replyTo: TO_EMAIL,
+        from: LESLIE_EMAIL,                   // requires verified alias (see top)
+        replyTo: LESLIE_EMAIL,                // replies go straight to Leslie
       });
     }
 
@@ -93,7 +102,8 @@ function testAutoReply() {
     body: autoReplyText("Alex"),
     htmlBody: autoReplyHtml("Alex"),
     name: REPLY_FROM_NAME,
-    replyTo: TO_EMAIL,
+    from: LESLIE_EMAIL,                   // requires verified alias (see top)
+    replyTo: LESLIE_EMAIL,
   });
   Logger.log("Test auto-reply sent to " + TEST_EMAIL);
 }

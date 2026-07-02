@@ -6,6 +6,7 @@ import Expertise from "@/components/Expertise";
 import Process from "@/components/Process";
 import GoogleReviews from "@/components/GoogleReviews";
 import Faq from "@/components/Faq";
+import QuickForm from "@/components/QuickForm";
 import QuoteForm from "@/components/QuoteForm";
 import FloatingActions from "@/components/FloatingActions";
 import NoInsuranceBanner from "@/components/NoInsuranceBanner";
@@ -42,6 +43,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <Hero />
+      <QuickForm />
       <StatsStrip />
       <Reveal><AttentionBanner /></Reveal>
       <Expertise />

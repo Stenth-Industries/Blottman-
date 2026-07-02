@@ -1,17 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/content";
+import { useState } from "react";
+import { CHARGE_OPTIONS, PHONE_DISPLAY, PHONE_TEL } from "@/lib/content";
+import { submitLead } from "@/lib/lead-client";
 
 type Status = "idle" | "submitting" | "done" | "error";
-
-// Fires the Google Ads conversion on a successful lead (no-op until the
-// gtag.js tag + NEXT_PUBLIC_GADS_CONVERSION are configured — see layout.tsx).
-declare global {
-  interface Window {
-    gtag?: (...args: unknown[]) => void;
-  }
-}
 
 // Bottom-of-page quote form. Posts to /api/lead, which emails Leslie + logs the
 // lead to the Google Sheet. Captures the gclid (for later offline-conversion
@@ -19,35 +12,14 @@ declare global {
 export default function QuoteForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
-  const gclid = useRef("");
-
-  // Capture the Google click id from the landing URL so the lead can be tied
-  // back to the ad later (offline conversion import for booked consults).
-  useEffect(() => {
-    const p = new URLSearchParams(window.location.search);
-    gclid.current = p.get("gclid") || p.get("gbraid") || p.get("wbraid") || "";
-  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("submitting");
     setError("");
 
-    const fd = new FormData(e.currentTarget);
-    fd.set("gclid", gclid.current);
-    fd.set("page", typeof window !== "undefined" ? window.location.pathname : "");
-
     try {
-      const res = await fetch("/api/lead", { method: "POST", body: fd });
-      const json = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
-      if (!res.ok || !json.ok) {
-        throw new Error(json.error || "Something went wrong. Please try again or call us.");
-      }
-      // Tell Google Ads a lead converted (no-op if the tag isn't configured).
-      const sendTo = process.env.NEXT_PUBLIC_GADS_CONVERSION;
-      if (sendTo && typeof window.gtag === "function") {
-        window.gtag("event", "conversion", { send_to: sendTo });
-      }
+      await submitLead(new FormData(e.currentTarget));
       setStatus("done");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please call us.");
@@ -126,7 +98,7 @@ export default function QuoteForm() {
               <form onSubmit={handleSubmit} encType="multipart/form-data" className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <Field name="name" label="Full name" autoComplete="name" className="sm:col-span-2" />
                 <Field name="phone" label="Phone" type="tel" autoComplete="tel" />
-                <Field name="email" label="Email" type="email" autoComplete="email" />
+                <Field name="email" label="Email (optional)" type="email" autoComplete="email" required={false} />
 
                 {/* Dropdown for Charge Type */}
                 <label className="flex flex-col gap-2 sm:col-span-2">
@@ -139,13 +111,9 @@ export default function QuoteForm() {
                       defaultValue=""
                     >
                       <option value="" disabled className="text-black">Select what you were charged with...</option>
-                      <option value="Speeding" className="text-black">Speeding</option>
-                      <option value="Stunt Driving" className="text-black">Stunt Driving</option>
-                      <option value="Careless Driving" className="text-black">Careless Driving</option>
-                      <option value="Distracted Driving" className="text-black">Distracted / Cell Phone</option>
-                      <option value="Suspended Licence" className="text-black">Suspended Licence</option>
-                      <option value="Fail to Remain" className="text-black">Fail to Remain / Stop</option>
-                      <option value="Other" className="text-black">Other</option>
+                      {CHARGE_OPTIONS.map((o) => (
+                        <option key={o.value} value={o.value} className="text-black">{o.label}</option>
+                      ))}
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-5 flex items-center text-white/40">
                       <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -160,12 +128,11 @@ export default function QuoteForm() {
 
                 <label className="flex flex-col gap-2 sm:col-span-2">
                   <span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
-                    What happened?
+                    What happened? (optional)
                   </span>
                   <textarea
                     name="message"
                     rows={4}
-                    required
                     placeholder="e.g., I was pulled over on the 401. The officer said I was doing 130km/h. This is my first ticket."
                     className="resize-y w-full rounded-xl border border-white/10 bg-white/[0.03] px-5 py-4 text-[15px] text-white placeholder-white/30 outline-none transition focus:border-gold/50 focus:bg-white/[0.06]"
                   />
@@ -218,12 +185,14 @@ function Field({
   type = "text",
   autoComplete,
   className = "",
+  required = true,
 }: {
   name: string;
   label: string;
   type?: string;
   autoComplete?: string;
   className?: string;
+  required?: boolean;
 }) {
   return (
     <label className={`flex flex-col gap-2 ${className}`}>
@@ -231,7 +200,7 @@ function Field({
       <input
         name={name}
         type={type}
-        required
+        required={required}
         autoComplete={autoComplete}
         className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-5 py-4 text-[15px] text-white placeholder-white/30 outline-none transition focus:border-gold/50 focus:bg-white/[0.06]"
       />

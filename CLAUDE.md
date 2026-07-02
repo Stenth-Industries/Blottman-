@@ -782,6 +782,38 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   day: Jul-1 was a 0-lead Canada-Day dip (BMX 121 impr/$7.98) but Jul-2 mid-day already 2,201 impr/$81/3
   leads — no action needed. Answer-rate leak persists (7 of last 10 calls <30s, 1 MISSED) — still Leslie's
   speed-to-answer fix. Script: `code/promote_competitor_negs.py` (idempotent, skips existing).
+- **2026-07-02** (Anshul): **CRO upgrade on landing-v2 (blottman.ca) — hero QuickForm + fewer required
+  fields.** From the conversion audit: form sat at the very bottom of a long page + 5 required fields
+  (incl. a mandatory textarea). **(1) NEW `components/QuickForm.tsx`** — compact 2-step lead form
+  rendered directly under the hero on ALL pages (home + 9 SKAG pages): step 1 = charge dropdown +
+  phone, step 2 = name + optional email. Same `/api/lead` + same Ads conversion label as the bottom
+  form; SKAG pages pre-select the charge via new `SLUG_CHARGE` map (content.ts). Hero CTA now anchors
+  to `#free-review` (the quick form) instead of `#quote`; sticky bar/section CTAs still → `#quote`.
+  **(2) Required fields cut on BOTH forms:** email + "What happened?" now optional; `route.ts`
+  requires name+phone only (Leslie calls back by phone). Charge dropdown centralized in
+  `CHARGE_OPTIONS` (content.ts) + 2 new options (No / Expired Licence, Disobey Sign / Red Light).
+  Shared submit logic (gclid capture + gtag conversion fire) extracted to `lib/lead-client.ts`.
+  `lead-webhook.gs` needed NO change (auto-reply already guarded behind a valid-email check).
+  Verified locally: tsc clean, SSR renders on / and /speeding, charge preselect works, API paths pass
+  (name+phone ok / missing-phone 400 / honeypot silent-ok), Tailwind arbitrary grid classes compiled.
+  ⚠️ During verification a REAL test lead was delivered via the live webhook ("Test User /
+  6471234567 / Speeding") → delete that Sheet row / ignore the email — silver lining: proves
+  LEAD_WEBHOOK_URL delivery works end-to-end. Also verified same session: live blottman.ca has the
+  form conversion label baked in (`AW-11165656868/RcgyCPuevdwaEKTOmcwp`) + call number-swap configured.
+  **(3) Homepage offence cards now link to the per-offence landing pages** (per user): `EXPERTISE`
+  entries gained `href` — 7 of 9 cards link to their matching page (Driving With No Experience →
+  `/no-licence`); Unsafe Turn + Traffic Violations have no page → whole card links to `#free-review`
+  instead. Cards show a gold "Learn more →" / "Free case review →" row; whole card is clickable
+  (stretched link). **Footer now carries a "What we fight" nav with ALL 9 ticket pages** (derived
+  from `TICKET_PAGES`, auto-syncs) on every page — covers `/no-insurance` + `/disobey-sign` (no
+  homepage card) and gives the SKAG pages sitewide internal links for SEO. NOTE this is internal
+  site linking only — Leslie's "multi-page rollout ON HOLD" directive was about wiring pages into
+  AD campaigns; campaigns still land on `blottman.ca/` homepage, unchanged.
+  **BUGFIX (same day, user-reported):** QuickForm step 2's email field came pre-filled with the phone
+  number — React reused the step-1 phone `<input>` DOM node for step-2's email (same tree position +
+  type, and email was uncontrolled). Fix: `key="quick-step-1"/"quick-step-2"` on the two step
+  `<form>`s (forces remount) + made name/email controlled state so Edit→back doesn't wipe them.
+  ⚠️ **NOT LIVE until Vercel redeploy of landing-v2.**
 - **2026-07-01** (Anshul): **BMX watch window CLOSED — reallocation holding, no revert.** Read-only pulse
   (`leads.py`, `campaign_status.py`, `call_quality.py`, `yesterday_review.py` + 7d cost query). 3 campaigns
   enabled at $100/day: BMX $65 + Search Consolidated $30 (LEARNING) + Blottman New pM $5. **BMX 7-day:
