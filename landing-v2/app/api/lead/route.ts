@@ -9,7 +9,9 @@ import { NextRequest, NextResponse } from "next/server";
 // contact submissions now.
 //
 // Env (see LEAD_FORM_SETUP.md):
-//   LEAD_WEBHOOK_URL   — the Apps Script web-app /exec URL
+//   LEAD_WEBHOOK_URL       — the Apps Script web-app /exec URL (primary: email + auto-reply + Sheet)
+//   N8N_LEAD_WEBHOOK_URL   — optional n8n fan-out (instant alert + Lead Tracker row); best-effort,
+//                            a failure here never blocks or fails the lead
 // If unset, the lead is logged to the server console (dev) and still returns ok.
 
 export const runtime = "nodejs";
@@ -65,6 +67,21 @@ export async function POST(req: NextRequest) {
       { ok: false, error: "Something went wrong on our end. Please call us so we don't miss you." },
       { status: 502 }
     );
+  }
+
+  // Best-effort fan-out to n8n (instant alert + Lead Tracker). Must never
+  // affect the response — the lead is already safely delivered above.
+  const n8nUrl = process.env.N8N_LEAD_WEBHOOK_URL;
+  if (n8nUrl) {
+    try {
+      await fetch(n8nUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(lead),
+      });
+    } catch (err) {
+      console.error("[lead] n8n fan-out failed (non-fatal)", err);
+    }
   }
 
   return NextResponse.json({ ok: true });

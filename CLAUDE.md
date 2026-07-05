@@ -822,6 +822,112 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   `[0-9\(\)\+\-\.\s]{7,}`. All 11 routes 200; `/api/lead` 400s on missing name/phone, honeypot
   silently drops. tsc clean.
   ⚠️ **NOT LIVE until Vercel redeploy of landing-v2.**
+- **2026-07-02** (Anshul): **Full conversion-leak re-audit + informational negatives applied.** Live
+  blottman.ca confirmed running the full CRO batch (QuickForm, optional fields, card links, footer
+  nav, both bugfixes) — someone committed + deployed mid-day ("ADD NEW CTA" commits); conversion
+  label + call number-swap verified surviving the rebuild. **RANKED remaining leaks:** (1) ANSWER
+  RATE — 7 of BMX's 13 calls last 7d died <20s + 2 MISSED (one 12:53am); answering = ~2x stenth
+  conv at $0. Offered call-asset schedule (not yet built). (2) Search Consolidated buying
+  informational queries, 0 conv (~$14-30/day): Jul-1 paid clicks = "how many points…", "what is the
+  fine…", "definition of careless driving", "how to pay speeding ticket ontario" (leaked past
+  `[PHR] pay ticket` — different token sequence). **FIX APPLIED: +4 PHRASE negatives to shared
+  Master Negatives** (`12109076551`, now 92): `how to pay`, `definition of`, `what is considered`,
+  `what qualifies as`. Deliberately kept "how to fight…" (converts) + bare "demerit points"/"fine"
+  (mixed intent). Attached to all 3 enabled campaigns, verified. Script:
+  `code/add_informational_negs.py` (idempotent). **FIX APPLIED (user-approved): call-asset
+  answerable-hours schedule** — set daily 9:00–18:00 (account TZ Toronto) on all 4 CALL assets
+  serving live surfaces: `370852648512` (BMX — was M-F 7-21/Sat 8-18/Sun 9-17, tightened),
+  `380047681148` (Search Consolidated — was 24/7), `82358852814` (Blottman New pM + paused Search
+  links — was 24/7), `370129419278` (account-level — was 24/7). Basis: every ≥30s call in 30d
+  landed 9:03am–5:15pm; misses cluster 12:53am / 8:23-8:43am / 7:31pm. Ads still serve 24/7 —
+  after-hours clicks now land on the .ca form (which has the new QuickForm) instead of a dead
+  line. Asset 280811704307 left alone (not linked anywhere live). Revert values in script header.
+  Scripts: `code/call_assets_inventory.py` (read-only), `code/call_asset_schedule.py`.
+  ⚠ Leslie's speed-to-answer DURING 9-18 remains her action (7 of 13 recent calls died <20s
+  inside business hours). (3) BMX = BUDGET_CONSTRAINED at $65 — the only
+  verified call source is capped while Search spends $30 for ~0; proposed BMX $75-80 / Search
+  $15-20 (NOT applied, needs user OK). (4) Blottman New pM still junk-only (2 calls: 705, 506 NB,
+  0 ≥30s) — pause recommendation stands, user previously said keep. (5) Next bid-strategy move:
+  once .ca QuickForm accumulates ~10-15 `Submit Lead Form` conv, switch Search Max Clicks → Max
+  Conversions.
+- **2026-07-05** (Anshul): **Leslie complaint: "lots of calls asking how to pay parking tickets" —
+  diagnosed + city-services negatives applied.** Read-only diagnosis first: **Search side is CLEAN**
+  — the Jul-2 informational negatives worked (last paid pay-intent click was Jul 1; Jul 2 = 1 impr
+  only, Jul 3–4 = zero pay/parking terms). The callers trace to **PMAX (BMX)** — 15 of last-7d 17
+  calls are BMX, 10 of them <30s hang-ups/missed = the "quick question: how do I pay" profile.
+  BMX insight categories show **payment-portal queries carrying NO 'parking'/'pay' token**, so all
+  92 existing negatives sailed past: `toronto ca aps` (Toronto's Administrative Penalty System =
+  parking dispute/pay portal, 28 impr/3 clk), `city of toronto court services`, `halton court
+  services`, plus fused single tokens `parkingticketdispute`, `disputeorpay`, `payreinstatementfee`
+  (same lesson as `excopper`). **FIX APPLIED: +6 negatives to shared Master Negatives**
+  (`12109076551`, now 98): `[PHR] aps`, `[PHR] court services`, `[BRO] parkingticketdispute`,
+  `[BRO] disputeorpay`, `[BRO] serviceontario`, `[BRO] payreinstatementfee`. Verified attached to
+  both enabled campaigns (BMX + Search Consolidated). Deliberately did NOT add bare `[BRO] pay`
+  (impression-only leaks; could clip price-shopping hire intent). ⚠️ HONEST CAVEAT for Leslie:
+  PMAX matches semantically — negatives block literal queries but can't fully fence the category,
+  so some pay-intent callers will persist; fastest handling = a 10-second phone triage script
+  ("we fight tickets, we don't process payments — call 311/city"). ⚠️ ALSO FOUND: **Blottman New pM
+  is now PAUSED** (was ENABLED $5/day per Jul-1 pulse — check change history for who; it was the
+  junk-only campaign so pausing is the right call, just undocumented). Enabled = BMX $65 + Search
+  $30 = $95/day. Script: `code/add_city_services_negs.py` (idempotent).
+- **2026-07-05** (Anshul): **n8n connected for automation buildout.** Stenth n8n Cloud instance
+  (`https://stenth.app.n8n.cloud`) linked to Claude Code via n8n's official instance-level MCP server
+  (full workflow build/test/publish capability, verified). Token in local `.env` (`N8N_MCP_URL` /
+  `N8N_MCP_TOKEN`, gitignored) + registered via `claude mcp add` (local scope, this machine only —
+  Akash: run the same `claude mcp add --transport http n8n <url> --header "Authorization: Bearer <token>"`
+  with the .env token to get it on your machine). Instance is empty (1 blank test workflow, 0 credentials).
+  PLANNED WORKFLOWS: #1 daily Google Ads lead-form submission pull → Sheet → email Leslie (kills the
+  manual daily chore + 30-day auto-delete risk); #2 speed-to-lead SMS/WhatsApp alert on .ca form submits;
+  later missed-call text-back (needs Leslie's phone line on Twilio/OpenPhone) + review-ask automation.
+  BLOCKED ON: ~~Google Sheets + Gmail OAuth credentials to be added in the n8n UI~~ DONE same day.
+  **UPDATE (same day): WORKFLOW #1 LIVE — "Blottman - Morning Digest" (`gygOH974zcMjpauc`, PUBLISHED).**
+  Daily 12:00 UTC (=8am Toronto in summer) → 4 Google Ads REST calls (v24, HTTP Request nodes with the
+  n8n `googleAdsOAuth2Api` credential `aqwQVCPldu26z2Ve`) → Code node builds HTML digest → Gmail sends
+  to info@stenth.com (test phase; add Leslie once approved). Shows: spend/clicks per campaign, every
+  call with time/duration/MISSED-flag (red callback prompt), lead-form submissions (auto-rescued
+  before 30-day delete), conversions with Contact Us marked "reference only". Verified with real run:
+  Jul-4 = $72.96 / 1 call / 1 stenth conv — matches `leads.py`. **GOTCHAS learned (for future n8n
+  work):** (1) n8n cloud OAuth redirect is `https://oauth.n8n.cloud/oauth2/callback` (NOT the
+  /rest/oauth2-credential/callback the docs imply) — created Web-type OAuth client "n8n" in Google
+  Cloud project "Google-Ads Blottman" with both URIs (the old "Claude Code" client is Desktop-type,
+  unusable by n8n); (2) the n8n Google Ads credential does NOT inject `developer-token` into plain
+  HTTP Request nodes (only the dedicated Google Ads node does) → must add developer-token +
+  login-customer-id as explicit header parameters; (3) the workflow-SDK `create_workflow_from_code`
+  strips inline credential objects — attach with `update_workflow` op `setNodeCredential` after
+  create. Files: SDK source `scratchpad/digest.js` (session-local), MCP helper `n8n_call.py`.
+  NEXT: ~~Workflow #2~~ DONE (below). Note: brothersify10 is only the n8n *login*; all Google
+  credentials were OAuth'd as info@stenth.com (user confirmed digest arrives from info@stenth.com).
+- **2026-07-05** (Anshul): **n8n WORKFLOW #2 LIVE — "Blottman - Lead Alert (real-time)"
+  (`zHflYJhx5391uGu7`, PUBLISHED) + Lead Tracker sheet.** Chain: webhook
+  `https://stenth.app.n8n.cloud/webhook/blottman-lead` (POST, same JSON shape as the .ca lead payload)
+  → normalize → instant alert email to info@stenth.com (tel: link + "call within 5 min" nudge) →
+  append row to **"Blottman Lead Tracker (Stenth)" Google Sheet**
+  (`16yCYXDCncH5jVEl2EW47MJ716SE5TUfWsXiOugJTMZk`, sheet "Leads", columns
+  Date/Name/Phone/Email/Charge/Message/Page/GCLID/**Retained?**/Notes — the Retained? column is the
+  future offline-conversion feed). Tested end-to-end with a marked TEST lead (exec #5 success; ignore
+  the "TEST - ignore (n8n setup)" row/email). **WIRED INTO landing-v2:** `app/api/lead/route.ts` now
+  fans out each lead to `N8N_LEAD_WEBHOOK_URL` best-effort AFTER the primary Apps Script webhook
+  (failure is non-fatal, never blocks the lead); env var added to local `.env.local`; tsc clean.
+  ⚠️ **TO GO LIVE: add `N8N_LEAD_WEBHOOK_URL=https://stenth.app.n8n.cloud/webhook/blottman-lead` in
+  Vercel → Project → Settings → Env Vars, then commit+push the route.ts change (Vercel auto-deploys).**
+  Until then n8n only sees manual/test posts; the Apps Script path is untouched either way. Also
+  archived the one-shot "Blottman - Tracker Setup" workflow (created the spreadsheet, no longer needed).
+  Setup gotcha: manual-trigger workflows can't be published/executed via MCP — use a schedule trigger
+  then archive.
+- **2026-07-05** (Anshul): **n8n email copy rewritten per user ("lots of dashes, looks AI").** Both
+  workflow emails now Stenth-branded: navy top bar with gold STENTH wordmark, full sentences, zero
+  em-dashes, fixed pluralization. New digest subject style: "Stenth daily report, July 4: $72.96
+  spent, 1 call, 1 verified lead". **Standing copy rule (2nd time flagged): no em-dashes/AI-fragment
+  copy in anything client-facing; brand as Stenth.** Also fixed Lead Tracker sheet: it was created
+  with no header row so the Sheets append failed — one-shot workflow wrote headers
+  (Date/Name/Phone/Email/Charge/Message/Page/GCLID/Retained?/Notes) via Sheets REST API
+  (predefinedCredentialType googleSheetsOAuth2Api works on HTTP node with no extra headers, unlike
+  Google Ads). Both one-shot setup workflows archived. Lead alert re-tested end-to-end: success
+  (delete the TEST rows/emails).
+  Also this session: generated updated client report `Blottman-Legal-Services-Ads-Report-Jul-2026.pdf`
+  (`code/generate_report_v2.py`) — full engagement story Jun 8–Jul 5, ends on the answer-rate + creative
+  pitch. Checked LSAs: legal category effectively US-only, not available to an Ontario paralegal — don't
+  pitch to Leslie.
 - **2026-07-01** (Anshul): **BMX watch window CLOSED — reallocation holding, no revert.** Read-only pulse
   (`leads.py`, `campaign_status.py`, `call_quality.py`, `yesterday_review.py` + 7d cost query). 3 campaigns
   enabled at $100/day: BMX $65 + Search Consolidated $30 (LEARNING) + Blottman New pM $5. **BMX 7-day:
