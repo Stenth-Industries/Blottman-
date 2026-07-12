@@ -1,6 +1,7 @@
 .env
 credentials.json
 .claude/settings.local.json
+STENTH-INFRA-BRIEFING.md
 .DS_Store
 __pycache__/
 *.pyc

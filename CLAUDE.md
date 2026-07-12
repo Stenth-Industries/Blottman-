@@ -156,6 +156,29 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
 - Diagnostic scripts added this session: `calls_diag.py`, `conv_actions.py`, `campaign_status.py`,
   `asset_policy.py`, `remove_audience_signal.py`.
 
+## ⚠️ ALL n8n AUTOMATION NOW RUNS ON `clients.stenth.com` — the Cloud instance is RETIRED
+
+**As of 2026-07-12 the n8n CLOUD instance (`stenth.app.n8n.cloud`) has ZERO active Blottman
+workflows. Do not build, edit, or republish anything there** — republishing a cloud workflow
+recreates duplicate emails. Everything lives on Stenth's **self-hosted n8n at
+`clients.stenth.com`** (Vultr VPS, monitored by a watchdog/sentinel, nightly encrypted backups):
+
+| Workflow | id (clients instance) | What it does |
+|---|---|---|
+| Blottman - Morning Digest | `gygOH974zcMjpauc` | Daily 8:00 Toronto report → info@stenth.com only |
+| Blottman - Lead Alert (real-time) | `zHflYJhx5391uGu7` | blottman.ca form → instant email To legal@blottman.com CC info@ + Lead Tracker row. Webhook: `https://clients.stenth.com/webhook/blottman-lead` (Vercel `N8N_LEAD_WEBHOOK_URL` points here) |
+| Blottman - Ad Lead Forwarder | `9Vq4md9HxHC9XDuL` | Hourly Google-hosted ad-form leads → same email + tracker. Manual run: `GET /webhook/blottman-forwarder-run` |
+| + dashboard stack | see briefing | blottman.stenth.com client dashboard (two-role login), auth, lead write-back, daily snapshot, watchdog |
+
+Both lead alerts use the Stenth house email template (same design as the digest) and write phones
+to the Lead Tracker apostrophe-prefixed (`PhoneSheet`) so Sheets doesn't render `+1…` as `#ERROR!`.
+The old `N8N_MCP_URL`/`N8N_MCP_TOKEN` in `.env` still reach the retired cloud instance (handy for
+reading history, nothing more). To inspect/edit the LIVE workflows use the clients-instance public
+API — URL, API key, VPS SSH, and break-glass steps are all in **`STENTH-INFRA-BRIEFING.md`**
+(gitignored, this folder). Deep source of truth:
+`D:\stenth-web-change\prospecting\infra\INFRA-RUNBOOK.md`. **Coordination rule: log any change to
+these workflows in BOTH that runbook and this file's change log.**
+
 ## Change log
 - **2026-06-10** (Kushagra): Consolidation steps 1–2 — paused "Blottman New pM"; raised
   PMAX - Blottman Max $36→$50; set #2 $15, #3 $10 ($75/day cap). Asset-group fixes (search themes,
@@ -908,9 +931,10 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   the "TEST - ignore (n8n setup)" row/email). **WIRED INTO landing-v2:** `app/api/lead/route.ts` now
   fans out each lead to `N8N_LEAD_WEBHOOK_URL` best-effort AFTER the primary Apps Script webhook
   (failure is non-fatal, never blocks the lead); env var added to local `.env.local`; tsc clean.
-  ⚠️ **TO GO LIVE: add `N8N_LEAD_WEBHOOK_URL=https://stenth.app.n8n.cloud/webhook/blottman-lead` in
-  Vercel → Project → Settings → Env Vars, then commit+push the route.ts change (Vercel auto-deploys).**
-  Until then n8n only sees manual/test posts; the Apps Script path is untouched either way. Also
+  ~~TO GO LIVE...~~ **LIVE + VERIFIED IN PRODUCTION (same day):** user set `N8N_LEAD_WEBHOOK_URL` in
+  Vercel, route.ts pushed (commit `656c031`), Vercel redeployed, and a marked TEST submission to the
+  real `blottman.ca/api/lead` flowed through the whole chain (n8n exec #10 success: alert email +
+  tracker row; Apps Script primary path unaffected). Every real website lead now hits both paths. Also
   archived the one-shot "Blottman - Tracker Setup" workflow (created the spreadsheet, no longer needed).
   Setup gotcha: manual-trigger workflows can't be published/executed via MCP — use a schedule trigger
   then archive.
@@ -939,3 +963,152 @@ Client reported no calls for ~3 days. Root cause confirmed (API + UI screenshot)
   payoff of the .ca consolidation). Last 7d totals: 8 stenth + 1 lead form + 21 Contact Us (observe-only).
   ⚠️ Only soft spot = **answer rate**: 7 of BMX's 15 calls this week were <30s (several 3–8s hang-ups) =
   leads already paid for that die at pickup → Leslie's speed-to-answer lever, costs nothing. No mutations.
+- **2026-07-11** (Kushagra): **Fixed "targeted goal is missing a primary conversion action" on Search
+  Consolidated (`23971101309`) + made the .ca form signal actually biddable.** Diagnosis
+  (`code/goal_diag.py`, read-only): the campaign was on Maximize Conversions with **0 biddable
+  conversions in 30d** — its two real signals both broken differently: (a) `SUBMIT_LEAD_FORM/WEBSITE`
+  (= `Submit Lead Form - STENTH` `7173263227`, the .ca QuickForm, 4 conv/30d) was **never biddable** at
+  any level, so the Jul-6 Max-Conversions flip was optimizing on nothing; (b) `SUBMIT_LEAD_FORM/
+  GOOGLE_HOSTED` was targeted but its only action `Lead form - Submit` (`7645568580`, 4 conv/30d) is
+  demoted to secondary → the UI warning. **FIX APPLIED (campaign-scoped, BMX untouched mid-tCPA-learning):**
+  Search now bids on exactly 4 goals — SUBMIT_LEAD_FORM/WEBSITE (**new**), SUBMIT_LEAD_FORM/GOOGLE_HOSTED,
+  PHONE_CALL_LEAD/WEBSITE, PHONE_CALL_LEAD/CALL_FROM_ADS; dropped empty junk goals DOWNLOAD/APP,
+  CONVERTED_LEAD/CALL_FROM_ADS, CONTACT/CALL_FROM_ADS. Search re-enters learning (~1wk) — fine, it was
+  bidding blind anyway. **⚠️ ONE UI STEP LEFT: flip `Lead form - Submit` (7645568580) back to Primary**
+  (Goals → Conversions → Summary → edit) — Google-hosted lead-form actions are **API-immutable**
+  (`MUTATE_NOT_ALLOWED`), meaning the earlier demotion was a UI change and `demote_leadform_secondary.py`
+  never actually worked. Until flipped, the warning stays + the 4 in-ad form leads stay observe-only.
+  API gotchas logged: campaign_conversion_goal mutates fail as a batch but succeed one-per-request;
+  both live campaigns already had `goal_config_level=CAMPAIGN`. Scripts: `goal_diag.py`,
+  `fix_search_goals.py` (idempotent, revert values in header).
+- **2026-07-06** (Kushagra, via UI ~11:00–11:32; logged by Claude from change history): **Bid-strategy
+  changes on both live campaigns.** (1) **BMX: Maximize Conversions → + Target CPA $51.00**
+  (`maximize_conversions.target_cpa_micros`, 11:28). Anchored to the historical ~$50 CPA, but recent
+  actual is higher (14d = $735/13 conv ≈ $57; last 7d ≈ $61) — a tCPA below achieved CPA makes PMAX
+  bid MORE conservatively, so expect a volume dip while it re-learns. **Watch 3–4 days: if spend
+  collapses toward the $8–18 dead days, raise tCPA to ~$60–65 or remove it.** (2) **Search
+  Consolidated: Maximize Clicks → Maximize Conversions** (no tCPA) + **AI Max ENABLED**
+  (`ai_max_setting.enable_ai_max` + asset_automation_settings, 11:09) + cpc ceiling touched while
+  still TARGET_SPEND (11:10). This is the planned Max-Conversions flip but EARLY — only 3
+  `Submit Lead Form - STENTH` conv in 14d (plan said 10–15). AI Max = AI query expansion + auto
+  text customization (RSA got tracking_url_template/final_url_suffix edits) → **watch search terms
+  daily for the account's classic junk creep** (informational/pay/city-services); shared Master
+  Negatives apply but AI matching is semantic. (3) **~14 campaign-level BROAD negatives added to
+  BMX** (free/legal aid/pro bono/parking variants). ⚠️ Two issues: the literal keyword
+  **"Free-seeker terms"** is a pasted list-label, not a keyword (matches nothing — delete for
+  hygiene); and **`[BROAD] free` blocks every query containing "free"** incl. "free consultation
+  traffic ticket" hire-intent (her own offer is a free case review) — consider narrowing to the
+  existing phrase negatives. (4) **Image assets added** (2 website images + 2 stock 1.91:1/1:1) —
+  closes the Jun-27 UI-only Search-image TODO. Both campaigns re-enter learning simultaneously —
+  expect a soft 3–7 days; DON'T stack more budget/bid changes on top this week.
+- **2026-07-12** (Kushagra): **Website lead alerts now go directly to the client — n8n "Blottman -
+  Lead Alert (real-time)" (`zHflYJhx5391uGu7`) Gmail node re-targeted: To = `legal@blottman.com`,
+  CC = `info@stenth.com`** (Stenth keeps visibility for the tracker/Retained? follow-up). ⚠️ **Also
+  found the workflow UNPUBLISHED** (`active:false`, no active version — last execution Jul 6 12:35
+  UTC; someone unpublished it after that, check who) → re-published (active version
+  `4a393da5-8f0a-490b-a36a-b52e216dbe5f`). No leads were lost during the ~Jul 6–12 gap: route.ts
+  treats the n8n webhook as best-effort fan-out, so submissions still reached the primary Apps
+  Script path (info@stenth.com email + auto-reply) — but no alert emails / Lead Tracker rows were
+  written in that window; backfill the Sheet from the Apps Script emails if needed. NOTE: the
+  PRIMARY Apps Script notification still emails only info@stenth.com (changing it = edit
+  `lead-webhook.gs` + manual re-paste/redeploy); Morning Digest recipient unchanged
+  (info@stenth.com). No live test sent (would land a TEST email in Leslie's inbox) — next real
+  lead confirms, or submit a marked test via the form.
+- **2026-07-12** (Kushagra, same session): **(1) Lead Alert footer rewritten for Leslie** (was
+  Stenth-internal "update the Retained column" copy) → now "This lead came in through the
+  blottman.ca contact form and has been saved to your lead records. Sent automatically by Stenth."
+  Republished (`ab7ebb3f`). **(2) Morning Digest was ALSO unpublished** (same Jul-5 11:29 draft
+  timestamp — the email-copy-rewrite session saved drafts without republishing; last digest ran
+  Jul 7, so no daily reports since) → **republished** (`419999a5`). ⚠️ n8n LESSON: `update_workflow`
+  creates a NEW DRAFT and silently deactivates nothing visible — but the active version stays the
+  OLD one until you re-publish; ALWAYS check `active:true` + `activeVersionId` after edits.
+  **(3) NEW n8n WORKFLOW #3 LIVE — "Blottman - Ad Lead Forwarder (Google-hosted)"
+  (`WcZCbLVK93kPITy5`, PUBLISHED, version `7f280940`).** Solves "Google-hosted lead form
+  submissions don't reach Leslie" WITHOUT touching the lead-form asset (editing it would trigger
+  re-review; it was stuck in review for weeks in June). Chain: hourly schedule → Google Ads REST
+  `lead_form_submission_data` query (id/gclid/datetime/fields/campaign — query verified live
+  against the API) → Code node dedupes via `$getWorkflowStaticData` seen-IDs (FIRST production
+  run seeds silently, no email blast) → Gmail per new lead to **legal@blottman.com CC
+  info@stenth.com** (same Stenth-branded template) → appends row to the Lead Tracker sheet
+  (gclid included = future OCI feed). **(4) FOUND: 8 in-ad lead-form submissions Jul 8–12**
+  (all Search Consolidated, all with name/email/phone) that were never delivered to anyone
+  (both n8n workflows were dead + no manual downloads). **USER DECISION: skip the backlog** — no
+  catch-up email sent; they remain retrievable in the Ads UI until ~Aug 7–11 (30-day
+  auto-delete) if wanted. The forwarder seeds them as seen, so it will never re-send them.
+  Test script: `scratchpad/lf_query_test.py` (session-local). Leslie's lead coverage now:
+  .ca form = real-time (workflow #2), in-ad form = ≤1h (workflow #3), calls = her phone directly.
+- **2026-07-12** (Claude, briefing from the stenth-web-change session): **Discovered this folder and
+  the Stenth VPS track had diverged — briefing written.** New section above the change log +
+  `STENTH-INFRA-BRIEFING.md` (gitignored, has creds) document everything built at
+  `clients.stenth.com`/`blottman.stenth.com` since Jul 7: client dashboard (two-role login incl.
+  Leslie's own password/view), watchdog + daily Telegram recap to the founders' group, Daily
+  Snapshot archiver, Retained?/Lost write-back, and COPIES of Digest + Lead Alert. ⚠️ THREE
+  conflicts flagged in the briefing: (1) **double Morning Digest from tomorrow** — the self-hosted
+  copy has been ACTIVE since Jul 7 (it's why digests kept arriving Jul 8–12 while the cloud one sat
+  unpublished), and today's cloud republish means info@ now gets two — deactivate one; (2) the
+  self-hosted Lead Alert copy is STALE vs today's legal@blottman.com/footer edits — re-port before
+  any cutover; (3) workflow #3 Ad Lead Forwarder exists only on cloud — must migrate (with seeded
+  dedupe staticData) if cloud is ever retired.
+- **2026-07-12** (Claude, same briefing session; user decision): **Double-digest conflict RESOLVED —
+  cloud "Blottman - Morning Digest" (`gygOH974zcMjpauc`) UNPUBLISHED** (verified `active:false`,
+  `activeVersionId:null` via MCP). The daily digest now comes ONLY from the self-hosted copy on
+  `clients.stenth.com` (ACTIVE since Jul 7, rebranded, 8:00 Toronto → info@stenth.com). Cloud keeps:
+  Lead Alert (`zHflYJhx5391uGu7`, verified still active) + Ad Lead Forwarder (`WcZCbLVK93kPITy5`,
+  verified still active). Do NOT republish the cloud digest — that recreates the duplicate.
+- **2026-07-12** (Kushagra, cloud session — corrections after reading the infra briefing): re-verified
+  all 3 cloud workflow states match the briefing (digest `active:false`; Lead Alert + Ad Lead
+  Forwarder `active:true`), and **no duplicate digest fired today** — my morning republish was
+  unpublished by the other session before the schedule hit (cloud digest's last execution is still
+  Jul 7). Corrections to my earlier Jul-12 entries: **(a)** "no daily reports since Jul 7" was wrong —
+  the self-hosted digest covered Jul 8–12 to info@stenth.com; **(b)** the 8 in-ad lead-form
+  submissions were therefore NOT invisible — they appeared in those self-hosted digests (Stenth saw
+  them; only Leslie didn't), which also explains the "skip the backlog" call; **(c)** the "who
+  unpublished the cloud workflows?" mystery = the Jul-7 export/import migration to the self-hosted
+  instance, not an accident. My Lead-Alert-gap claim stands: the cloud Lead Alert webhook WAS down
+  Jul 7–12 (self-hosted copy inactive, cutover pending) so .ca leads reached info@stenth.com only
+  via the Apps Script path, with no tracker rows written that week.
+- **2026-07-12** (Claude, same session): **Both lead-alert emails restyled to the Stenth house design**
+  (user request: match the Morning Digest look). The Code nodes of "Blottman - Lead Alert
+  (real-time)" (`zHflYJhx5391uGu7`, new active version `1c34f94a`) and "Blottman - Ad Lead Forwarder"
+  (`WcZCbLVK93kPITy5`, new active version `10d9627f`) were rewritten with the digest's exact design
+  tokens: dark #01080F header bar with logo + Anton STENTH wordmark, "Lead Alert" label in #6F9CEB,
+  blue #3B6FD4 eyebrow + big Anton "NEW LEAD" title, key/value details table in the digest's
+  th/td style, a blue pill "Call <name> now" tel: button, the red urgency callout restyled to the
+  digest's callout tokens, and the digest's footer signature ("Sent automatically by STENTH for
+  Blottman Legal Services"). Data logic 100% unchanged (same Lead Tracker fields Date/Name/Phone/
+  Email/Charge/Message/Page/GCLID, same dedupe staticData, same recipients To legal@ CC info@).
+  Updated via MCP update_workflow → publish_workflow, verified `versionId===activeVersionId` and
+  active:true on BOTH (the Jul-5 unpublished-draft mistake specifically checked for). Old navy/gold
+  (#0D1B2A/#C9A84C) template fully gone. NOTE: Kushagra also receives Google Ads' own native
+  notification for in-ad form leads — left as-is deliberately (removing it means editing the lead
+  form asset, which risks re-triggering the weeks-long review from June).
+- **2026-07-12** (Claude, migration session): **CLOUD → SELF-HOSTED MIGRATION COMPLETE. The n8n Cloud
+  instance (stenth.app.n8n.cloud) now has ZERO active Blottman workflows** — do not republish
+  anything there; all three run on `clients.stenth.com` (Stenth VPS, watchdog/sentinel/backup
+  covered, see STENTH-INFRA-BRIEFING.md):
+  - **Lead Alert** (`zHflYJhx5391uGu7` on clients, ACTIVE): current Stenth-styled template, To
+    legal@blottman.com CC info@stenth.com. Proven end-to-end via the prod webhook before recipients
+    were flipped (test row cleaned from the tracker). **`N8N_LEAD_WEBHOOK_URL` in Vercel
+    (landing-v2, Production+Preview) now = `https://clients.stenth.com/webhook/blottman-lead`** and
+    blottman.ca was redeployed — website leads flow to the VPS as of ~08:15 UTC Jul 12.
+  - **Ad Lead Forwarder** (NEW id `9Vq4md9HxHC9XDuL` on clients, ACTIVE, hourly + manual
+    `GET /webhook/blottman-forwarder-run`): cloud copy got a final flush run (nothing pending),
+    was unpublished, and the new one seeded 8 seen-IDs silently (the known Jul 8–12 backlog) — no
+    re-emails, no gap.
+  - **Morning Digest**: already on clients since Jul 7 (cloud copy unpublished earlier today).
+  - **Bug fixed in both lead workflows during migration:** phone numbers like `+1 416…` were being
+    written to the Lead Tracker as `#ERROR!` (Sheets parses leading `+` as a formula — the cloud
+    versions had this bug all along). Now the code writes an apostrophe-prefixed `PhoneSheet` to
+    the sheet; the email keeps the clean phone.
+  - The n8n Cloud subscription is now unused — cancelling it is Kushagra's call.
+  - Next real lead (either source) is the final production confirmation; if something looks off,
+    check `https://clients.stenth.com` executions, creds in STENTH-INFRA-BRIEFING.md.
+- **2026-07-12** (Kushagra, cloud session): **Independent post-migration cross-check from this machine —
+  all green.** Cloud (via MCP): all 3 Blottman workflows `active:false` ✓. Self-hosted (via the clients
+  public API): 8 workflows ACTIVE ✓; Lead Alert `zHflYJhx5391uGu7` has To=legal@blottman.com,
+  CC=info@stenth.com, the new Stenth-styled template + PhoneSheet fix, old navy template gone ✓;
+  Ad Lead Forwarder `9Vq4md9HxHC9XDuL` has the same recipients, PhoneSheet fix, staticData seeded
+  with exactly the 8 Jul 8–12 seen-IDs (`initialized:true` — no re-email risk), and its first hourly
+  execution succeeded 08:29 UTC ✓. NOTE for future sessions on THIS machine: the `claude mcp` n8n
+  server still points at the now-empty CLOUD instance — to edit the live workflows use the
+  clients.stenth.com public API (key in STENTH-INFRA-BRIEFING.md) or re-register MCP against it.
