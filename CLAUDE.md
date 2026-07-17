@@ -1103,6 +1103,140 @@ these workflows in BOTH that runbook and this file's change log.**
   - The n8n Cloud subscription is now unused — cancelling it is Kushagra's call.
   - Next real lead (either source) is the final production confirmation; if something looks off,
     check `https://clients.stenth.com` executions, creds in STENTH-INFRA-BRIEFING.md.
+- **2026-07-17** (Anshul): **Leslie complaint: "I keep getting calls for courthouse" — diagnosed +
+  19 court-navigation negatives applied.** Read-only diagnosis first (`code/courthouse_diag.py`,
+  LAST_14_DAYS): **this one is SEARCH CONSOLIDATED (`23971101309`), not PMAX** (inverse of the Jul-5
+  parking-payment complaint). 64 court-ish search terms / 73 impr / **5 clicks / $29.20 = 10.3% of the
+  campaign's 14d spend** ($284.11). Paid ones: `simcoe courthouse` $7.31, `www durham courtservices`
+  $6.53, `www toronto cacourtcaselookup` $5.05, `https ojpc ca` $8.72 (**1 conv**),
+  `how to win a speeding ticket in court` $1.59. PMAX only a trickle (`provincial offences court
+  offices` 35 impr/1 clk). **ROOT CAUSE = AI MAX** (enabled by Kushagra via UI Jul-6): the campaign has
+  **0 of 76 keywords containing 'court'** — every one of these queries is AI Max semantic expansion
+  stretching "traffic ticket defence" out to the whole provincial-offences-court universe (courthouse
+  addresses, case-lookup portals, dockets, court dates, Zoom links, prosecutor meetings). These people
+  want the GOVERNMENT COURT OFFICE, not representation → they click, then phone Leslie asking
+  courthouse questions. The Jul-6 entry's own warning ("watch search terms daily for the account's
+  classic junk creep") called this exactly. **Why existing negatives missed them:** only 2 of 98 negs
+  were court-related, and `[PHR] court services` can't block `www durham courtservices` /
+  `www haltoncourtservices` — **fused single tokens**, the same lesson as `excopper` and
+  `parkingticketdispute`; each fused token needs its own BROAD neg. **FIX APPLIED: +19 to shared Master
+  Negatives** (`12109076551`, **98 → 117**, verified attached to both enabled campaigns) —
+  PHRASE: `courthouse`, `court house`, `court office`, `court offices`, `court records`, `court cases`,
+  `check court date`, `court zoom`, `prosecutor`, `court fine`; BROAD (fused/navigational):
+  `docket`, `dockets`, `lookup`, `cacourtcaselookup`, `courtservices`, `haltoncourtservices`,
+  `ontariocourts`, `ontariocourtdates`, `ojpc`. **Deliberately NOT added** (would clip real hire
+  intent): bare `court` (kills "do i have to go to court for careless driving" = someone WITH a ticket
+  deciding whether to get help), `traffic court` (ambiguous + 0 clicks so far, no spend to save),
+  `phone number` ("traffic ticket lawyer phone number" is hire intent), `driver control` (MTO
+  suspension reviews are work she can take), `how to fight` (converts). ⚠️ **JUDGEMENT CALL TO REVIEW:**
+  `ojpc` had **1 conversion** — almost certainly a junk form-fill from a portal-hunter (exactly Leslie's
+  complaint) but it IS a logged conv; drop that one neg if you disagree. ⚠️ **THE REAL LEVER IS AI MAX,
+  NOT NEGATIVES** — negatives are whack-a-mole against a semantic matcher that invents new phrasings
+  weekly; AI Max produced **1,083 distinct search terms in 14d off 76 keywords**. Recommend
+  (NOT applied, needs Kushagra's call since it's his Jul-6 change): either turn AI Max OFF on
+  `23971101309`, or keep it and put the search-term review on a weekly cadence. Same honest caveat as
+  Jul-5 for the PMAX trickle: PMAX matches semantically, so negatives can't fully fence the category —
+  a 10-second phone triage ("we fight tickets, we're not the court office — call the courthouse
+  directly") still catches the remainder. Effect re-learns over 24–48h. Scripts:
+  `code/courthouse_diag.py` (read-only, reusable), `code/add_courthouse_negs.py` (idempotent).
+- **2026-07-17** (Anshul, same session): **⚠️ CORRECTION + THE REAL ROOT CAUSE — AI Max is running a
+  junk-conversion DOOM LOOP on Search Consolidated. Two numbers in the entry above are WRONG; the
+  conclusion is much worse than stated.** `segments.search_term_match_type` has an explicit **`AI_MAX`**
+  value, so AI Max attribution is MEASURED, not inferred (use this — it settles these arguments
+  instantly). Corrections: **(a)** "10.3% of spend" was court-terms only; **AI Max is actually
+  $194.15 of $284.11 = 63% of all Search spend** (39 of 76 clicks). **(b)** "every court query came
+  from AI Max" is FALSE — the sane-looking ones (`do you have to go to court for careless driving`,
+  `how to win a speeding ticket in court`, `court for speeding ticket`) are **NEAR_PHRASE/NEAR_EXACT
+  = ordinary phrase matching** off her real keywords. Only the pure-navigational ones (`simcoe
+  courthouse`, `www durham courtservices`, `www toronto cacourtcaselookup`, `https ojpc ca`) are
+  AI_MAX. Campaign is 72 PHRASE + 4 EXACT, **0 BROAD**, so AI Max is the only keywordless source.
+  **THE DECISIVE FINDING: AI Max produces 100% of the campaign's conversions, and 100% of those
+  conversions are junk.** 14d by match type: **AI_MAX $194.15 → 7 conv** ($27.74/conv); NEAR_PHRASE
+  $48.03 → **0**; NEAR_EXACT $22.19 → 0; EXACT $14.47 → 0; PHRASE $5.27 → 0. Every converting term is
+  a payment-portal / lookup / DIY query, ZERO hire intent: **`www paytickets ca` $27.33 → 3 conv**,
+  `https ojpc ca` 1, `www cityofkingston ca pay` 1, `www ontario ticketsandfines` 1, **`g1 test`**
+  (learner's permit!) 1, `www toronto cacourtcaselookup` 1, `paytickets ca` 1, `speeding ticket
+  ontario pay` 1, `how to check tickets on driver's license` 1. **MECHANISM = DOOM LOOP:** campaign is
+  on **Maximize Conversions**; the only conversions it can see are payment-portal seekers; so the
+  bidder is learning *"find me more people who want to pay tickets online"* and AI Max gives it the
+  reach to do it. Running since the Jul-6 AI-Max + Max-Conversions flip (which also went early: 3 conv
+  vs the planned 10–15). Each junk form-fill makes the next day worse. **WHY LESLIE NOTICED NOW:**
+  Search generates ~no calls (**1 call in 21d vs PMAX's 52** — call_view), so her "courthouse calls"
+  are junk **form-fills**: since the **Jul-12** change every .ca submission fires an instant Lead Alert
+  to **legal@blottman.com**, she calls them back, and they want the courthouse. Jul-12 change → Jul-17
+  complaint. **⚠️ ALSO — THE ANSWER-RATE NARRATIVE LOOKS WRONG.** We've told Leslie for a month that
+  <30s calls are her speed-to-answer problem. Last 21d short calls are **~25 RECEIVED vs ~10 MISSED**:
+  3s/6s/7s/8s/1s calls that she ANSWERED and the caller instantly dropped. That's a wrong-target
+  profile (PMAX junk reach), not a slow pickup. **Stop blaming the client for this until re-checked.**
+  **RECOMMENDED (NOT APPLIED — Kushagra's call, it reverses his Jul-6 change):** (1) **AI Max OFF** on
+  `23971101309` — not because it's weak exploration (my first, wrong reasoning) but because it is the
+  junk engine; (2) **Max Conversions → Maximize Clicks** — with AI Max off there are 0 conversions to
+  bid on, so Max Conversions would re-break exactly like the Jul-11 "targeted goal is missing a primary
+  conversion action" issue; (3) **Search $30 → $15, move $15 to BMX** which is BUDGET_CONSTRAINED and
+  is the only verified call source (the Jul-2 proposal, still unapplied). Honest counter to keep on
+  file: Search is ~4wks old with QS 1–3 losing ~70% IS to rank, so it has never had a fair shot —
+  option (3) preserves the SKAG asset instead of pausing it. Scripts: scratchpad `attribution.py`,
+  `decisive.py` (fold into `code/` if this recurs).
+- **2026-07-17** (Anshul, same session, 2nd recheck): **Doom loop CONFIRMED with conversion-action +
+  conv-rate evidence; one of my recommendations above was WRONG.** (a) The 18 Search conv/14d =
+  **15× `Lead form - Submit` (Google-hosted IN-AD form) + 3× .ca QuickForm**. Converting portal terms
+  run **50–100% conversion rates** (`www paytickets ca` 3 conv / 6 clk; six others 1 clk / 1 conv) —
+  real intent converts at 5–15%, so these are **misdirected citizens filling the in-ad lead form
+  thinking they're contacting the ticket office**, not bots and not intercepted leads. (b) **Complaint
+  mechanism nailed:** the Jul-12 Ad Lead Forwarder emails every in-ad submission to legal@blottman.com
+  within the hour → ~1 portal-seeker/day since Jul 12 → Leslie calls back → "courthouse." Forwarder
+  live Jul 12, complaint Jul 17. (c) **CORRECTION — the "move $15 to BMX" rec above is WRONG:** BMX
+  7d actual spend = **$45.71/day vs $65 budget** — the primary_status still reads BUDGET_CONSTRAINED
+  but the binding constraint is the **tCPA $51** (Jul-6). Extra budget would sit unspent. The BMX
+  lever is Kushagra's own Jul-6 contingency: **raise tCPA to ~$60** (volume did sag as predicted).
+  (d) **Negative-list gap:** top junk converters are unblocked fused tokens — `paytickets`,
+  `ticketsandfines`, `cityofkingston` (`[PHR] pay ticket` can't token-match them). ⚠️ Do NOT
+  blanket-block `g1` — "driving with no experience" (unaccompanied G1) is a practice area; block
+  `g1 test`/`g1 practice test` only. (e) Ground-truth check available: the lead alert emails since
+  Jul 12 (legal@ + CC info@) contain each "lead's" own words. **REVISED PLAN (pending Kushagra):
+  (1) AI Max OFF + Max Clicks on `23971101309`; (2) fused pay-portal negatives; (3) BMX tCPA
+  $51→$60; (4) no budget moves.** Script: scratchpad `recheck.py`.
+- **2026-07-17** (Kushagra + Claude, same session): **ALL FOUR FIXES APPLIED + VERIFIED** (Kushagra
+  approved reversing his own Jul-6 changes after seeing the doom-loop evidence).
+  **(1) Search Consolidated (`23971101309`): AI Max OFF** (enable_ai_max=False, both asset
+  automations OPTED_OUT) **+ Maximize Conversions → Maximize Clicks** (TARGET_SPEND, $8 cpc
+  ceiling = its pre-Jul-6 config). These had to move together: with AI Max off the campaign has 0
+  biddable conversions (all non-AI-Max match types = 0 conv/14d), so staying on Max Conversions
+  re-creates the Jul-11 "missing primary conversion action" break. **(2) +5 negatives to shared
+  Master Negatives** (`12109076551`, now **122**): `[BRO] paytickets`, `[BRO] ticketsandfines`,
+  `[BRO] cityofkingston`, `[PHR] g1 test`, `[PHR] g1 practice test` (bare `g1` deliberately kept
+  biddable — unaccompanied-G1 tickets are a practice area). **(3) BMX (`22979153470`) tCPA $51 →
+  $60** — the Jul-6 watch-note contingency, triggered by the volume sag ($45.71/day actual vs $65
+  budget). Verified final state: Search = TARGET_SPEND, ai_max=False, ceiling $8.00, automations
+  OPTED_OUT; BMX = MAXIMIZE_CONVERSIONS tCPA $60.00. **⚠️ API GOTCHA (cost 3 failed attempts):
+  mutating `ai_max_setting.enable_ai_max` ALONE is rejected with the misleading fault "This feature
+  is only available for campaigns with AI Max enabled." The disable only succeeds sent in ONE
+  operation together with both `asset_automation_settings` set OPTED_OUT** (mirrors the UI toggle).
+  Also: `AssetAutomationSetting` is a NESTED type on Campaign (`type(Campaign).AssetAutomationSetting()`),
+  not a `get_type()` name; and masking parent `ai_max_setting` fails FIELD_HAS_SUBFIELDS. Search
+  re-enters learning (3rd bid change in ~3wks — fine, its learned state was poisoned; that's the
+  point). WATCH: (a) Search terms in ~3-4 days — court/pay junk should collapse to near-zero;
+  (b) BMX volume recovery at tCPA $60 over ~1wk; (c) Leslie's junk-lead complaints should stop
+  within days since the in-ad form no longer harvests portal-seekers. Revert values in script
+  header. Script: `code/fix_aimax_doomloop.py` (all four changes + the working AI-Max-disable
+  pattern; reusable).
+- **2026-07-17** (Kushagra + Claude, same session): **stenth tracker RECALIBRATED per Leslie + BMX
+  tCPA moved with it.** Leslie confirmed: a conversion = a call of **≥45 SECONDS** (her confirmation
+  proxy, was 30s) and her **average revenue per conversion = $400**. Applied
+  (`code/stenth_recalibrate.py`, verified): **(1)** `Inbound call - Blottman (stenth)` (`7638369752`)
+  `phone_call_duration_seconds` 30→**45** + default value $150→**$400** (always_use stays True; the
+  Jun-12 "$150 mystery value" is now moot). Duration change is forward-only, not retroactive.
+  **(2) BMX tCPA $60→$95** — REQUIRED companion, not a separate idea: 14 of the last-30d 31
+  qualifying BMX calls are 30–44s, so the 45s definition cuts ~45% of counted conversions; BMX's
+  true CPA under 45s = **$1,583.69 / 17 = $93.16**. Leaving this morning's $60 tCPA in place against
+  the stricter definition would recreate the Jul-6→17 throttle. At $400/conv, $95 CPA = 4.2x return
+  — the economics Leslie herself just validated. ⚠️ Expect REPORTED conversion counts to drop
+  ~40-45% from today — that's the definition tightening, NOT performance falling; pre-brief Leslie
+  so the digest numbers don't read as a crash. **(3) DASHBOARD FOR LESLIE ON HOLD (user decision)**
+  → the Retained?-driven Offline Conversion Import plan is PARKED; the 45s threshold is the interim
+  quality gate. When OCI revives: upload value = $400, and the eventual value-bidding switch
+  targets ~400% tROAS. Values don't affect count-based bidding today; $400 matters for reporting
+  honesty + the future tROAS flip. Revert values in script header.
 - **2026-07-12** (Kushagra, cloud session): **Independent post-migration cross-check from this machine —
   all green.** Cloud (via MCP): all 3 Blottman workflows `active:false` ✓. Self-hosted (via the clients
   public API): 8 workflows ACTIVE ✓; Lead Alert `zHflYJhx5391uGu7` has To=legal@blottman.com,
