@@ -40,8 +40,9 @@ export async function POST(req: NextRequest) {
     ts: new Date().toISOString(),
   };
 
-  // Only name + phone are required — Leslie calls leads back, so email and a
-  // written message are optional (fewer required fields = fewer abandons).
+  // Only name + phone are required at the API level — the QuickForm (hero, on
+  // every page) has no message field at all, so enforcing it here would break
+  // that form's submissions. QuoteForm enforces its own message field client-side.
   if (!lead.name || !lead.phone) {
     return bad("Please fill in your name and phone number.");
   }
