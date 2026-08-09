@@ -13,13 +13,19 @@ export default function OffenseDetails({ page }: { page: TicketPage }) {
 
   return (
     <section className="relative overflow-hidden bg-ink py-16 text-white sm:py-24">
-      {/* Background Image with seamless top/bottom fades and vignette */}
+      {/* Background Image with seamless top/bottom fades and vignette.
+          Uses next/image (NOT a raw <img>) so the source PNGs — 620-950 KB each —
+          are served as AVIF at the viewport width. A raw <img> bypasses the
+          optimizer entirely, which shipped the full PNG on every SKAG page to a
+          ~95%-mobile audience for a background rendered at 25% opacity. */}
       <div className="pointer-events-none absolute inset-0">
-        <img
+        <Image
           src={bgImage}
           alt=""
           aria-hidden="true"
-          className="h-full w-full object-cover object-center opacity-25 brightness-75 mix-blend-lighten"
+          fill
+          sizes="100vw"
+          className="object-cover object-center opacity-25 brightness-75 mix-blend-lighten"
         />
         {/* Soft edge vignette to focus the center and darken the edges heavily */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(12,12,12,0.95)_100%)]" />

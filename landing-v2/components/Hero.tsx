@@ -33,19 +33,24 @@ export default function Hero({
 
   return (
     <section className="relative overflow-hidden bg-ink text-white">
-      {/* Cinematic Video Background — slow moving, blurred out, driving at night POV */}
-      {/* The video file 'hero-bg.mp4' needs to be dropped into the public/ folder. 
-          Until then, it uses the courthouse-bg.webp as a seamless fallback poster. */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        poster="/courthouse-bg.webp"
-        className="absolute inset-0 h-full w-full object-cover object-center blur-[2px] opacity-80"
-      >
-        <source src="/hero-bg.mp4" type="video/mp4" />
-      </video>
+      {/* Hero background.
+          This was a <video> pointing at /hero-bg.mp4, but that file was never
+          added to public/ — so every pageview on every page fired a request that
+          404'd. The poster still rendered, which is why it looked fine. Now the
+          poster IS the background, served through next/image (AVIF, sized to the
+          viewport).
+          TO RESTORE THE VIDEO: drop hero-bg.mp4 into public/, then swap this
+          <Image> back to a <video autoPlay loop muted playsInline
+          poster="/courthouse-bg.webp"> with a <source src="/hero-bg.mp4">. */}
+      <Image
+        src="/courthouse-bg.webp"
+        alt=""
+        aria-hidden="true"
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover object-center blur-[2px] opacity-80"
+      />
       {/* left-to-right darkening: left very dark for the headline, right darkened ~30% behind Leslie */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/72 to-ink/65" />
       {/* soft black halo behind Leslie's portrait so it blends into the hero */}
@@ -147,11 +152,15 @@ export default function Hero({
             {/* warm gold glow + soft shadow around the card so it sits in the black-and-gold hero */}
             <div className="absolute -inset-4 rounded-[2.25rem] bg-gold/15 blur-3xl" />
             <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-[rgba(232,176,65,0.22)] bg-ink-soft shadow-[0_35px_90px_-30px_rgba(0,0,0,0.85)] ring-1 ring-inset ring-white/[0.07]">
+              {/* No `priority` here on purpose: this portrait lives in a
+                  `hidden lg:block` column, but priority emits a <link rel=preload>
+                  regardless of CSS — so every mobile visitor (~95% of our traffic)
+                  was preloading a 330px image that never renders. The mobile
+                  visitor gets the 80px variant in the figure above instead. */}
               <Image
                 src="/leslie-office.webp"
                 alt="Leslie Rivas — Blottman Legal Services, Ontario traffic ticket defence"
                 fill
-                priority
                 sizes="330px"
                 className="object-cover object-top brightness-95"
               />

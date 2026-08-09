@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { m, useReducedMotion } from "motion/react";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/content";
@@ -35,13 +36,17 @@ export default function NoInsuranceBanner() {
 
   return (
     <section className="relative overflow-hidden bg-ink py-16 text-white sm:py-24">
-      {/* Background Image with seamless top/bottom fades and vignette */}
+      {/* Background Image with seamless top/bottom fades and vignette.
+          next/image, not a raw <img> — see the note in OffenseDetails.tsx. The
+          source PNG is 733 KB and renders at 25% opacity behind a vignette. */}
       <div className="pointer-events-none absolute inset-0">
-        <img
+        <Image
           src="/abstract_siren_bg.png"
           alt=""
           aria-hidden="true"
-          className="h-full w-full object-cover object-center opacity-25 brightness-75 mix-blend-lighten"
+          fill
+          sizes="100vw"
+          className="object-cover object-center opacity-25 brightness-75 mix-blend-lighten"
         />
         {/* Soft edge vignette to focus the center and darken the edges heavily */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(12,12,12,0.95)_100%)]" />
@@ -55,9 +60,12 @@ export default function NoInsuranceBanner() {
         className="pointer-events-none absolute right-0 top-1/2 w-[800px] -translate-y-1/2 translate-x-[65%] rotate-12 opacity-5 mix-blend-luminosity"
         aria-hidden="true"
       >
-        <img
+        <Image
           src="/process-1-ticket.jpg"
           alt=""
+          width={900}
+          height={601}
+          sizes="800px"
           className="h-auto w-full rounded-3xl"
         />
       </div>
