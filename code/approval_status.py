@@ -66,8 +66,11 @@ for r in ga.search(customer_id=cid, query="""
     FROM ad_group_criterion
     WHERE campaign.id = 23039650759
       AND ad_group_criterion.type = 'KEYWORD'
-      AND ad_group_criterion.final_urls != ''
 """):
+    # NOTE: GAQL rejects `final_urls != ''` (OPERATOR_FIELD_MISMATCH — repeated
+    # field only accepts CONTAINS ALL/ANY/NONE), so filter in Python instead.
+    if not r.ad_group_criterion.final_urls:
+        continue
     any_kw = True
     print(f"  kw '{r.ad_group_criterion.keyword.text}': {list(r.ad_group_criterion.final_urls)}")
 if not any_kw:

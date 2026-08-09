@@ -1246,3 +1246,155 @@ these workflows in BOTH that runbook and this file's change log.**
   execution succeeded 08:29 UTC ✓. NOTE for future sessions on THIS machine: the `claude mcp` n8n
   server still points at the now-empty CLOUD instance — to edit the live workflows use the
   clients.stenth.com public API (key in STENTH-INFRA-BRIEFING.md) or re-register MCP against it.
+- **2026-08-09** (Anshul): **Leslie complaint "lots of 20-30s junk calls about how to pay tickets" →
+  root cause = an UNLOGGED tCPA removal on BMX on Jul-28. RESTORED tCPA $0 → $95 (applied + verified).**
+  Diagnosis: change history (`change_event`, 30d max lookback) shows **`maximize_conversions.
+  target_cpa_micros` on BMX (`22979153470`) set 95000000 → 0 on 2026-07-28 15:23 by info@stenth.com**,
+  with no CLAUDE.md entry. That wiped the Jul-16 walk-up ($51→$60→$95) and left Maximize Conversions
+  fully uncapped. **MEASURED DAMAGE** (`code/tcpa_calib.py`, new reusable script): Jul 14-27 with the
+  $95 cap = **$947.16 / 15 biddable conv = $63.14 CPA** (stenth-only $78.93); Jul 28-Aug 8 uncapped =
+  **$711.55 / 6 biddable conv = $118.59 CPA**. Uncapping ~**doubled** cost per real conversion and cut
+  volume by more than half. Also: PMAX expanded into the **Content network** (0 impr/day → 400-500/day,
+  33-37 clicks/day of near-free Display/Discover) starting ~Aug 4, ≈1wk after the change = the normal
+  PMAX re-learning ramp. **FIX: `code/restore_bmx_tcpa.py`** → verified `tCPA=$95.00`, strategy still
+  MAXIMIZE_CONVERSIONS. Chose $95 not tighter because achieved stenth CPA *under* the cap was $78.93 —
+  targeting at/below achieved is the **Jul-06 mistake** ($51 vs ~$57 achieved) that throttled BMX 11
+  days; and $95 is the value the campaign already learned under = least re-learning churn.
+  **⚠️ KEY MEASUREMENT LESSON (I got this wrong first pass and corrected it — don't repeat it):
+  `metrics.all_conversions` ≠ `metrics.conversions`.** My initial read blamed a "Content-network doom
+  loop" using all_conversions; segmenting properly shows **Content produced 0 BIDDABLE conversions** —
+  all 7 were `Contact Us`, which is observe-only (`include_in_conversions_metric=False`), so the bidder
+  never learned from any of it. The real mechanism is plainer: uncapped Max Conversions bids harder into
+  expensive auctions (CPA drifts up) and explores wider (Content reach). **Always segment by
+  `segments.conversion_action_name` + `metrics.conversions` before claiming a feedback loop.**
+  **USEFUL STRUCTURAL FACT:** BMX bids on essentially ONE action — `Inbound call - Blottman (stenth)`
+  (8 biddable/14d); Contact Us + Phone Click are 0-biddable. So **BMX's tCPA is calibrated directly
+  against the stenth 45s-call CPA** — that's the number to compute when tuning it.
+  ⚠️ **HONEST CAVEAT — do NOT tell Leslie this is solved yet.** The 20-30s calls are *under* the 45s
+  stenth threshold, so they never counted as conversions and never touched bidding; they are invisible
+  in conversion reporting (which is why this went unnoticed for 2wks). The Content→junk-caller link is
+  **inference, not measurement**: Aug 7 had 5 junk-short calls on 33 Content clicks, but Aug 6 had 3
+  GOOD calls (73s/42s/149s) on 37 Content clicks — no clean correlation. Restoring the cap is
+  well-supported on efficiency grounds regardless. **WATCH 4-5 days of call data before declaring the
+  junk-call issue fixed.** Interim zero-cost mitigation for Leslie: the 10-second triage script ("we
+  fight tickets in court, we don't process payments — call the city/court directly").
+  **⚠️ PROCESS ISSUE (2nd occurrence): an unlogged mutation on the shared-credential account caused a
+  multi-week problem before anyone noticed** (1st was the Jul-06 AI Max flip → Jul-17 doom loop).
+  BMX's tCPA must never sit at $0. Proposals (NOT applied, team call): lock tCPA edits to one owner +
+  mandatory log entry, and/or add a **Content-vs-Search CPA split to the Morning Digest** — that split
+  diverged 3-4 days before Leslie complained and would have tripped an alert in days, not weeks.
+  Scripts: `code/tcpa_calib.py` (read-only calibration: biddable vs all_conversions by network +
+  conversion action), `code/restore_bmx_tcpa.py` (revert values in header).
+- **2026-08-09** (Anshul, same session): **"Contact Us" phantom explained + BMX still points at the
+  OLD site (blottman.com) — the structural finding of the day.** Kushagra asked why Leslie can't find
+  the 7 Content-network "Contact Us" conversions. Answer (`code/contact_us_probe.py`, read-only):
+  **they are not forms.** `Contact Us` (`7262635666`) is **`WEBPAGE_CODELESS`** — no tag was ever
+  installed, so Google's base tag is *guessing* from page interactions (tel:/mailto: clicks, button
+  clicks). `primary=False`, `include_in_conversions_metric=False`. Not weak leads — **not leads**.
+  This is the same phantom behind the Jun-15 mismatch (Leslie counted 5-10; our data said 35).
+  **THE BIG ONE: BMX asset group `6607110351` final URL is still `https://blottman.com/`** while
+  Search Consolidated runs entirely on `blottman.ca` (10 routes). Contact Us last 14d = **24 of 25 on
+  BMX** (i.e. on .com); real `Submit Lead Form - STENTH` = **3 total, ALL from Search, ZERO from BMX**
+  — because BMX never sends anyone to .ca. **So ~70% of spend lands on the site with no form tag, no
+  lead delivery, no QuickForm/CRO work, and no site access; while every piece of conversion
+  infrastructure we built (QuickForm, gclid capture, Submit Lead Form tag, n8n instant alert to
+  legal@blottman.com, Lead Tracker) sits on the site getting the least money.** That is the real
+  reason Leslie feels she gets no leads from most of the spend.
+  **PROPOSED (NOT APPLIED): repoint BMX asset group → `blottman.ca/`.** Two prerequisites found:
+  **(1)** BMX uses *account-level* conversion goals, which include `SUBMIT_LEAD_FORM/GOOGLE_HOSTED`
+  but **NOT** `SUBMIT_LEAD_FORM/WEBSITE` — so repointing alone makes form fills *visible* but still
+  **not biddable**; BMX would keep bidding on stenth calls only. Needs a campaign-level goal added,
+  exactly as done for Search on Jul-11 (`fix_search_goals.py`). **(2)** BMX campaign-level sitelinks
+  are presumably still .com and must move in the same change (the Jun-24 lesson: campaign sitelinks
+  DO count toward domain consistency). **TIMING: deliberately deferred** — tCPA was changed the same
+  day and PMAX is re-learning; stacking a landing-page change would give two variables and no clean
+  read on whether the junk calls stop. Do it as ONE clean change after the 4-5 day tCPA watch window.
+- **2026-08-09** (Anshul, same session): **Search Consolidated (`23971101309`) full eligibility audit —
+  CLEAN on compliance, the problem is RANK.** New script `code/search_eligibility.py` (read-only:
+  settings drift, ad approval + Ad Strength, keyword QS, extension stack, impression share).
+  **GOOD NEWS — everything we built is live and approved:** `primary=ELIGIBLE`, no reasons; **all 10
+  RSAs APPROVED/REVIEWED** on their matching .ca pages; **Ad Strength GOOD on 9 of 10** ad groups
+  (only **Cell Phone = AVERAGE**) — a real lift from the Jun-27 state (3 POOR) and from the old broad
+  campaign that never beat AVERAGE; full extension stack serving (10 sitelinks, 10 callouts, 2
+  structured snippets, call, lead form, business logo, **business name**, 8 ad images) — both Jun-27
+  UI-only TODOs (business-name verification, Search image upload) are DONE. **Jul-17 fixes verified
+  still holding: `ai_max=False`, `TARGET_SPEND` (Max Clicks) w/ $8 ceiling** — nobody re-enabled AI Max.
+  ⚠️ **DRIFT (3rd unlogged change): budget is $35/day, CLAUDE.md logs $30.**
+  **THE ACTUAL PROBLEM (14d): impression share 20.37%, LOST TO RANK 72.84%**, lost to budget only
+  6.79% — essentially unchanged since Jun-27 (28% IS / 69% rank), so 6 weeks has not fixed it.
+  **QS distribution: QS1=5, QS2=7, QS3=15, QS4=1, QS5=5, QS7=1** (27 of 34 scored keywords at QS<=3),
+  incl. every top spender (`fight a traffic ticket` QS3, `careless driving charge` QS2, `driving
+  without insurance ontario` QS1); 42 more keywords have too little volume to score.
+  **DIAGNOSIS:** phrase keywords match a flood of zero-click research queries (`what is stunt driving
+  in ontario`, `how much is a speeding ticket in ontario`), which cost ~nothing in dollars but drag
+  expected CTR -> QS -> Ad Rank, losing us the *good* auctions too.
+  **ECONOMICS FLAG:** Search 14d = $445.72 for **3** deliverable form fills = **$148.57/lead**, vs
+  BMX $711.55 for 6 verified 45s+ calls = **$118.59/call**. Search currently costs MORE per lead than
+  PMAX, with a softer signal, 6 weeks in. (The 3 form fills ARE real and do reach Leslie via n8n.)
+- **2026-08-09** (Anshul, same session): **QS-drag negatives DRAFTED AND STAGED, NOT APPLIED** —
+  `code/add_qs_drag_negs.py` (inert without `--apply`; dry run verified). Drafted the honest way with
+  `code/draft_informational_negs.py` (read-only), which measures each candidate's blast radius against
+  1,267 real 14d search terms and auto-vetoes any that would block a converting or healthy-CTR query.
+  **⚠️ THE MEASUREMENT OVERTURNED INTUITION — do this before writing negatives, never freehand them:**
+  candidates I would have added by feel turned out to BEAT the 3.67% campaign CTR and were vetoed —
+  **`how many points` 17.14%, `how much does` 20.00%, `how long does` 15.79%, `what is the fine` 5.77%,
+  `can you go to jail` 5.88%, `points for` 5.00%, `penalty for` 4.41%.** People researching demerit
+  points and penalties DO click; blocking them would have destroyed good traffic.
+  **STAGED SET = 10 PHRASE negatives** (~489 impr / 7 clicks / CTR ~1.4% in 14d): `fine for`,
+  `how much is`, `what is stunt driving`, `demerit points for`, `what happens if`, `what is the
+  penalty`, `fines for`, `is stunt driving a criminal`, `what is careless driving`, `laws`.
+  Five more were dropped for <10 impr (statistical noise). Verified the period's only converting term
+  (`stunt driving lawyer cost`) survives the whole set. `how to fight`/`dispute`/`help`/`lawyer`/
+  `near me` deliberately untouched.
+  ⚠️ **HONEST SIZING — do not oversell this:** it lifts measured CTR 3.67% -> ~4.0%, a **~10% relative
+  lift**. That is a nudge toward better QS, **not a cure for 72.84% lost-to-rank.** If QS/IS have not
+  moved meaningfully in 2-3 weeks after applying, the real question becomes whether these SKAGs can
+  win against established competitors at all, or whether Search budget belongs in BMX.
+  ⚠️ Master Negatives is attached to BOTH enabled campaigns, so this hits PMAX too (intended).
+  **APPLY AFTER the tCPA watch window closes** — bundle with the BMX .ca migration as one session.
+  Also fixed a latent GAQL bug in `code/approval_status.py`: `ad_group_criterion.final_urls != ''` is
+  invalid (`OPERATOR_FIELD_MISMATCH` — repeated fields only take CONTAINS ALL/ANY/NONE); now filtered
+  in Python. Script had been failing at section 3 on every run.
+- **2026-08-09** (Anshul): **landing-v2 mobile performance fixes — 96% cut in background-image bytes
+  (MEASURED, not estimated). NOT DEPLOYED.** Context: ~95% of traffic is mobile (Aug-8: 1,307 mobile
+  impr vs 66 desktop) and **landing page experience is one of the three Quality Score inputs** — with
+  QS 1-3 and 72.84% lost to rank, page speed is one of the few QS levers we control.
+  **(1) Raw `<img>` was bypassing next/image on every SKAG page.** `OffenseDetails.tsx` imported
+  `next/image` but rendered a raw `<img>` for the section background, so `next.config.mjs`'s AVIF
+  setting did nothing for it and the full source PNG shipped — **for a background rendered at 25%
+  opacity behind a vignette.** Same in `NoInsuranceBanner.tsx` (×2: the siren bg + the off-axis ticket
+  at 5% opacity). Converted all three to `<Image fill sizes="100vw">` / `<Image width height>`.
+  **MEASURED via `next start` + curl at w=640 (mobile), q=75:**
+  speeding 739,493→23,585 (-97%), careless 965,504→59,915 (-94%), stunt 829,379→32,255 (-97%),
+  disobey 743,475→28,740 (-97%), no_licence 708,749→22,020 (-97%), cell_phone 633,625→22,687 (-97%),
+  abstract_siren 750,116→45,083 (-94%). **Total 5,370,341 → 234,285 bytes = -96%.**
+  **(2) `hero-bg.mp4` NEVER EXISTED.** `Hero.tsx` rendered `<video autoPlay loop muted playsInline>`
+  with `<source src="/hero-bg.mp4">` — the file is not in `public/`, so **every pageview on every page
+  fired a request that 404'd.** The `courthouse-bg.webp` poster still rendered, which is exactly why
+  nobody caught it. Replaced with the poster as a real `<Image fill priority sizes="100vw">`.
+  **Restore instructions are in the component comment** if the video is ever supplied.
+  **(3) Removed `priority` from the desktop-only Leslie portrait.** It sits in a `hidden lg:block`
+  column, but `priority` emits `<link rel="preload">` **regardless of CSS** — so ~95% of visitors were
+  preloading a 330px portrait that never renders. Mobile still gets the 80px variant in the
+  mobile-only figure. Verified in built HTML: preloads are now exactly `courthouse-bg.webp` + `logo.png`.
+  **VERIFIED:** `tsc --noEmit` clean; `npm run build` clean (17/17 static routes); built HTML shows
+  **zero raw image `src=`** and `speeding_dark_bg.png` now routing through `_next/image`; zero
+  `hero-bg.mp4` references remain. ⚠️ **NOT DEPLOYED — needs a Vercel redeploy of landing-v2.**
+  ⚠️ Honest caveat: QS improvement is **not proven** — Google doesn't expose the QS component
+  breakdown via API, and expected-CTR/ad-relevance may dominate. This is a real input and it's free,
+  but don't promise Leslie a rank change from it.
+  ⚠️ **STILL TRUE: none of this reaches ~70% of spend until BMX points at blottman.ca** (see the
+  earlier Aug-09 entry). Site work compounds with that migration; alone it only affects the ~$31/day
+  Search campaign.
+  **NOT CHANGED, needs a client conversation (both were explicit client requests that reversed the
+  Jul-02 CRO work):** `bce5439` (Aug 5) moved the hero CTA from `#free-review` (the 2-step QuickForm
+  directly under the hero) back to `#quote` (the full form at the page bottom), so ad visitors now
+  scroll the whole page to reach a form; `a6d1198` (Aug 1) made QuoteForm's "What happened?" textarea
+  required again. **On the required message field Leslie is arguably RIGHT** — her #1 complaint is junk
+  leads, and a required free-text field filters out pay-a-ticket enquiries, so it's a rational
+  volume-for-quality trade. The hero CTA change is the weaker one: a long scroll filters nobody, it
+  just loses the impatient. Re-litigate with data, not opinion.
+  **ALSO TO VERIFY (couldn't check from here — Vercel CLI not installed):**
+  `NEXT_PUBLIC_GADS_CALL_CONVERSION` must be set in Vercel or the website call number-swap never
+  loads. `Calls From Website` (`7173397842`) IS a biddable action but shows ~zero conversions, which
+  is consistent with the env var being unset.
