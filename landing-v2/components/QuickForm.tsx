@@ -21,6 +21,7 @@ export default function QuickForm({ defaultCharge = "" }: { defaultCharge?: stri
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
 
   const input =
     "w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3.5 text-[15px] text-white placeholder-white/40 outline-none transition focus:border-gold/50 focus:bg-white/[0.06]";
@@ -139,7 +140,7 @@ export default function QuickForm({ defaultCharge = "" }: { defaultCharge?: stri
             </p>
           </form>
         ) : (
-          <form key="quick-step-2" onSubmit={handleSubmit} className="grid gap-3 sm:grid-cols-[1fr_1fr_auto]">
+          <form key="quick-step-2" onSubmit={handleSubmit} className="grid gap-3 sm:grid-cols-2">
             <input
               name="name"
               required
@@ -160,17 +161,27 @@ export default function QuickForm({ defaultCharge = "" }: { defaultCharge?: stri
               autoComplete="email"
               className={input}
             />
+            <textarea
+              name="message"
+              required
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              rows={3}
+              placeholder="Describe your ticket — what happened, what you were charged with, etc."
+              aria-label="Describe your ticket"
+              className={`${input} resize-y sm:col-span-2`}
+            />
             {/* Honeypot: real users never fill "company". */}
             <input type="text" name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
-            <button type="submit" disabled={status === "submitting"} className={button}>
+            <button type="submit" disabled={status === "submitting"} className={`${button} sm:col-span-2`}>
               {status === "submitting" ? "Sending…" : "Get My Review"}
             </button>
             {status === "error" && (
-              <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-[13px] text-red-200 sm:col-span-3">
+              <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-[13px] text-red-200 sm:col-span-2">
                 {error}
               </p>
             )}
-            <p className="text-[11px] leading-relaxed text-white/40 sm:col-span-3">
+            <p className="text-[11px] leading-relaxed text-white/40 sm:col-span-2">
               Almost done — {chargeLabel} · {phone}{" "}
               <button
                 type="button"

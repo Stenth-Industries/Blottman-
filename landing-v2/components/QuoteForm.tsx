@@ -128,12 +128,12 @@ export default function QuoteForm() {
 
                 <label className="flex flex-col gap-2 sm:col-span-2">
                   <span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
-                    What happened?
+                    Describe your ticket
                   </span>
                   <textarea
                     name="message"
-                    rows={4}
                     required
+                    rows={4}
                     placeholder="e.g., I was pulled over on the 401. The officer said I was doing 130km/h. This is my first ticket."
                     className="resize-y w-full rounded-xl border border-white/10 bg-white/[0.03] px-5 py-4 text-[15px] text-white placeholder-white/30 outline-none transition focus:border-gold/50 focus:bg-white/[0.06]"
                   />
