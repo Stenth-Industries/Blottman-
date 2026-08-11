@@ -40,13 +40,12 @@ export async function POST(req: NextRequest) {
     ts: new Date().toISOString(),
   };
 
-  // Name, phone, and a ticket description are required — the description lets
-  // Leslie pre-screen the case before calling back, instead of Leslie fielding
-  // calls that turn out to be parking-fine or payment questions. Email stays
-  // optional (she calls leads back). Both QuickForm and QuoteForm now collect
-  // the description field, so this is safe to enforce for every submission.
-  if (!lead.name || !lead.phone || !lead.message) {
-    return bad("Please fill in your name, phone number, and a short description of your ticket.");
+  // Name, phone, email, and a ticket description are all required — the
+  // description lets Leslie pre-screen the case before calling back instead
+  // of fielding calls that turn out to be parking-fine or payment questions,
+  // and email gives a second contact channel if the phone doesn't connect.
+  if (!lead.name || !lead.phone || !lead.email || !lead.message) {
+    return bad("Please fill in your name, phone number, email, and a short description of your ticket.");
   }
 
   const url = process.env.LEAD_WEBHOOK_URL;

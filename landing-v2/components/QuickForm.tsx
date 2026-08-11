@@ -154,10 +154,11 @@ export default function QuickForm({ defaultCharge = "" }: { defaultCharge?: stri
             <input
               name="email"
               type="email"
+              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email (optional)"
-              aria-label="Email (optional)"
+              placeholder="Email"
+              aria-label="Email"
               autoComplete="email"
               className={input}
             />

@@ -98,7 +98,7 @@ export default function QuoteForm() {
               <form onSubmit={handleSubmit} encType="multipart/form-data" className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <Field name="name" label="Full name" autoComplete="name" className="sm:col-span-2" />
                 <Field name="phone" label="Phone" type="tel" autoComplete="tel" />
-                <Field name="email" label="Email (optional)" type="email" autoComplete="email" required={false} />
+                <Field name="email" label="Email" type="email" autoComplete="email" />
 
                 {/* Dropdown for Charge Type */}
                 <label className="flex flex-col gap-2 sm:col-span-2">
