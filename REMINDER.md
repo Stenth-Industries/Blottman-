@@ -1,5 +1,34 @@
 # ⏰ Reminders — Blottman Law Ads
 
+## 🔴 ~Aug 14-15, 2026 — Repoint PMAX (BMX) final URL blottman.com → blottman.ca (FOR AKASH + KUSHAGRA)
+**Same decision gate as the Jul 5 entry below — still not done as of Aug 11.** BMX's asset group final
+URL is still `https://blottman.com/`. On Aug 11 we made two changes to BMX already (budget $65→$50/day,
+removed the PMAX call-asset to push impulse-call traffic toward a form instead) and deliberately did NOT
+stack a third significant change (this URL migration) on the same campaign within the same 72h window —
+this account has a documented history (the June delivery-collapse incident) of stacked changes causing
+real damage. **Wait ~3-4 days from Aug 11, let the budget cut + call-asset removal show clean data, then
+do the migration as its own isolated step:**
+1. Repoint BMX asset group final URL `blottman.com/` → `blottman.ca/`
+2. Repoint or drop the 2 campaign-level sitelinks on BMX (one points to `/contact-us/`, which doesn't
+   exist on blottman.ca — needs to go to the homepage instead, where the QuickForm lives)
+3. Check the 8 account-level sitelinks that also touch blottman.com and could still serve on BMX
+FUE is already off on BMX, so no risk of Google auto-expanding into other blottman.com pages mid-move.
+
+**Also open from Aug 11, not yet investigated:** blottman.com does have a lead form after all — it's a
+**LeadConnector/GoHighLevel iframe embed** (`api.leadconnectorhq.com/widget/form/...`, form named
+"Blottman"), invisible to a plain HTML/curl check since it's a client-side iframe (a first pass missed
+it). It's a separate system from blottman.ca's QuoteForm/QuickForm and is NOT wired to the
+`Submit Lead Form` Ads conversion action, so submissions through it are probably going untracked.
+There's also a **CallRail** dynamic-number-insertion script on the page (swaps the displayed phone
+number per traffic source) — not previously documented anywhere in this account's notes. Both need a
+real look: who owns/monitors the LeadConnector form, does Leslie see those submissions, and does
+CallRail's number swap explain anything about the call-quality pattern.
+
+To act: open Claude Code in this folder and say *"check on the BMX final URL migration + the
+LeadConnector/CallRail stuff we found Aug 11."*
+
+---
+
 ## 🔴 ~July 5, 2026 — Check .ca form signal → then repoint PMAX to blottman.ca
 **Decision gate for repointing PMAX (BMX + Blottman New pM) from blottman.com → blottman.ca.**
 Today (Jun 28) PMAX asset groups all land on **`https://blottman.com/`** (old site, FUE OFF), so PMAX
