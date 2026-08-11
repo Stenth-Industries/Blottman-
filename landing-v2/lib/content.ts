@@ -574,4 +574,12 @@ export const FAQS = [
     q: "How fast can you help?",
     a: "Send us a message today and we'll review your charge and call you back. The sooner we start, the more options you have.",
   },
+  {
+    q: "Do you handle parking tickets or other ticket types?",
+    a: "No. We handle traffic and Highway Traffic Act matters only, including speeding, careless driving, stunt driving, and similar charges. We do not handle parking tickets or any other ticket type outside the HTA.",
+  },
+  {
+    q: "Do you serve only Ontario, or other Canadian provinces too?",
+    a: "Ontario only. As a licensed Ontario paralegal, our services are limited to charges under Ontario's Highway Traffic Act.",
+  },
 ];
