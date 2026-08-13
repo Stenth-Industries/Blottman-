@@ -1398,3 +1398,106 @@ these workflows in BOTH that runbook and this file's change log.**
   `NEXT_PUBLIC_GADS_CALL_CONVERSION` must be set in Vercel or the website call number-swap never
   loads. `Calls From Website` (`7173397842`) IS a biddable action but shows ~zero conversions, which
   is consistent with the env var being unset.
+- **2026-08-13** (Anshul): **BMX MIGRATED TO blottman.ca + full copy/targeting pass. Triggered by
+  Leslie's WhatsApp escalation ("another call for court location… this is now extremely concerning").**
+  **DIAGNOSIS FIRST (read-only):** the junk callers are NOT Search — its 7d search terms are 100%
+  offence-intent (stunt/careless/stop-sign), the Jul-17 AI Max fix is holding. They are **PMAX, via
+  two pools.** Pool 1 = 19 tracked call-extension calls/7d, only 7 ≥30s. **Pool 2 (the invisible one)
+  = tap-to-call on the OLD site:** `Contact Us` (WEBPAGE_CODELESS, fires on page interactions) logged
+  **24 events/14d, 21 mobile, 9 of them on the CONTENT network**. BMX Content served 1,602 impr /
+  **105 clicks** (more clicks than its Search network) for $26 with **0 biddable conv** — near-zero-intent
+  Display/Discover taps landing on blottman.com where the phone number is displayed. That is why
+  negatives never fixed it and why our reporting never matched her experience.
+  **⚠️ AKASH TOLD LESLIE "we have stopped using the old website" — that was NOT true.** BMX (62% of
+  spend) still pointed at blottman.com until today. Correct this with her before she checks an ad.
+  **UNLOGGED CHANGES FOUND (Aug-11, 3rd occurrence of this problem):** (1) 11:43 via API, BMX $65→$50
+  and Search $35→$50; (2) 12:24 via API, **both campaign-level CALL assets removed from BMX** — which
+  did NOT stop PMAX calls (account-level call asset `370129419278` is ENABLED and serves in their
+  place; stenth still fired Aug 12), it just made the wiring inconsistent; (3) 14:22 via UI, a **new
+  PMAX campaign draft on Maximize Conversion VALUE, tROAS 2.27, $50/day** with fresh assets. **DO NOT
+  PUBLISH that draft** — 6 conv/14d and zero revenue data in the account.
+  **APPLIED (all verified):**
+  **(A) `code/migrate_bmx_to_ca.py`** — asset group `6607110351` final URL blottman.com → **blottman.ca**;
+  created 2 new .ca sitelinks (`407152521563` Car Ticket Defence, `407152521683` Free Case Review) and
+  unlinked the 2 .com ones. NOTE the unlinked "Contact Us" sitelink carried description **"98% Win Rate,
+  Traffic Law Experts"** — the Jun-17 clickbait claim, still live until today. Made
+  **`SUBMIT_LEAD_FORM/WEBSITE` biddable** on BMX (it was bidding on PHONE_CALL_LEAD only). ⚠️ Correction
+  to the Aug-09 note: BMX was already `goal_config_level=CAMPAIGN`, not account-level.
+  **(B) `code/fix_bmx_copy.py`** — 17 assets out, 12 in. Out: 9 outcome guarantees (Fight…& Win, Beat
+  Your Car Ticket Today, Ticket Dismissals Start Here, Get Your Ticket to Win, …), 5 **"Lawyer"** assets
+  (LSO risk — she is not a lawyer), 3 descriptions incl. the "24/7 legal help" one that invites
+  after-hours calls, and campaign callouts **"98% Win Rate" + "100% Representation" + "24/7 Legal Help"**.
+  Also pulled "Experienced Ticket Paralegal" (client's own Jun-27 no-'paralegal' directive; new copy
+  says "Licensed in Ontario", satisfying both LSO and the client). In: **self-filtering copy that works
+  on Display where negatives do not** — `Ontario traffic ticket defence. We do not handle parking
+  tickets or payments.` / `Ontario traffic tickets only. We do not handle parking tickets or fine
+  payments.` / `Ontario Traffic Tickets Only` / `Speeding & Careless Tickets` + Licensed in Ontario,
+  Free Case Review Online, Serving All of Ontario. Final: **14 headlines / 5 long headlines /
+  5 descriptions, 0 assets containing lawyer, win, dismiss, 98%, paralegal or 24/7.**
+  **ACCOUNT-LEVEL callouts removed:** "Meet Our Lawyer" (LSO) and **"Chat Support Available"** (verified
+  false — `FloatingActions.tsx` ChatIcon is a button that scrolls to `#quote`; blottman.ca has no chat).
+  Only "Get A Free Consultation" remains.
+  **(C) `code/trim_search_themes.py`** — **10 of 20 search themes were anchored on "lawyer"**, i.e. on a
+  profession rather than the offence. That is why BMX's negative list has had to block legal aid ×4,
+  pro bono, public defender, government lawyer, free, immigration: **the negatives were fighting the
+  themes.** Removed `how to fight a traffic ticket` (DIY anchor → the courthouse/pay-portal universe),
+  `license suspension lawyer` (dup), `HOV ticket`; added `stunt driving charge ontario`,
+  `careless driving ticket ontario`, `driving without insurance charge`, `traffic ticket defence
+  ontario`. Now 21 themes. **No audience signal present** (the Jun-11 policy trigger stays removed).
+  ⚠️ Themes are HINTS — Google weights them below landing page and conversion history. Expect a nudge.
+  **⚠️ API GOTCHAS (cost 3 failed attempts, worth knowing):** asset-group asset edits **cannot be
+  batched**. A mixed link+unlink batch is validated against PRE-batch counts → `NOT_ENOUGH_LONG_
+  HEADLINE_ASSET`; links-first fails `RESOURCE_LIMIT` (max 5 long headlines / 5 descriptions, and this
+  grandfathered group sat at 8 and 6); removals-only fails too. **Only one operation per request works.**
+  Also `client.get_type("FieldMask")` does not exist in v24 → use `field_mask_pb2.FieldMask`, and
+  `asset_group_asset.performance_label` is not a queryable field.
+  **MEASURED CONTEXT:** 14d = $1,269 for **10 real leads** (BMX $784/6 verified 45s+ calls = $130.71;
+  Search $484.81/4 .ca form fills = $121.20). **BMX conversions collapsed 64%**: Jul 13-28 = 19 conv at
+  1.19/day, Jul 29-Aug 11 = 6 conv at 0.43/day, at comparable spend — the cut point is the Jul-28
+  unlogged tCPA removal, which is a cleaner confirmation of the Aug-09 diagnosis. 30d BMX = $1,987 /
+  25 conv / $79 CPA. Search remains structurally weak: 76 keywords, **27 of 34 scored at QS ≤ 3**,
+  72.84% lost to rank, unchanged in 6 weeks.
+  **MEASUREMENT THAT OVERTURNED INTUITION (do this before writing negatives):** I was about to narrow
+  `[BRO] free` on BMX (Jul-06 note flagged it as blocking our own "free case review" offer). Natural
+  experiment: that negative is campaign-level on BMX only, so Search Consolidated is unblocked — its
+  30d "free" search terms are **1 impression, 0 clicks** (`free public court records ontario`). There
+  is no hire-intent traffic being lost. **Left it alone.**
+  **DELIBERATELY NOT DONE — budgets untouched this week.** On the numbers I would put BMX back to $65,
+  but landing page + conversion goal + ad copy + themes all moved today; adding a budget change means
+  no clean read on which one worked. Watch 4-5 days of call quality, then rebalance.
+  **WATCH:** (a) asset group reads `ASSET_GROUP_UNDER_REVIEW` from the URL change — expect a soft day
+  or two, do not panic; (b) BMX had near-zero delivery days Aug 3 and Aug 8 ($0.33) — if that recurs,
+  suspect the tCPA; (c) the tCPA $95 was calibrated on **calls alone** and form fills now count as
+  conversions too, so the blended CPA target will need a fresh look in 1-2 weeks.
+  **THE NUMBER THAT DECIDES EVERYTHING, STILL MISSING:** ~21 leads/mo at ~$127 each against ~$2,900
+  spend. Whether that is excellent or ruinous depends entirely on the **retention rate, which nobody
+  records** — the Lead Tracker's `Retained?` column sits empty. It is free, it is Leslie's 30 seconds
+  a day, and it is the prerequisite for the OCI build (upload retained leads at $400). This is the
+  single biggest unlock available and it is parked. Scripts: `migrate_bmx_to_ca.py`, `fix_bmx_copy.py`,
+  `trim_search_themes.py` (all with revert values in their headers).
+  **(D) QS-drag negatives APPLIED** (staged Aug-09, released this session now that the tCPA watch
+  window closed): `code/add_qs_drag_negs.py --apply` added the 10 measured PHRASE negatives to shared
+  **Master Negatives** (`12109076551`, **131 → 141**, verified 10/10 present and attached to both
+  enabled campaigns). Blocks ~489 impr/14d at ~1.4% CTR vs the 3.67% campaign average, so measured CTR
+  should go ~3.67% → ~4.0%. **That is a ~10% relative nudge, NOT a cure for 72.84% lost-to-rank** — if
+  QS/IS have not moved in 2-3 weeks, the real question becomes whether these SKAGs can win at all or
+  whether Search budget belongs in BMX. Accepted confound: the shared list also hits PMAX, so its
+  effect cannot be separated from the copy pass. Does not matter — both push the same direction and
+  we would keep both either way.
+  **NEXT ACTIONS AGREED:** (1) message Leslie (draft written in-session) correcting the "we stopped
+  using the old website" claim and **pre-warning her that total call volume will DROP** — that is the
+  filtering working, not a failure; (2) **deploy landing-v2** — the Aug-09 mobile perf fixes (96% cut
+  in background-image bytes) are still undeployed, and they finally matter now that .ca receives ~60%
+  of spend instead of ~30%; (3) verify `NEXT_PUBLIC_GADS_CALL_CONVERSION` is set in Vercel; (4) **UNPARK
+  the retention capture** — the `Retained?`/Lost write-back already exists on the blottman.stenth.com
+  dashboard and was shelved Jul-17 by decision, not by a blocker, so this is a switch not a build
+  (low-tech fallback: Leslie replies "RETAINED" to the lead alert email, n8n writes it back);
+  (5) re-check call quality in 4-5 days, then rebalance budgets (expectation: BMX back toward $65).
+  **HOW OCI WILL ACTUALLY WORK (asked this session, worth recording):** form leads join on **gclid**
+  (already captured into the Lead Tracker; Google resolves the click's campaign/placement/query itself,
+  we only supply the outcome). Calls join on **caller number + call start time** — ⚠️ and `call_view`
+  exposes only `caller_area_code`, NOT the full number, so the call path CANNOT be built from Google's
+  data alone and needs Leslie's phone log. That is the harder half, and it is where most of BMX's
+  conversions live. ⚠️ **At ~5 retained/mo, `Retained Client` must go in as SECONDARY/observation only**
+  — making it the biddable goal would starve PMAX worse than today (needs ~30 conv/mo). At this volume
+  WE are the optimizer, not Google: the column's near-term value is deciding where the $2,900 goes.
