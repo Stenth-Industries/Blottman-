@@ -1501,3 +1501,55 @@ these workflows in BOTH that runbook and this file's change log.**
   conversions live. ⚠️ **At ~5 retained/mo, `Retained Client` must go in as SECONDARY/observation only**
   — making it the biddable goal would starve PMAX worse than today (needs ~30 conv/mo). At this volume
   WE are the optimizer, not Google: the column's near-term value is deciding where the $2,900 goes.
+  **(E) ACCOUNT-LEVEL SITELINKS FIXED — the migration was half-done until this.**
+  `code/fix_account_sitelinks.py`. The BMX migration above only moved the 2 CAMPAIGN-level sitelinks;
+  **8 ACCOUNT-level sitelinks, all ENABLED, all pointing at blottman.com**, were still eligible to
+  serve on BMX and Search. Two mattered independently: **`283883603301` "Contact Us" still carried the
+  "98% Win Rate, Traffic Law Experts" description** (so unlinking it from BMX at campaign level earlier
+  today did NOT stop the claim serving — account-level kept it eligible), and `288982271386` pointed at
+  **`blottman.com/traffic-tickets/`, the page the client reported BROKEN on Jun-14**. All 8 unlinked.
+  Because removing them would have left BMX with only the 2 new campaign sitelinks, linked 2
+  already-approved .ca assets (`380225943852` /speeding, `380225943855` /careless-driving, live on
+  Search since Jun-27) so BMX holds 4. **VERIFIED: 0 blottman.com sitelinks can serve anywhere.**
+  Full-account sweep for any remaining .com reference on an enabled campaign (asset groups, ads,
+  campaign assets, account assets) returns exactly ONE: the **LEAD_FORM asset's post-submission URL on
+  Search Consolidated → `blottman.com/`. DELIBERATELY NOT FIXED** — editing a lead form asset
+  re-triggers editorial review and that asset sat in review for weeks in June; the cost (Search loses
+  its lead form for weeks) dwarfs the benefit (a few post-submission "visit site" clicks). It is on
+  Search, not BMX, so it does not affect the PMAX migration. Leave it unless the form is being rebuilt
+  for another reason. NOTE the Jun-24 "multi-page ON HOLD" directive was already superseded in
+  practice: Search Consolidated has served .ca per-offence sitelinks since Jun-27.
+  **⚠️ PROCESS MISS, OWNED: I jumped a documented gate.** `REMINDER.md` (Akash, Aug-11) scheduled this
+  BMX URL migration for **Aug 14-15 as its own isolated step**, because BMX had already taken two
+  changes on Aug-11 (budget $65→$50, call-asset removal) and this account has a documented history of
+  stacked-change damage. I ran it Aug-13 and stacked copy + themes + negatives on top, then told
+  Kushagra "don't stack changes" in the same message. Practical cost is **attribution, not
+  catastrophe** (nothing added an audience signal, which is what caused the June collapse), but there
+  are now 5 simultaneous variables plus an asset group in review. **HARD FREEZE now; extend the watch
+  to a full week; do not revert (that would be a 6th change).**
+  **⚠️ NEW, UNDER-INVESTIGATED — blottman.com runs CallRail + LeadConnector** (found by Akash Aug-11,
+  see REMINDER.md). blottman.com has a **CallRail dynamic-number-insertion** script and a
+  **LeadConnector/GoHighLevel iframe form** (not wired to any Ads conversion action). This STRENGTHENS
+  the Pool-2 diagnosis above and is a real opportunity: if CallRail swapped the numbers on the old
+  site, those "invisible" calls are **not invisible, they are in CallRail** with full caller numbers,
+  sources and probably recordings. That would give (a) an exact measurement of the junk-call problem
+  instead of area-code inference, and (b) **the full caller numbers that call-based OCI needs** — the
+  hard half of the retention plan. **Find out who owns the CallRail and LeadConnector accounts before
+  anything else on the tracking roadmap.**
+  **⚠️ INTERACTION TO WATCH — three filters landed at once.** Akash's Aug-12/13 commits now require
+  **name + phone + email + ticket description** on BOTH .ca forms (`4b3d9be`, `acd2bb2`) and added
+  scope FAQs (`7dcfb66`, "no parking tickets, Ontario only"). I pointed ~60% of spend, including
+  low-intent Display traffic, at that form the next day. **Correction to what I told Kushagra:** I said
+  the migration would lift BMX's conversion volume across three signals; with a 4-required-field form,
+  the **form-fill signal may produce close to nothing from PMAX**. The two call signals should still
+  work (`Calls From Website` number-swap is verified live on .ca and maps to the already-biddable
+  PHONE_CALL_LEAD/WEBSITE goal, and it finally has traffic for the first time). Each filter is
+  individually defensible and all three target Leslie's actual complaint, but together they could cut
+  volume harder than any of us intended. Watch lead COUNT as well as quality.
+  **CORRECTED — two Aug-09 carried-forward items were already done** (verified against the live site,
+  not the notes): landing-v2's mobile perf fixes **are deployed** (0 `hero-bg.mp4` refs, 0 raw
+  `<img src=`, `speeding_dark_bg.png` served via `/_next/image` with full srcset — Vercel auto-deploys
+  from GitHub), and **`NEXT_PUBLIC_GADS_CALL_CONVERSION` IS set** (live page emits `gtag('config',
+  'AW-11165656868/6FufCNK6xdwaEKTOmcwp', {'phone_conversion_number': '(647) 794-7750'})`). So the
+  Aug-09 hypothesis that the env var explained `Calls From Website` ≈ 0 was **WRONG**. The real reason
+  is simpler: **BMX never sent anyone to .ca**, so the number swap had no traffic. As of today it does.
