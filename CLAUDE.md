@@ -1584,7 +1584,16 @@ these workflows in BOTH that runbook and this file's change log.**
   final URL assets + asset group policy pages. (Browser session was very unstable — tab groups died
   between calls; `browser_batch` with an explicit tabId is what worked, and only the
   `assetreport/pmaxdlpa` URL form loaded, several other `/aw/...` paths 404'd.)
-  **⚠️ STILL UNVERIFIED: I could not independently confirm the FUE toggle saved.** API cannot read it,
-  `change_event` showed nothing for Aug 13-14 on BMX (it lags), and the settings page would not load
-  through the extension. **CONFIRM IT within 24-48h by reloading the Expanded final URL assets report:
-  if FUE is truly off, no NEW expanded URLs accrue.** If new rows appear, the toggle did not save.
+  **✅ BOTH VERIFIED IN THE UI (Claude-in-Chrome, campaign settings → Asset optimization → Text):**
+  the panel reads **"Customization and final URL expansion turned off"** on a freshly loaded page.
+  Also visible and correct in the same panel: conversion goals = **"Campaign-specific: Phone call
+  leads, Submit lead forms"** (the Aug-13 goal change is live), Bidding = **Target CPA CA$95.00**,
+  Budget CA$50/day. ⚠️ **STALE-PANEL TRAP:** an already-open settings panel still showed
+  "Customization" CHECKED after the API write; only a full reload showed the truth (summary line went
+  from "Text customization, video enhancement, and 2 more are turned on" → "Video enhancement, image
+  enhancement, and 1 more"). **Always reload before reading a Google Ads settings panel as evidence.**
+  Also noted in passing: Brand guidelines business name is **"Blottman"**, not the client-confirmed
+  **"Blottman Legal Services"** (Jun-27) — cosmetic, not changed during the freeze.
+  Remaining: the policy flag itself needs Google to re-evaluate (asset group was `UNDER_REVIEW`).
+  Recheck `campaign_status.py` in 24-48h; `HAS_ASSET_GROUPS_LIMITED_BY_POLICY` should drop, leaving
+  only `BUDGET_CONSTRAINED`.
