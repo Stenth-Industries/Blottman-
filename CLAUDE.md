@@ -1553,3 +1553,38 @@ these workflows in BOTH that runbook and this file's change log.**
   'AW-11165656868/6FufCNK6xdwaEKTOmcwp', {'phone_conversion_number': '(647) 794-7750'})`). So the
   Aug-09 hypothesis that the env var explained `Calls From Website` ≈ 0 was **WRONG**. The real reason
   is simpler: **BMX never sent anyone to .ca**, so the number swap had no traffic. As of today it does.
+  **(F) ⚠️⚠️ THE REAL ROOT CAUSE, FOUND IN THE UI — FINAL URL EXPANSION WAS ON, AND AUTO-CREATED
+  ASSETS WERE REWRITING OUR COPY. Kushagra was right to push back; my API-only reading was wrong.**
+  I told him the "One website per ad group" flag was a lagging label with nothing left to fix. It was
+  a live violation. Found via Claude-in-Chrome on the **Expanded final URL assets** report
+  (`/aw/assetreport/pmaxdlpa?...assetGroupId=6607110351`):
+  **(i) BMX was spending real money on blottman.com subpages that are NOT assets in the account** —
+  `blottman.com/stunt-driving-ticket-lawyer/` **2 clicks / CA$34.99** and
+  `blottman.com/driving-with-no-insurance-traffic-ticket-lawyer/`, both on Aug 11. THAT is the second
+  website. **So the Jun-14 log claiming FUE was turned off on all PMAX was wrong, or it was re-enabled
+  since.** Verify this claim rather than trusting the note.
+  **(ii) `TEXT_ASSET_AUTOMATION` was OPTED_IN, so Google was scraping the landing page and writing its
+  own headlines/descriptions**, including `Ontario Traffic Ticket Lawyers`, `Get 98% win rate`,
+  `We represent ALL of Ontario and are SPECIALIZED in traffic ticket infractions with 98% win rate`,
+  `Fight Driving With No Insurance Ticket & Win`. **None of these are in asset group 6607110351.**
+  This is why the Jun-17 clickbait fix and today's copy pass kept "not sticking": we remove the claims,
+  Google regenerates them from blottman.com, which still says all of it. **Any future copy/policy work
+  on a PMAX asset group must check this setting FIRST or it is wasted effort.**
+  **FIXED:** Final URL expansion turned OFF (**UI, by Kushagra** — `url_expansion_opt_out` was removed
+  from the Campaign resource in v24 so it is not scriptable and **not readable via API either**), and
+  `code/stop_auto_assets_bmx.py` set **TEXT_ASSET_AUTOMATION → OPTED_OUT** (verified). Left
+  `GENERATE_IMAGE_EXTRACTION` OPTED_IN deliberately: it pulls images from the landing page, which is
+  now .ca, and the account has been creative-starved since June; images do not carry the claim risk
+  that text does.
+  **⚠️ METHOD LESSON, THE IMPORTANT ONE: the API cannot see this class of problem, and I asserted
+  "clean" from an API sweep three times before the UI proved otherwise.** Expanded URLs are not
+  assets, so no URL sweep finds them; `url_expansion_opt_out` is not a queryable field; and (as
+  already logged for clickbait in June) `policy_topic_entries` under-reports what the UI shows. **When
+  the UI and the API disagree about policy, the UI is right.** Use Claude-in-Chrome on the Expanded
+  final URL assets + asset group policy pages. (Browser session was very unstable — tab groups died
+  between calls; `browser_batch` with an explicit tabId is what worked, and only the
+  `assetreport/pmaxdlpa` URL form loaded, several other `/aw/...` paths 404'd.)
+  **⚠️ STILL UNVERIFIED: I could not independently confirm the FUE toggle saved.** API cannot read it,
+  `change_event` showed nothing for Aug 13-14 on BMX (it lags), and the settings page would not load
+  through the extension. **CONFIRM IT within 24-48h by reloading the Expanded final URL assets report:
+  if FUE is truly off, no NEW expanded URLs accrue.** If new rows appear, the toggle did not save.
