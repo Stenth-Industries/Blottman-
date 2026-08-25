@@ -9,13 +9,16 @@ export const dynamic = "force-dynamic";
 // real client is through in a few seconds while a payment or courthouse caller
 // presses 2 and never reaches her phone.
 //
-// Wording is Leslie's own, from WhatsApp on Aug 20. Left verbatim: it is her
-// firm answering her phone, and it is good copy anyway. Both options are
-// framed symmetrically, which is what makes a wrong-number caller self-select
-// instead of pressing 1 to reach a human.
+// Wording is Leslie's own, from WhatsApp on Aug 20, with the press-2 line
+// reworded on Aug 25 to match the shape of the press-1 line ("if you have
+// received..." / "if you need any help or assistance..."). Both options now
+// read as offers rather than one offer and one instruction, which is what
+// makes a wrong-number caller self-select instead of pressing 1 to reach a
+// human.
 const GREETING =
   "Thanks for calling Blottman Legal Services. If you have received a traffic " +
-  "ticket or summons to court, press 1. To pay a fine or reach a courthouse, press 2.";
+  "ticket or summons to court, press 1. If you need any help or assistance to " +
+  "pay a fine or reach a courthouse, press 2.";
 
 // Played instead of the greeting outside business hours, when configured. See
 // AFTER_HOURS below: the default is to ring her anyway.
