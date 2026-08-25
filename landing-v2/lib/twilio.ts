@@ -86,3 +86,33 @@ export async function logCallEvent(event: Record<string, unknown>): Promise<void
     console.error("[voice] call log fan-out failed (non-fatal)", err);
   }
 }
+
+// Leslie's real line, normalised rather than trusted. A ten-digit North
+// American number set without its country code gets a "+" from Twilio and is
+// then read as an international dial: 7057901965 became +7 057901965, country
+// code 7, and failed instantly with the caller hearing the no-answer message a
+// second later. That is a silent, total outage of the call path caused by a
+// typo in an env var.
+export function normalizePhone(raw: string): string {
+  const trimmed = raw.trim();
+  if (trimmed.startsWith("+")) return trimmed;
+  const digits = trimmed.replace(/\D/g, "");
+  if (digits.length === 10) return "+1" + digits;
+  if (digits.length === 11 && digits.startsWith("1")) return "+" + digits;
+  return "+" + digits;
+}
+
+export const OFFICE_LINE = normalizePhone(process.env.TWILIO_FORWARD_TO || "+16477947750");
+
+// Bridging TwiML, shared by the screening route and the mis-key rescue so the
+// two paths cannot drift apart. answerOnBridge keeps real ringback in the
+// caller's ear instead of silence, and the caller's own number is passed
+// through as the caller id, so her handset shows who is calling exactly as it
+// does today.
+export function dialOffice(): string {
+  return (
+    `<Dial timeout="25" answerOnBridge="true" action="/api/voice/complete" method="POST">` +
+    `<Number>${xml(OFFICE_LINE)}</Number>` +
+    `</Dial>`
+  );
+}

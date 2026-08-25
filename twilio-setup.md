@@ -30,7 +30,12 @@ Google forwarding number → Twilio number → blottman.ca/api/voice → her lin
 2. **1** → dials `+1 647 794 7750`, caller's own number passed through as caller
    ID, real ringback in their ear.
 3. **2** → *"Please contact the courthouse that issued your ticket for
-   assistance in payment or inquiries. Goodbye."* Her phone never rings.
+   assistance in payment or inquiries."* Her phone never rings. Then one line
+   back: *"If you reached this by mistake and you have a traffic ticket you want
+   to fight, press 1 now."* Pressing 2 was the only irreversible path in the
+   flow, and a real client fat-fingering 2 on a mobile keypad would have been
+   hung up on after we had already paid for the click. A genuine wrong number
+   has their answer by then and rings off.
 4. **Nothing pressed, or any other key → the call connects anyway.** Failing
    open is deliberate: dropping a confused real client costs far more than
    letting one junk call through.

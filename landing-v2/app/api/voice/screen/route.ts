@@ -1,35 +1,33 @@
 import { NextRequest } from "next/server";
-import { formParams, logCallEvent, publicUrl, twiml, verifyTwilio, xml } from "@/lib/twilio";
+import {
+  OFFICE_LINE,
+  dialOffice,
+  formParams,
+  logCallEvent,
+  publicUrl,
+  twiml,
+  verifyTwilio,
+  xml,
+} from "@/lib/twilio";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const VOICE = "Polly.Joanna";
 
-// Leslie's real line. Everything that reaches here is a call she would have
-// received anyway; the only question is whether it is worth her time.
-//
-// Normalised rather than trusted. A ten-digit North American number set without
-// its country code gets a "+" from Twilio and is then read as an international
-// dial: 7057901965 became +7 057901965, country code 7, and failed instantly
-// with the caller hearing our no-answer message a second later. That is a
-// silent, total outage of the call path, caused by a typo in an env var.
-function normalizePhone(raw: string): string {
-  const trimmed = raw.trim();
-  if (trimmed.startsWith("+")) return trimmed;
-  const digits = trimmed.replace(/\D/g, "");
-  if (digits.length === 10) return "+1" + digits;
-  if (digits.length === 11 && digits.startsWith("1")) return "+" + digits;
-  return "+" + digits;
-}
-
-const OFFICE_LINE = normalizePhone(process.env.TWILIO_FORWARD_TO || "+16477947750");
-
-// Leslie's wording, from WhatsApp on Aug 20, with a goodbye added so the line
-// does not simply go dead.
+// Leslie's wording, from WhatsApp on Aug 20.
 const WRONG_NUMBER =
   "Please contact the courthouse that issued your ticket for assistance in " +
-  "payment or inquiries. Goodbye.";
+  "payment or inquiries.";
+
+// Pressing 2 was the only irreversible path in the flow; everything else fails
+// open. A real client who fat-fingers 2 on a mobile keypad would have been hung
+// up on, after we had already paid for the click. So the decline is offered one
+// way back, on its own route rather than a query string, because Twilio signs
+// the full URL including the query and publicUrl() builds it without one.
+const SECOND_CHANCE =
+  "If you reached this by mistake and you have a traffic ticket you want to " +
+  "fight, press 1 now.";
 
 export async function POST(req: NextRequest) {
   const params = await formParams(req);
@@ -53,16 +51,14 @@ export async function POST(req: NextRequest) {
   });
 
   if (outcome === "declined") {
-    return twiml(`<Say voice="${VOICE}">${xml(WRONG_NUMBER)}</Say><Hangup/>`);
+    return twiml(
+      `<Say voice="${VOICE}">${xml(WRONG_NUMBER)}</Say>` +
+        `<Gather numDigits="1" timeout="5" actionOnEmptyResult="true" ` +
+        `action="/api/voice/rescue" method="POST">` +
+        `<Say voice="${VOICE}">${xml(SECOND_CHANCE)}</Say>` +
+        `</Gather>`
+    );
   }
 
-  // answerOnBridge keeps real ringback in the caller's ear instead of silence
-  // while her phone rings, and stops Twilio billing the leg as answered until
-  // she actually picks up. The caller's own number is passed through as the
-  // caller id, so her handset shows who is calling exactly as it does today.
-  return twiml(
-    `<Dial timeout="25" answerOnBridge="true" action="/api/voice/complete" method="POST">` +
-      `<Number>${xml(OFFICE_LINE)}</Number>` +
-      `</Dial>`
-  );
+  return twiml(dialOffice());
 }

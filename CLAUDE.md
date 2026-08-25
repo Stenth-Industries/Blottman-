@@ -1712,6 +1712,17 @@ these workflows in BOTH that runbook and this file's change log.**
   screen route now coerces 10-digit and 1+10-digit input to E.164 and preserves anything already
   starting with "+", verified across 4 input shapes incl. an international number. The screening log
   now also records the number actually dialled.
+  **MIS-KEY RESCUE ADDED (same session, user-approved):** pressing 2 was the ONLY irreversible path
+  in the flow (everything else fails open), so a real client fat-fingering 2 on a mobile keypad got
+  hung up on after we had already paid for the click. After the courthouse message the caller now
+  gets one line back - "if you reached this by mistake and you have a traffic ticket you want to
+  fight, press 1 now" - then a 5s gather; 1 bridges, silence ends the call. Logged as
+  `stage: rescue` so first-prompt accepts stay separable: **a rising rescue count would mean the
+  GREETING is being misheard, not that the gate is working.** ⚠️ **API GOTCHA:** the rescue was first
+  built as `action="/api/voice/screen?rescued=1"` and that is BROKEN - **Twilio signs the full URL
+  INCLUDING the query string**, and `publicUrl()` rebuilds it without one, so every rescue callback
+  would 403. It needs its own route. The shared `dialOffice()` in `lib/twilio.ts` keeps the two bridge
+  paths from drifting.
   **NOT STARTED:** Phase 1b, the landing-page-experience work (LPE is BELOW_AVERAGE on 36 of 37 scored
   keywords). Blocked on facts only Leslie has: **LSO licence number, business address, business hours,
   years in practice, and a short bio.** I will not invent those - transparency is the exact criterion
