@@ -1597,3 +1597,111 @@ these workflows in BOTH that runbook and this file's change log.**
   Remaining: the policy flag itself needs Google to re-evaluate (asset group was `UNDER_REVIEW`).
   Recheck `campaign_status.py` in 24-48h; `HAS_ASSET_GROUPS_LIMITED_BY_POLICY` should drop, leaving
   only `BUDGET_CONSTRAINED`.
+- **2026-08-19** (Anshul): **DIAGNOSTIC SESSION — priorities reordered. Read-only, NO mutations.**
+  Full plan published as an artifact: **Blottman Recovery Runbook**
+  `https://claude.ai/code/artifact/6844fa63-a4f1-4698-ba83-a2a213d971b2`
+  **(1) ⚠️ THE FINDING: `code/search_diagnosis.py` was finally RUN (written Aug-14, never executed).
+  LANDING PAGE EXPERIENCE is BELOW_AVERAGE on 36 of 37 scored keywords** (1 AVERAGE, 0 above). Ad
+  relevance is ABOVE_AVERAGE on 23/37; expected CTR BELOW on 28 (downstream). So the QS 1-3 and the
+  **69.68% lost-to-rank** that has not moved since Jun-27 is the LANDING PAGE, not copy, not targeting,
+  not negatives. We have spent 3 months optimising the half of the funnel that already worked. **Since
+  the Aug-13 BMX migration this gates 100% of spend, not 33%.** Fix list: blottman.ca has 11 pages, no
+  /about, no /contact, no header nav, 9 near-identical templated offence pages (the doorway pattern) =
+  fails Google's transparency + originality criteria. This is now the highest-leverage work in the account.
+  **(2) ⚠️ CORRECTION TO MY OWN AUG-09 NOTE: the form changes destroyed conversion rate.** Weekly CR on
+  Search: Jul-w4 1.67% -> Jul-w5 **4.96%** -> Aug-w1 **0.43%** -> Aug-w2 1.02% -> Aug-w3 1.32%. The
+  collapse week: 154 clicks -> 0.7 conv, vs 47 clicks -> 2.3 conv the week before. Commits in that
+  window: `a6d1198` (Aug-1, description required), `bce5439` (Aug-5, hero CTA moved back to the bottom
+  form), `4b3d9be` (Aug-12, email required). 4 required fields incl. a free-text essay, on **95% mobile**
+  traffic. I wrote Aug-09 that Leslie was "arguably RIGHT" about the required description. **She wasn't** —
+  it filtered out the leads, not the junk (the junk arrives by PHONE; the form never touched it). Small n,
+  but mechanism + timing + 10x magnitude. Proposed fix is progressive capture, not a straight revert:
+  step 1 = charge + phone and it SUBMITS (partial lead = callable lead), step 2 = name + description.
+  **(3) Junk-call rate STILL ~53%** (8 of 15 calls <30s, last 7d) after the full Aug-13 copy pass. That is
+  the **6th consecutive window** at 42-53%. Negatives, AI Max removal, theme retarget and a total copy
+  rewrite have all failed to move it. **Twilio screening is confirmed as the right answer.** Design change:
+  make it a press-1/press-2 GATE, not a 12s announcement — the keypress count then MEASURES the junk rate
+  exactly (first time ever), and `NEW_THRESHOLD` should be **52** not 57. **DROP the call-recording idea**
+  (confidentiality/privilege on prospective-client calls; the keypress gives us the measurement anyway).
+  **(4) CONFIRMED GOOD — the Aug-13/14 work landed.** BMX no longer reports
+  `HAS_ASSET_GROUPS_LIMITED_BY_POLICY`, only `BUDGET_CONSTRAINED` (the FUE + auto-asset fix worked).
+  **Phantom `Contact Us` went 22 (Aug 5-12) -> 0 (Aug 13-19)** — the codeless action is correctly extinct.
+  First-ever `Submit Lead Form` from PMAX (1) and first-ever `Calls From Website` on Search (1).
+  **(5) 14d NUMBERS (Aug 5-18):** $1,462.74 spend / **12 biddable conv** / **$121.90 per real lead**.
+  BMX $832.19 / 8 = $104.02. Search $630.55 / 4 = $157.64. Neither is clearly better, which is WHY the
+  plan does not start by moving budget between them — at n=12 a reallocation is noise.
+  **(6) WATCH: BMX is below the volume tCPA needs.** 8 biddable/14d = ~17/mo vs the ~30/mo tCPA requires.
+  Symptom already visible: **Aug 8 = $0.33, Aug 15 = $1.08** against a $50 budget. Confounded with the
+  migration + asset-group review, so NOT actionable yet. **If a 3rd near-zero day occurs, remove the $95
+  tCPA and run plain Maximize Conversions.**
+  **(7) SEQUENCING (the point of the runbook):** website / Google Ads / telephony are separable surfaces
+  and can run in parallel; two changes on the SAME surface must not overlap. Phase 0 = client messages +
+  this log, **no account changes**. Phase 1 = website funnel (form + LPE). Phase 2 = Twilio. Phase 3 =
+  retention -> OCI. Phase 4 = only then budgets/tCPA. Phase 5 = one owner for bid/budget edits + a
+  Content-vs-Search CPA split and a "0 biddable conv for 3 days" alert in the Morning Digest.
+  ⚠️ **Reported conversions WILL fall** (phantom gone + 45s threshold + filtering). Pre-brief Leslie
+  before she reads a digest and panics.
+
+- **2026-08-25** (Anshul): **Runbook Phase 1 (form) + Phase 2 (Twilio) BUILT AND TESTED. Nothing is
+  deployed and nothing in Google Ads was touched.**
+  **(A) PROGRESSIVE-CAPTURE FORM (landing-v2).** Reverses the Aug 1-12 required-field regression the
+  right way instead of a straight revert. `QuickForm` step 2 now requires **name only** (email and the
+  description are optional), and **abandoning step 2 delivers a partial lead** (charge + phone) via
+  `sendBeacon` on `pagehide` - a visitor who gives a number and leaves used to be lost entirely.
+  `QuoteForm` requires name + phone + charge. `/api/lead` requires phone + charge always, name unless
+  the post is a partial. A `leadId` groups the two posts one visitor can make, so if they abandon and
+  come back the second post arrives as `stage: "update"` and the message reads "MORE DETAIL ON THE LEAD
+  ALREADY SENT FOR 647..." - Leslie sees a follow-up, not a phantom second person. **Downstream payload
+  shape is unchanged, so neither the Apps Script nor either n8n workflow needs an edit.**
+  ⚠️ **CORRECTION TO MY OWN AUG-09 NOTE (2nd time on this point):** I wrote that Leslie was "arguably
+  right" to require the ticket description. She was not. The junk she complains about arrives **by
+  phone from PMAX**; the form never touched it. The essay field filtered out leads and left the junk
+  untouched. The charge dropdown already does the pre-screening it was added for - a closed list of her
+  nine offences, which a parking-fine or payment enquiry cannot pick.
+  VERIFIED: tsc clean, `npm run build` clean (17/17), 7 API paths exercised (partial accepted,
+  complete-without-name rejected 400, honeypot silently dropped), and 8 real-Chrome checks at 390px
+  mobile incl. the beacon, which arrived server-side as a partial from `/careless-driving` with the
+  phone intact, 0 JS errors. Test kept at `scratchpad/qf2-test.js`.
+  **NOT changed:** the hero CTA still points at `#quote` (bce5439, an explicit client request).
+  Worth re-litigating with Leslie using the CR series, but not something to reverse silently.
+  **(B) TWILIO CALL SCREENING (landing-v2 + code/twilio_call_swap.py).** Built the whole flow on a URL
+  we already control - three routes at `blottman.ca/api/voice`, `/screen`, `/complete`, plus
+  `lib/twilio.ts`. **Greeting and the press-2 message are Leslie's own wording** (WhatsApp Aug 20),
+  used verbatim. Press 1 dials her with the caller's own number as caller ID and real ringback; press 2
+  gets the courthouse message and her phone never rings; **anything else, including silence, connects
+  anyway** (failing open - dropping a confused real client costs far more than one junk call getting
+  through). DTMF is accepted during playback so a real caller is through in seconds. Request-signature
+  verification is implemented and **validated against Twilio's published test vector**, not against
+  itself (valid 200 / tampered 403 / missing 403); it is skipped while `TWILIO_AUTH_TOKEN` is unset so
+  the endpoints work before the account exists. Every step logs one JSON line with the caller number,
+  the keypress, and `DialCallDuration`.
+  **⚠️ THE KEYPRESS IS THE FIRST DIRECT MEASUREMENT OF THE JUNK RATE WE HAVE EVER HAD** - all six prior
+  windows were inferred from duration bands and area codes.
+  **⚠️ CORRECTED THE DRAFTED SCRIPT: the planned 45s -> 57s stenth threshold bump was WRONG and is now
+  opt-in (`--threshold N`), not automatic.** Google times the call from when TWILIO answers, so counted
+  duration = greeting + ringing + conversation, and none of those are constant (press-1-on-hearing adds
+  ~3s, listening through adds ~12s, her line then rings 5-25s). At 57 a genuine 45s conversation
+  answered quickly stops counting. `/api/voice/complete` logs the real talk time next to the call
+  Google is timing; set the threshold from a week of that, not arithmetic. Stays at 45 meanwhile.
+  VERIFIED: build registers all 3 routes; all 6 call paths return correct TwiML; `--create` dry-runs
+  clean against the live account; **account-level call conversion action confirmed = stenth
+  (`7638369752`)**, so a new asset cloned from `370129419278` keeps counting to the same action and the
+  swap introduces no measurement discontinuity.
+  **BLOCKED ON (only these):** a Twilio account + Canadian local number, and 3 Vercel env vars. Full
+  console steps, env table, test script and the two-phase swap are in **`twilio-setup.md`**.
+  **OPEN WITH LESLIE (she asked, Aug 20):** (1) should calls outside 9am-7pm ring her anyway -
+  implemented both ways behind `TWILIO_AFTER_HOURS`, **default rings**, recommendation is keep it (a
+  caller at 8pm has a ticket and a deadline); (2) ~~does `647 794 7750` ring her cell directly?~~
+  **ANSWERED Aug-25 (Kushagra): it IS her own number**, so the chain is Google -> Twilio -> her cell,
+  one hop, no CallRail in the path, caller ID passes through intact. Cutover blocker cleared.
+  ⚠️ **KNOWN GAP, needs a Leslie decision:** this screens **ad call assets only**, NOT website taps.
+  Someone who lands on blottman.ca and taps the displayed number reaches her cell directly, because
+  Google's website call-conversion swap forwards to whatever the page shows. That is exactly the
+  invisible "Pool 2" from the Aug-13 diagnosis (24 codeless Contact Us events/14d, 9 on the Content
+  network, Display taps on the phone number) - and it MOVED TO .ca when BMX was migrated. Closing it
+  means making the Twilio number the site's `PHONE_DISPLAY`/`PHONE_TEL`, which changes her public
+  number. Business decision, not a technical one.
+  **NOT STARTED:** Phase 1b, the landing-page-experience work (LPE is BELOW_AVERAGE on 36 of 37 scored
+  keywords). Blocked on facts only Leslie has: **LSO licence number, business address, business hours,
+  years in practice, and a short bio.** I will not invent those - transparency is the exact criterion
+  being scored, and a fabricated About page is an LSO problem on top of a useless one.
