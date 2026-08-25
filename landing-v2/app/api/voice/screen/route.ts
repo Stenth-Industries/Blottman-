@@ -8,7 +8,22 @@ const VOICE = "Polly.Joanna";
 
 // Leslie's real line. Everything that reaches here is a call she would have
 // received anyway; the only question is whether it is worth her time.
-const OFFICE_LINE = process.env.TWILIO_FORWARD_TO || "+16477947750";
+//
+// Normalised rather than trusted. A ten-digit North American number set without
+// its country code gets a "+" from Twilio and is then read as an international
+// dial: 7057901965 became +7 057901965, country code 7, and failed instantly
+// with the caller hearing our no-answer message a second later. That is a
+// silent, total outage of the call path, caused by a typo in an env var.
+function normalizePhone(raw: string): string {
+  const trimmed = raw.trim();
+  if (trimmed.startsWith("+")) return trimmed;
+  const digits = trimmed.replace(/\D/g, "");
+  if (digits.length === 10) return "+1" + digits;
+  if (digits.length === 11 && digits.startsWith("1")) return "+" + digits;
+  return "+" + digits;
+}
+
+const OFFICE_LINE = normalizePhone(process.env.TWILIO_FORWARD_TO || "+16477947750");
 
 // Leslie's wording, from WhatsApp on Aug 20, with a goodbye added so the line
 // does not simply go dead.
@@ -32,6 +47,7 @@ export async function POST(req: NextRequest) {
     stage: "screened",
     outcome,
     digits,
+    dialing: outcome === "declined" ? "" : OFFICE_LINE,
     callSid: params.CallSid || "",
     from: params.From || "",
   });

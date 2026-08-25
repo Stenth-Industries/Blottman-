@@ -1701,6 +1701,17 @@ these workflows in BOTH that runbook and this file's change log.**
   network, Display taps on the phone number) - and it MOVED TO .ca when BMX was migrated. Closing it
   means making the Twilio number the site's `PHONE_DISPLAY`/`PHONE_TEL`, which changes her public
   number. Business decision, not a technical one.
+  **SAME-DAY FOLLOW-UP (first live test):** greeting + webhook + signature verification all confirmed
+  working against the real Twilio number **`+1 289 401 5322`** (Brampton, $1.15/mo, bought on
+  pay-as-you-go - a TRIAL account would have broken this: trials prepend a recorded notice and refuse
+  to dial any unverified number). First press-1 test FAILED, diagnosed from the Twilio call log:
+  child leg `To: +7057901965`, status Failed, 0 sec. Cause = `TWILIO_FORWARD_TO` set to a bare
+  10-digit `7057901965`; Twilio prefixed "+" and read the leading **7 as country code 7 (Russia)**.
+  ⚠️ **This failure mode is invisible in production** - the caller just hears our "sorry, we could not
+  reach the office" message, identical to Leslie's phone being off. FIXED: `normalizePhone()` in the
+  screen route now coerces 10-digit and 1+10-digit input to E.164 and preserves anything already
+  starting with "+", verified across 4 input shapes incl. an international number. The screening log
+  now also records the number actually dialled.
   **NOT STARTED:** Phase 1b, the landing-page-experience work (LPE is BELOW_AVERAGE on 36 of 37 scored
   keywords). Blocked on facts only Leslie has: **LSO licence number, business address, business hours,
   years in practice, and a short bio.** I will not invent those - transparency is the exact criterion
