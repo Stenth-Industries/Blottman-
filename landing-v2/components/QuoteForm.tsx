@@ -98,7 +98,7 @@ export default function QuoteForm() {
               <form onSubmit={handleSubmit} encType="multipart/form-data" className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <Field name="name" label="Full name" autoComplete="name" className="sm:col-span-2" />
                 <Field name="phone" label="Phone" type="tel" autoComplete="tel" />
-                <Field name="email" label="Email" type="email" autoComplete="email" />
+                <Field name="email" label="Email (optional)" type="email" autoComplete="email" required={false} />
 
                 {/* Dropdown for Charge Type */}
                 <label className="flex flex-col gap-2 sm:col-span-2">
@@ -128,11 +128,10 @@ export default function QuoteForm() {
 
                 <label className="flex flex-col gap-2 sm:col-span-2">
                   <span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
-                    Describe your ticket
+                    Anything we should know? (optional)
                   </span>
                   <textarea
                     name="message"
-                    required
                     rows={4}
                     placeholder="e.g., I was pulled over on the 401. The officer said I was doing 130km/h. This is my first ticket."
                     className="resize-y w-full rounded-xl border border-white/10 bg-white/[0.03] px-5 py-4 text-[15px] text-white placeholder-white/30 outline-none transition focus:border-gold/50 focus:bg-white/[0.06]"

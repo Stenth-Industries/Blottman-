@@ -16,6 +16,17 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
+// A submission arrives in one of three shapes:
+//   complete — the whole form was filled in. The normal case.
+//   partial  — the visitor gave their charge and phone in QuickForm step 1 and
+//              then left. Sent by sendBeacon during page unload. A phone number
+//              and a named charge is a callable lead, so we deliver it rather
+//              than throwing it away, which is what used to happen.
+//   update   — the same visitor came back and finished after we already
+//              delivered their partial. Matched by leadId, and labelled so it
+//              reads as more detail on an existing lead, not a second person.
+type Stage = "complete" | "partial" | "update";
+
 export async function POST(req: NextRequest) {
   let form: FormData;
   try {
@@ -29,6 +40,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true });
   }
 
+  const stage = stageOf(form.get("stage"));
   const lead = {
     name: str(form.get("name")),
     phone: str(form.get("phone")),
@@ -37,15 +49,44 @@ export async function POST(req: NextRequest) {
     message: str(form.get("message")),
     gclid: str(form.get("gclid")),
     page: str(form.get("page")),
+    leadId: str(form.get("leadId")),
+    stage,
     ts: new Date().toISOString(),
   };
 
-  // Name, phone, email, and a ticket description are all required — the
-  // description lets Leslie pre-screen the case before calling back instead
-  // of fielding calls that turn out to be parking-fine or payment questions,
-  // and email gives a second contact channel if the phone doesn't connect.
-  if (!lead.name || !lead.phone || !lead.email || !lead.message) {
-    return bad("Please fill in your name, phone number, email, and a short description of your ticket.");
+  // Phone plus a charge is the floor: it is everything Leslie needs to call
+  // back and decide whether the case is hers. Name is required as soon as the
+  // visitor is actually filling the form in; it is waived only for a partial,
+  // where by definition they left before reaching that field.
+  //
+  // Email and the ticket description are optional on purpose. They were made
+  // required on Aug 1 and Aug 12 and the Search conversion rate fell from
+  // 4.96% to 0.43% over the same window — four required fields including a
+  // free-text box, on traffic that is ~95% mobile. The charge dropdown does
+  // the pre-screening the description was added for: it is a closed list of
+  // the nine offences Leslie takes, so a parking-fine or payment enquiry
+  // cannot pick one.
+  if (!lead.phone || !lead.charge) {
+    return bad("Please give us a phone number and the charge you're facing.");
+  }
+  if (stage !== "partial" && !lead.name) {
+    return bad("Please fill in your name and phone number.");
+  }
+
+  // Keep the downstream payload shape identical to what the Apps Script and the
+  // n8n workflows already read (name / message are rendered straight into the
+  // alert email), so a partial or an update explains itself in Leslie's inbox
+  // without either of those needing a change.
+  if (stage === "partial") {
+    lead.name = lead.name || "No name given";
+    lead.message =
+      "PARTIAL FORM. This visitor selected their charge and gave a phone number, " +
+      "then left the page before finishing. The number and the charge are what they typed. " +
+      "Worth a callback.";
+  } else if (stage === "update") {
+    lead.message =
+      "MORE DETAIL ON THE LEAD ALREADY SENT FOR " + lead.phone + ". " +
+      (lead.message || "No description given.");
   }
 
   const url = process.env.LEAD_WEBHOOK_URL;
@@ -87,6 +128,11 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({ ok: true });
+}
+
+function stageOf(v: FormDataEntryValue | null): Stage {
+  const s = str(v);
+  return s === "partial" || s === "update" ? s : "complete";
 }
 
 function str(v: FormDataEntryValue | null): string {

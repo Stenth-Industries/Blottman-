@@ -1,14 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { CHARGE_OPTIONS, PHONE_DISPLAY, PHONE_TEL } from "@/lib/content";
-import { submitLead } from "@/lib/lead-client";
+import { beaconPartialLead, newLeadId, submitLead } from "@/lib/lead-client";
 
 type Status = "idle" | "submitting" | "error";
 
 // Compact 2-step lead form directly under the hero, so a paid-click visitor can
 // convert without scrolling the whole page. Step 1 asks only what Leslie needs
-// to call back (charge + phone); step 2 adds the name (+ optional email).
+// to call back (charge + phone); step 2 adds the name, and offers email and a
+// description without demanding either.
+//
+// Step 2 is progressive capture, not a gate: if the visitor leaves while it is
+// open, a partial lead (charge + phone) is delivered on unload. Requiring email
+// and a written description here between Aug 1 and Aug 12 took the Search
+// conversion rate from 4.96% to 0.43%, so those two fields are optional now and
+// abandoning the step no longer costs us the lead.
+//
 // Posts to the same /api/lead as the bottom QuoteForm and fires the same
 // Google Ads conversion. The SKAG pages pass `defaultCharge` so the dropdown
 // arrives pre-selected with the offence the visitor searched for.
@@ -23,6 +31,47 @@ export default function QuickForm({ defaultCharge = "" }: { defaultCharge?: stri
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
+  // One id per visitor, so a partial and the finished submit that follows it
+  // are recognisable as the same person rather than as two leads.
+  const leadId = useRef("");
+  // Whether the unload beacon already delivered this visitor as a partial. If
+  // it did and they come back and finish, the finished post is an update.
+  const partialSent = useRef(false);
+  // Whether anything at all has been delivered, so we never send twice.
+  const delivered = useRef(false);
+
+  const buildForm = useCallback(
+    (stage: "partial" | "complete" | "update") => {
+      const fd = new FormData();
+      fd.set("leadId", leadId.current);
+      fd.set("stage", stage);
+      fd.set("charge", charge);
+      fd.set("phone", phone);
+      if (stage !== "partial") {
+        fd.set("name", name);
+        fd.set("email", email);
+        fd.set("message", message);
+      }
+      return fd;
+    },
+    [charge, phone, name, email, message]
+  );
+
+  // A visitor who gives us a number and then closes the tab is still a lead.
+  // pagehide is the one unload signal that fires reliably on mobile Safari and
+  // Chrome, and sendBeacon is the only send that survives the teardown.
+  useEffect(() => {
+    if (step !== 2 || done) return;
+    const onPageHide = () => {
+      if (delivered.current) return;
+      delivered.current = true;
+      partialSent.current = true;
+      beaconPartialLead(buildForm("partial"));
+    };
+    window.addEventListener("pagehide", onPageHide);
+    return () => window.removeEventListener("pagehide", onPageHide);
+  }, [step, done, buildForm]);
+
   const input =
     "w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3.5 text-[15px] text-white placeholder-white/40 outline-none transition focus:border-gold/50 focus:bg-white/[0.06]";
   const button =
@@ -33,12 +82,13 @@ export default function QuickForm({ defaultCharge = "" }: { defaultCharge?: stri
     setStatus("submitting");
     setError("");
 
-    const fd = new FormData(e.currentTarget);
-    fd.set("charge", charge);
-    fd.set("phone", phone);
+    const fd = buildForm(partialSent.current ? "update" : "complete");
+    const company = new FormData(e.currentTarget).get("company");
+    if (typeof company === "string" && company) fd.set("company", company);
 
     try {
       await submitLead(fd);
+      delivered.current = true;
       setDone(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please call us.");
@@ -89,6 +139,7 @@ export default function QuickForm({ defaultCharge = "" }: { defaultCharge?: stri
             key="quick-step-1"
             onSubmit={(e) => {
               e.preventDefault();
+              if (!leadId.current) leadId.current = newLeadId();
               setStep(2);
             }}
             className="grid gap-3 sm:grid-cols-[1.15fr_1fr_auto]"
@@ -149,27 +200,25 @@ export default function QuickForm({ defaultCharge = "" }: { defaultCharge?: stri
               placeholder="Full name"
               aria-label="Full name"
               autoComplete="name"
-              className={input}
+              className={`${input} sm:col-span-2`}
             />
             <input
               name="email"
               type="email"
-              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-              aria-label="Email"
+              placeholder="Email (optional)"
+              aria-label="Email (optional)"
               autoComplete="email"
-              className={input}
+              className={`${input} sm:col-span-2`}
             />
             <textarea
               name="message"
-              required
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={3}
-              placeholder="Describe your ticket — what happened, what you were charged with, etc."
-              aria-label="Describe your ticket"
+              placeholder="Anything we should know? Optional — where you were stopped, the speed on the ticket, your court date."
+              aria-label="Anything we should know, optional"
               className={`${input} resize-y sm:col-span-2`}
             />
             {/* Honeypot: real users never fill "company". */}
