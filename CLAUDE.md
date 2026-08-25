@@ -1723,6 +1723,31 @@ these workflows in BOTH that runbook and this file's change log.**
   INCLUDING the query string**, and `publicUrl()` rebuilds it without one, so every rescue callback
   would 403. It needs its own route. The shared `dialOffice()` in `lib/twilio.ts` keeps the two bridge
   paths from drifting.
+  **PHASE 1 EXECUTED (user-approved, same session).** `twilio_call_swap.py --create +12894015322
+  --apply` created call asset **`412465293989`** and linked it to **campaign `23971101309`
+  (Search Consolidated)** + **account level** (which is what serves BMX, since BMX's own campaign-level
+  call assets were removed Aug-11). VERIFIED: both old and new now serve - account level has
+  `370129419278` (647) 794-7750 AND `412465293989` +1 289 401 5322; Search Consolidated has
+  `380047681148` AND `412465293989`. Google rotates between them, so **some calls bypass the greeting
+  until cutover - that is the point**: her ads never lose the call extension while the new asset clears
+  editorial review (the trap that stranded the lead form for weeks in June). Review status reads
+  `UNSPECIFIED` immediately after creation - re-check with `--status`, expect APPROVED in hours to a day.
+  Also verified the new asset's ad schedule matches the other two EXACTLY (7 day rules, 09:00-18:00),
+  so this change moved one variable and not two.
+  ⚠️ **DISCREPANCY TO RAISE WITH LESLIE: she believes the call button runs 9am-7pm** (WhatsApp Aug 20).
+  It is actually **09:00-18:00** on all three assets. She is losing the 6-7pm hour she thinks she has.
+  ⚠️⚠️ **BLOCKER BEFORE CUTOVER - `TWILIO_FORWARD_TO` MUST BE DELETED FROM VERCEL.** It was set to a
+  705 number for testing. If it is still set when Google approves the asset and rotates to the Twilio
+  number, **every screened ad call routes to that 705 phone instead of Leslie** - and it would look
+  exactly like normal operation from the Google side. The default in code is already her `+16477947750`.
+  LIVE TEST RESULTS (all confirmed by real calls from the user's +61 mobile): greeting plays, webhook +
+  signature verification pass, press 1 bridges, and **the receiving handset shows the CALLER'S number,
+  not the Twilio number** - so Leslie's call history stays usable for callbacks and her area-code read
+  on a caller is unchanged.
+  **GREETING FINAL WORDING** (Leslie's, press-2 line reworded Aug-25 so both options read as offers
+  rather than one offer + one instruction): *"Thanks for calling Blottman Legal Services. If you have
+  received a traffic ticket or summons to court, press 1. If you need any help or assistance to pay a
+  fine or reach a courthouse, press 2."*
   **NOT STARTED:** Phase 1b, the landing-page-experience work (LPE is BELOW_AVERAGE on 36 of 37 scored
   keywords). Blocked on facts only Leslie has: **LSO licence number, business address, business hours,
   years in practice, and a short bio.** I will not invent those - transparency is the exact criterion
