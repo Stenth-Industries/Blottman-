@@ -454,8 +454,8 @@ export const EXPERTISE: { title: string; blurb: string; image: string; href?: st
 
 // How it works — numbered step process (Garde Wilson "What happens" pattern).
 export const PROCESS = [
-  { step: "01", title: "Send Us a Message", body: "Tell us what happened and send us a quick message. It takes two minutes and costs nothing.", image: "/process-1-ticket.jpg" },
-  { step: "02", title: "Free Case Review", body: "We review the charge, the evidence, and your options — then call you with an honest read.", image: "/process-2-review.jpg" },
+  { step: "01", title: "Send Us a Message", body: "Reach out. It takes two minutes and costs nothing.", image: "/process-1-ticket.jpg" },
+  { step: "02", title: "Free Consultation", body: "We will provide a free consultation and talk through your options.", image: "/process-2-review.jpg" },
   { step: "03", title: "We Fight It For You", body: "As your licensed paralegal we handle the paperwork and attend court on your behalf.", image: "/process-3-court.png" },
   { step: "04", title: "Keep Your Record", body: "Our goal: protect your licence, your record, and your insurance rate every step of the way.", image: "/process-4-driving.jpg" },
 ];
