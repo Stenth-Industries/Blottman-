@@ -193,7 +193,7 @@ def phase_cutover(apply, threshold):
         return
 
     links = list(ga.search(customer_id=cid, query="""
-        SELECT campaign_asset.resource_name FROM campaign_asset
+        SELECT campaign.id, campaign_asset.resource_name FROM campaign_asset
         WHERE campaign.id = %s AND campaign_asset.field_type = 'CALL'
         AND campaign_asset.status = 'ENABLED'
         AND campaign_asset.asset = 'customers/%s/assets/%d' """

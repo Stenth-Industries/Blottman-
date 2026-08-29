@@ -1752,3 +1752,95 @@ these workflows in BOTH that runbook and this file's change log.**
   keywords). Blocked on facts only Leslie has: **LSO licence number, business address, business hours,
   years in practice, and a short bio.** I will not invent those - transparency is the exact criterion
   being scored, and a fabricated About page is an LSO problem on top of a useless one.
+- **2026-08-29** (Anshul): **STATUS PULSE — read-only, NO mutations. Two things changed since Aug-25,
+  one good and one that needs a decision.**
+  **(1) ✅ TWILIO CALL ASSET IS APPROVED.** `412465293989` (+1 289 401 5322) reads **APPROVED**, so
+  `python code/twilio_call_swap.py --cutover` is now safe to run. The voice routes are live in
+  production and hardened: `POST https://blottman.ca/api/voice` and `/api/voice/screen` both return
+  **403 "invalid signature"** to an unsigned request, which confirms `TWILIO_AUTH_TOKEN` is set in
+  Vercel and signature verification is actually running. The progressive-capture form is live too
+  (verified by probing `/api/lead`: it accepts a `stage=partial` payload and returns the new
+  "Please give us a phone number and the charge you're facing." error text).
+  ⚠️⚠️ **CUTOVER STILL BLOCKED ON ONE THING: `TWILIO_FORWARD_TO` must be deleted from Vercel.** It was
+  set to a 705 test number on Aug-25. It cannot be checked from here (no Vercel CLI installed). If it
+  is still set when the old call assets are paused, **every screened ad call routes to that test phone
+  instead of Leslie, and it looks completely normal from Google's side** (the caller just hears "we
+  could not reach the office"). Do not run `--cutover` until someone confirms the var is gone; the
+  code default is already her `+16477947750`.
+  **(2) ⚠️ THE stenth AD_CALL ACTION HAS BEEN DARK SINCE AUG-14. Fifteen days, zero conversions.**
+  This is NOT a tracking break and NOT the 45s threshold misfiring. The wiring is intact (account-level
+  call conversion action = `7638369752`, and the new Twilio asset inherits it via
+  `USE_ACCOUNT_LEVEL_CALL_CONVERSION_ACTION`, so the swap introduces no discontinuity). **The ad call
+  extension has simply stopped producing long calls.** Last 7d: 6 calls total (was ~15/wk), 4 on BMX of
+  which exactly 1 reached 30s. The two genuine consults in the window (269s Aug-21, 293s Aug-26) both
+  came in on **`Calls From Website`**, the blottman.ca number swap, which has now fired 3× (Aug 17 /
+  21 / 26) and is producing for the first time ever.
+  **THE SIGNAL HAS MIGRATED, WHICH IS THE AUG-13 MIGRATION WORKING AS DESIGNED:** BMX now converts on
+  **`Submit Lead Form - STENTH`** (Aug 17, 21, 22, 24, 25 — five, and the first form conversions PMAX
+  has ever produced). Contact Us is down to 3 all-conv/14d and still correctly 0-biddable.
+  **⚠️ CONSEQUENCE THAT NEEDS ACTING ON: BMX's $95 tCPA is now calibrated against a signal that no
+  longer exists.** It was set (Jul-17, restored Aug-09) from the *stenth 45s-call CPA*. BMX's actual
+  blended CPA is now **$142.83** against a $95 target, so PMAX is bidding conservatively into a target
+  it cannot hit. The Aug-13 entry predicted exactly this ("the tCPA was calibrated on calls alone and
+  form fills now count too, will need a fresh look in 1-2 weeks") — that window is up. Recalibrate off
+  the blended number, or drop the tCPA and run plain Maximize Conversions until the blend settles.
+  **(3) 14d NUMBERS (Aug 15-28): $1,415.68 / 10 biddable conv / $141.57 CPA.** That is the worst CPA
+  on record for this account (Aug-19 was $121.90, Aug-13 was $127). Split almost exactly in half:
+  **BMX $714.13 / 5 conv / $142.83** and **Search $701.55 / 5 conv / $140.31**. Six of the fourteen
+  days produced zero conversions. Spend is pacing $86-130/day.
+  **(4) ⚠️ BUDGET DRIFT, 4th unlogged change: Search Consolidated is on $50/day.** CLAUDE.md logs it at
+  $30, then $35 (Aug-09). The Aug-11 unlogged edit took it to $50. **Search now takes half the account's
+  money** and is the campaign with the known structural problem.
+  **(5) Search is unchanged by six weeks of work on it.** IS **19.88%**, lost-to-rank **71.46%**
+  (was 72.84% Aug-09, 69.68% Aug-19 — noise, not movement). **Landing page experience is still
+  BELOW_AVERAGE on 37 of 38 scored keywords**, exactly as on Aug-19. The Aug-13 QS-drag negatives moved
+  nothing measurable, which is what that entry predicted they would do ("a ~10% relative nudge, NOT a
+  cure"). One thing DID improve: **ad relevance is now ABOVE_AVERAGE on 25 of 38** keywords, so the copy
+  work landed and the remaining drag is landing page + expected CTR. Weekly CR is stuck at 1.0-1.4%
+  against the 4.96% Jul-w5 peak, though the progressive form only went live ~Aug-25 so that is 4 days of
+  data and not yet a verdict. **Worst single line: the `Fail to Stop` ad group, $252.26 / 147 clicks /
+  30d / ZERO conversions**, its highest CTR (7.11%) and nothing to show for it.
+  **MY READ (not applied, needs a decision):** Search at $50/day is the clearest waste in the account.
+  Its gating factor is a landing-page score nobody has touched, and the LPE fix is still blocked on
+  facts only Leslie has (LSO licence number, business address, hours, years in practice, bio). Cut
+  Search to $30 and hold the $20 rather than move it, until the BMX tCPA is recalibrated — moving
+  budget and bid targets in the same week on this account is how the June incident happened.
+  **SEQUENCE I WOULD RUN:** (a) confirm `TWILIO_FORWARD_TO` deleted, then `--cutover`; (b) recalibrate
+  BMX tCPA off the blended CPA; (c) Search $50 → $30; (d) get the five About-page facts from Leslie and
+  do the LPE work. One per surface, not all at once.
+- **2026-08-30** (Anshul): **TWILIO CUTOVER DONE — every Google Ads call now hits the screening
+  greeting before Leslie's phone rings.** Phase 2 of `code/twilio_call_swap.py`, run after the new
+  asset cleared review. Unlinked **`380047681148`** (campaign-level on Search Consolidated
+  `23971101309`) and **`370129419278`** (account-level, which is what served BMX since its own
+  campaign-level call assets were removed Aug-11). **VERIFIED via `call_assets_inventory.py`:** the
+  only call asset serving anywhere is **`412465293989` / +1 289 401 5322**, on Search Consolidated
+  and at account level; every remaining (647) 794-7750 link is on a PAUSED campaign and cannot
+  serve. Flow is now Google → Twilio → greeting → press 1 → her cell.
+  **stenth threshold deliberately LEFT AT 45s.** Google times the call from when Twilio answers, so
+  counted duration is greeting + ringing + conversation, and that overhead is a distribution rather
+  than a constant (DTMF is accepted during playback: pressing 1 early adds ~3s, listening through
+  adds ~12s, her line then rings 5-25s). Set it later from a week of `DialCallDuration` in the
+  `/api/voice/complete` logs, not by arithmetic. The old 45 → 57 plan stays rejected.
+  ⚠️ **THE JUNK BASELINE RESETS — do not compare next week's duration bands to the 46% figure.**
+  Twilio answers instantly, so calls that previously logged MISSED will now log RECEIVED-but-short.
+  The real measurement from here is the **keypress count** in the voice logs, which is the first
+  direct read on the junk rate this account has ever had (all six prior windows were inferred from
+  duration bands and area codes).
+  ⚠️ **STILL UNVERIFIED AND STILL THE ONE THING THAT HIDES ITSELF: `TWILIO_FORWARD_TO` in Vercel.**
+  It was set to a 705 test number on Aug-25. There is no Twilio credential and no Vercel CLI on this
+  machine, so it cannot be read from here, and there is no longer a second call asset in rotation to
+  mask a wrong value. If it is still set, every screened ad call routes to that test phone and looks
+  entirely normal from Google's side. The code default is already `+16477947750`. **First real call
+  after this is the production confirmation — if Leslie reports the phone has gone quiet, check that
+  variable before anything else.**
+  **REVERT (unchanged):** relink `380047681148` to campaign `23971101309` and `370129419278` at
+  account level.
+  **BUG FIXED IN THE SCRIPT (uncommitted):** `phase_cutover`'s campaign_asset query filtered on
+  `campaign.id` without selecting it → `EXPECTED_REFERENCED_FIELD_IN_SELECT_CLAUSE`, which killed
+  the first apply attempt before any mutation (nothing was written). Added `campaign.id` to the
+  SELECT. **Same class of GAQL bug as the one fixed in `approval_status.py` on Aug-09 — a field used
+  in WHERE must also appear in SELECT.** Worth remembering; it has now bitten twice.
+  ⚠️ PROCESS NOTE: the `--apply` step had to be run by hand from the prompt. Claude Code's auto-mode
+  classifier refused it repeatedly even after the action was approved in `/permissions`; the
+  per-action grant did not persist for the apply form (the read-only `--cutover` dry run did go
+  through). For future sessions, add a persistent rule `Bash(python code/twilio_call_swap.py:*)`.
