@@ -1915,6 +1915,36 @@ these workflows in BOTH that runbook and this file's change log.**
   NOT affect an already-running deployment until it is redeployed. It just did not apply here.)
   **Still worth one cheap confirmation** since no session has watched a press-1 bridge end to end: call
   +1 289 401 5322, press 1, confirm Leslie's line rings.
+- **2026-09-02** (Anshul): **WEBSITE NUMBER SWITCHED TO THE TWILIO SCREENING LINE — the Aug-25 "known
+  gap" is now closed.** Until today only Google **ad call assets** were screened; anyone landing on
+  blottman.ca and tapping the displayed number reached Leslie's cell directly, unscreened. That is the
+  invisible "Pool 2" from the Aug-13 diagnosis, and it moved to .ca when BMX migrated. Kushagra made the
+  call (it changes her public number on the site). Changed `landing-v2/lib/content.ts`:
+  **`PHONE_DISPLAY` "(647) 794-7750" → "(289) 401-5322"**, **`PHONE_TEL` "+16477947750" →
+  "+12894015322"** (old values kept in a comment above them; reverting is those two lines).
+  **WHY THIS WAS A ONE-LINE CHANGE AND NOT A TRACKING OUTAGE:** every `tel:` link, the JSON-LD
+  `telephone`, and — critically — the Google **"Calls From Website"** `phone_conversion_number` in
+  `app/layout.tsx` all *derive* from these constants rather than hardcoding the number, so the
+  number-swap re-pointed itself. Had that been a literal, this change would have silently killed the
+  only call signal currently producing anything (stenth has been dark since Aug-14).
+  VERIFIED in the built output: 13 `tel:` links + 9 displayed instances on the new number, **0
+  occurrences of the old number**, `phone_conversion_number': '(289) 401-5322'`, JSON-LD
+  `"telephone":"+12894015322"`. `tsc` clean, `npm run build` clean (17/17 routes). Commit `8e0e4e7`,
+  pushed to main (Vercel auto-deploys landing-v2 from GitHub).
+  ⚠️ **THREE CONSEQUENCES, none blocking:** (1) **every website caller is now screened**, not just ad
+  traffic — organic, referral and returning clients included; (2) **`Calls From Website` will
+  over-count slightly** — Google times from when Twilio answers, so the greeting (~12s) plus ringing
+  now count toward its ≥60s threshold, i.e. the distortion runs the *permissive* way (the opposite of
+  the stenth 45s problem); revisit both thresholds together once a week of `DialCallDuration` data
+  accumulates in the `/api/voice/complete` logs; (3) **the old 647 number is still published
+  elsewhere** — Google Business Profile, blottman.com, and anything printed — so those callers still
+  reach her cell unscreened. That is the remaining hole in call screening and it needs Leslie.
+  ✅ **TOOLING WIN worth keeping: the Vercel CLI is now installed and authenticated on this machine**
+  (`npm i -g vercel`, already logged in as `brothersify10-3783`, landing-v2 already linked). This ends
+  the recurring blind spot that blocked verification on Aug-25/29/30 and earlier today: `vercel env ls
+  --cwd landing-v2` reads env state, `vercel ls --cwd landing-v2` shows deployment status/age, and
+  `vercel logs <url> --cwd landing-v2` tails runtime logs (recent window only — it will NOT reach back
+  to a call from days ago, so the press-1 bridge still cannot be confirmed retroactively from here).
   ⚠️ Still **no keypress data**, so the junk-rate measurement has not started (2 calls is not a sample).
   ⚠️ **RECURRING BLIND SPOT — this has now blocked verification on Aug-25, Aug-29, Aug-30 and Sep-02:
   there is no Vercel CLI on this machine and no Twilio creds in the local env files** (they predate the
