@@ -4,8 +4,13 @@
 // ---------------------------------------------------------------------------
 
 // Phone number requested for the page. tel: link strips formatting.
-export const PHONE_DISPLAY = "(647) 794-7750";
-export const PHONE_TEL = "+16477947750";
+// Twilio screening line. Ad calls AND website taps both route through the
+// press-1 greeting (app/api/voice) before Leslie's cell rings. Changing these
+// two constants also updates the Google "Calls From Website" number-swap,
+// which reads PHONE_DISPLAY in app/layout.tsx - keep them in sync.
+// Leslie's direct line, pre-Twilio, was (647) 794-7750 / +16477947750.
+export const PHONE_DISPLAY = "(289) 401-5322";
+export const PHONE_TEL = "+12894015322";
 
 // Business identity — used in the footer, privacy policy, and legal copy.
 export const BUSINESS_NAME = "Blottman Legal Services";
