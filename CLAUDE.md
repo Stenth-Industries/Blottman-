@@ -1930,7 +1930,10 @@ these workflows in BOTH that runbook and this file's change log.**
   VERIFIED in the built output: 13 `tel:` links + 9 displayed instances on the new number, **0
   occurrences of the old number**, `phone_conversion_number': '(289) 401-5322'`, JSON-LD
   `"telephone":"+12894015322"`. `tsc` clean, `npm run build` clean (17/17 routes). Commit `8e0e4e7`,
-  pushed to main (Vercel auto-deploys landing-v2 from GitHub).
+  pushed to main (Vercel auto-deploys landing-v2 from GitHub). **CONFIRMED LIVE on blottman.ca** after
+  the deploy finished: 13 `tel:` + 9 displayed on the new number, 0 of the old, the gtag swap reading
+  `'(289) 401-5322'`, and `/speeding` carrying it too. The Aug-30 Twilio cutover commit (`35d0eb0`) had
+  also been sitting **unpushed** locally and went up with this.
   ⚠️ **THREE CONSEQUENCES, none blocking:** (1) **every website caller is now screened**, not just ad
   traffic — organic, referral and returning clients included; (2) **`Calls From Website` will
   over-count slightly** — Google times from when Twilio answers, so the greeting (~12s) plus ringing
@@ -1945,6 +1948,15 @@ these workflows in BOTH that runbook and this file's change log.**
   --cwd landing-v2` reads env state, `vercel ls --cwd landing-v2` shows deployment status/age, and
   `vercel logs <url> --cwd landing-v2` tails runtime logs (recent window only — it will NOT reach back
   to a call from days ago, so the press-1 bridge still cannot be confirmed retroactively from here).
+  ⚠️ **HOUSEKEEPING, not done this session (flagged only):** (1) **`REMINDER.md` is stale — every item
+  in it is from JUNE** ("check the blottman.ca migration", "reassess the PMAX taper", "flip Final URL
+  Expansion OFF", "run `stenth_watch.py` each morning"), all long since done or superseded. A future
+  session reading it will chase closed work. It needs rewriting against the current open items or
+  deleting in favour of this change log. (2) **Two scripts sit UNTRACKED in `code/`** —
+  `deep_readonly_audit.py` and `summarize_deep_audit.py` — they are not from this session and were left
+  uncommitted by whoever wrote them (Akash?). Not committed here because I have not read or verified
+  them. Also untracked and deliberately not committed: `.firecrawl/` (scraped page snapshots) and
+  `scratchpad/`.
   ⚠️ Still **no keypress data**, so the junk-rate measurement has not started (2 calls is not a sample).
   ⚠️ **RECURRING BLIND SPOT — this has now blocked verification on Aug-25, Aug-29, Aug-30 and Sep-02:
   there is no Vercel CLI on this machine and no Twilio creds in the local env files** (they predate the
