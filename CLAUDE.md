@@ -1995,3 +1995,13 @@ these workflows in BOTH that runbook and this file's change log.**
   judging the tCPA removal. Watch: whether click volume holds, whether cost per conversion stays in the
   ~$50-100 range now that nothing caps it, and the first **keypress** data (still the only direct
   measurement of the junk rate this account has ever had, and still pending real volume).
+  **RANKING CHECK (asked Sep-3, verified not assumed): Sep-2 is the BEST DAY IN 30 DAYS on BOTH count
+  and efficiency** — 4 biddable conv at **$27.12 CPA**, vs next-best Aug-10 (3 conv, $51.60) and a
+  cluster of 2-conv days at $41-75. The 14-day average CPA before this was ~$128. **And it is CLEAN:
+  `all_conversions` == `conversions` (4.0 = 4.0), i.e. zero Contact Us phantom padding** — contrast
+  Aug-07 which showed 7 all-conv and **0 biddable**, and Aug-05 (5 all-conv, 1 biddable). Those were
+  the codeless phantom Leslie could never find in her inbox; these are 4 real leads.
+  **First day all three live signals fired together:** 1 stenth call (the 715s consult) + 1 Calls From
+  Website (the .ca number swap, newly pointed at Twilio) + 2 Submit Lead Form (1 BMX, 1 Search).
+  ⚠️ Sober comparison for whoever reads this next: **Aug-10 also did 3 conv and was immediately
+  followed by zeros on Aug-11, 13, 15 and 16.** One strong day is not a trend in this account.
