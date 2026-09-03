@@ -1,98 +1,76 @@
-# ⏰ Reminders — Blottman Law Ads
+# Reminders — Blottman Law
 
-## 🔴 ~Aug 14-15, 2026 — Repoint PMAX (BMX) final URL blottman.com → blottman.ca (FOR AKASH + KUSHAGRA)
-**Same decision gate as the Jul 5 entry below — still not done as of Aug 11.** BMX's asset group final
-URL is still `https://blottman.com/`. On Aug 11 we made two changes to BMX already (budget $65→$50/day,
-removed the PMAX call-asset to push impulse-call traffic toward a form instead) and deliberately did NOT
-stack a third significant change (this URL migration) on the same campaign within the same 72h window —
-this account has a documented history (the June delivery-collapse incident) of stacked changes causing
-real damage. **Wait ~3-4 days from Aug 11, let the budget cut + call-asset removal show clean data, then
-do the migration as its own isolated step:**
-1. Repoint BMX asset group final URL `blottman.com/` → `blottman.ca/`
-2. Repoint or drop the 2 campaign-level sitelinks on BMX (one points to `/contact-us/`, which doesn't
-   exist on blottman.ca — needs to go to the homepage instead, where the QuickForm lives)
-3. Check the 8 account-level sitelinks that also touch blottman.com and could still serve on BMX
-FUE is already off on BMX, so no risk of Google auto-expanding into other blottman.com pages mid-move.
-
-**Also open from Aug 11, not yet investigated:** blottman.com does have a lead form after all — it's a
-**LeadConnector/GoHighLevel iframe embed** (`api.leadconnectorhq.com/widget/form/...`, form named
-"Blottman"), invisible to a plain HTML/curl check since it's a client-side iframe (a first pass missed
-it). It's a separate system from blottman.ca's QuoteForm/QuickForm and is NOT wired to the
-`Submit Lead Form` Ads conversion action, so submissions through it are probably going untracked.
-There's also a **CallRail** dynamic-number-insertion script on the page (swaps the displayed phone
-number per traffic source) — not previously documented anywhere in this account's notes. Both need a
-real look: who owns/monitors the LeadConnector form, does Leslie see those submissions, and does
-CallRail's number swap explain anything about the call-quality pattern.
-
-To act: open Claude Code in this folder and say *"check on the BMX final URL migration + the
-LeadConnector/CallRail stuff we found Aug 11."*
+> Follow-ups that need a human to act or a date to arrive.
+> Deep context lives in `CLAUDE.md`; this file is only "what to do next, and when".
+> **Rewritten 2026-09-03** — every prior item was from June and long since done or
+> superseded (blottman.ca migration check, PMAX taper, FUE flip, daily `stenth_watch`).
+> Git history has the old version if anyone needs it.
 
 ---
 
-## 🔴 ~July 5, 2026 — Check .ca form signal → then repoint PMAX to blottman.ca
-**Decision gate for repointing PMAX (BMX + Blottman New pM) from blottman.com → blottman.ca.**
-Today (Jun 28) PMAX asset groups all land on **`https://blottman.com/`** (old site, FUE OFF), so PMAX
-only feeds the untrusted "Contact Us" codeless signal — its sole trusted signal is calls (stenth). The
-new **Search – Ontario Traffic Tickets (Consolidated)** (`23971101309`, live Jun 27) lands on
-**blottman.ca**, where the form fires a real Google Ads conversion.
+## 🔴 Friday 2026-09-04 — BMX Target CPA verdict
 
-**VERIFIED Jun 28 (Anshul):** the .ca form→conversion path is fully wired in production —
-blottman.ca returns 200, loads gtag `AW-11165656868`, and the form-conversion send_to
-`AW-11165656868/RcgyCPuevdwaEKTOmcwp` is baked into the live JS bundle. `QuoteForm.tsx` fires
-`gtag('event','conversion', {send_to})` on successful submit. Env vars confirmed set in Vercel prod
-(gtag loading live = `NEXT_PUBLIC_GADS_ID` + `NEXT_PUBLIC_GADS_CONVERSION` present). Code is good —
-the only open question is whether real submissions register as the **`Submit Lead Form`** action
-(`7173263227`) in Google Ads.
+On **Sep 2** the $95 Target CPA was removed from **PMAX - Blottman Max** (`22979153470`),
+leaving plain Maximize Conversions. Day one looked strong, but one day proves nothing in
+this account.
 
-**On ~Jul 5, run:** `python code/leads.py` and `python code/yesterday_review.py` — look for
-**`Submit Lead Form` conversions** appearing from the consolidated Search campaign (Search should have
-exited LEARNING by ~Jul 4–5).
-- **If ≥ ~5 Submit Lead Form conversions have logged** (proves .ca tracking works end-to-end) AND BMX
-  is stable → **repoint PMAX asset groups to `https://blottman.ca/`** (one move, on a quiet day, NO
-  budget/bid changes — it resets PMAX learning). This lets PMAX optimize toward real form leads, not
-  just the codeless Contact Us.
-- **If 0 form conversions** → do NOT repoint PMAX; debug why the .ca form action isn't registering
-  (submit a live test lead on blottman.ca, watch the action in Google Ads) before moving PMAX.
+**Run:** `python code/leads.py` and `python code/campaign_status.py`
 
-To act: open Claude Code in `E:\Blottman-law` and say *"check the .ca form signal."*
+**The question:** has BMX held its volume, or was Sep 2 an outlier?
 
----
+| Read | Verdict |
+|---|---|
+| BMX holding **~15-20 clicks/day** and converting most days | Working. Leave it alone. |
+| BMX back to **~5 clicks/day and zeros** | Sep 2 was noise. Next lever is the **conversion-goal mix**, not bidding. |
 
-## 🔴 June 24, 2026 — Check blottman.ca migration test (broad campaign)
-On Jun 23 the 2 enabled RSAs in **Traffic ticket lawyer broad** (`23039650759`) were
-repointed from blottman.com → **blottman.ca** (staged test before migrating all campaigns).
-**Run:** `python code/check_broad_tomorrow.py` — confirm both ads are **APPROVED**, serving,
-clicks land on blottman.ca, and a conversion shows. Sitelinks left on blottman.com (mismatch
-accepted for the test). **If approved + clean → migrate the rest** (other Search campaigns + PMAX).
-**If disapproved → read the policy reason** before rolling out further.
+**Baselines to compare against:**
+- BMX Aug 18-31: **$705.21 / 4 conv = $176.30 CPA**, including 6 consecutive zero days.
+- BMX Sep 2: **276 impr / 20 clicks / $47.47 / 3 conv = $15.82 CPA**.
+- Account Sep 2: 828 impr / 53 clicks / $108.46 / **4 conv @ $27.12** — best day in 30
+  days on both count and cost, and phantom-free (`all_conversions == conversions`).
 
-> **Jun 23 update (Anshul):** hit a *"One website per ad group / This ad can't run"* disapproval —
-> the 2 PAUSED ads in the ad group were still on blottman.com, and Google's "one website per ad group"
-> rule counts paused ads too, so the .ca/.com mix flagged the whole group. **Fixed** by repointing the
-> 2 paused ads to blottman.ca (`code/fix_paused_ad_domains.py`). ⚠️ **When migrating the rest, sweep
-> PAUSED ads too** in every campaign or you'll re-trigger this. Sitelinks still on .com — migrate those too.
+⚠️ **Friday is only 2 days post-change.** It can catch a collapse but cannot confirm a fix.
+**The real checkpoint is Sun 2026-09-06 / Mon 2026-09-07**: if BMX has logged **5+ conversions
+since the change at a CPA under ~$100**, call it fixed. Precedent for caution: Aug 10 also did
+3 conversions and was followed by zeros on Aug 11, 13, 15 and 16.
 
-To act: open Claude Code in `E:\Blottman-law` and say *"check the blottman.ca migration."*
+To act: open Claude Code in `E:\Blottman-law` and say *"check BMX."*
 
 ---
 
-## 🔵 ~June 15, 2026 — Reassess PMAX taper (Step 3)
-After raising **PMAX - Blottman Max** to $50/day on Jun 10, check whether it held ~$50 CPA at the new budget.
+## 🟡 Needs Leslie — not blocked on us
 
-**If CPA held ($50–60) and it's spending the budget:**
-- Begin **Step 3 taper**: gradually shift `Blottman New pM #2` ($35.61/day) and `#3` ($35.61/day) budgets into Max, then pause #2/#3 once Max absorbs the volume.
-- Run **Step 4 geo trim**: drop Vaughan, Markham, London, Cambridge, Orillia (0 conversions).
-
-**Also check:** did the STENTH $500 call conversion start firing? → run `python stenth_watch.py`
-
-To act: open Claude Code in `E:\Blottman-law` and say *"reassess the PMAX taper."*
+- **Brand creative for PMAX.** Still the biggest unfilled gap vs competitors: 4+ landscape,
+  4+ square, 2+ portrait images, 1 short video. Open since June.
+- **The old 647 number is still published** on **Google Business Profile** and **blottman.com**.
+  Ad calls and blottman.ca taps now route through the Twilio press-1 screening
+  (+1 289 401 5322), but anyone who finds her via GBP or the old site still reaches her cell
+  unscreened. This is the remaining hole in call screening.
+- **Retention capture (`Retained?` column).** Parked since Jul 17 by decision, not by a
+  blocker. Still the prerequisite for Offline Conversion Import, and still the number that
+  decides whether ~$128/lead is good or ruinous.
 
 ---
 
-## 🟢 Ongoing — daily
-- `python stenth_watch.py` each morning — confirm the $500 stenth call signal starts flowing (was switched Jun 9, expected to lag a few days).
+## 🟢 Watch — no action yet
 
-## 🟡 When ready
-- Flip **Final URL Expansion OFF** on PMAX - Blottman Max (UI: Campaign settings → Final URL expansion).
-- Provide brand creative for PMAX: 4+ landscape + 4+ square + 2 portrait images, 1 short video.
-- Decide audience signal source (remarketing list vs custom segment).
+- **Keypress data from Twilio screening.** Press-1 vs press-2 counts in the
+  `/api/voice/complete` logs are the first direct measurement of the junk-call rate this
+  account has ever had. Pending real call volume.
+- **Call-duration thresholds.** Google times calls from when *Twilio* answers, so the
+  greeting plus ringing inflates every counted duration. `stenth` (45s) and
+  `Calls From Website` (60s) should both be re-cut from a week of real `DialCallDuration`
+  data — not by arithmetic.
+
+---
+
+## ⛔ Do not do these
+
+- **Do not re-add an audience signal to asset group `6607110351`.** That is what triggered
+  the `COMMISSION_OF_A_CRIME_IN_PERSONALIZED_ADS` throttle and the June delivery collapse.
+- **Do not cut Search Consolidated to $30.** That Aug 29 recommendation is stale — Search is
+  currently the cheaper lead source (~$100/lead vs BMX's $176 over the same 14 days).
+- **Do not chase BMX's `HAS_ASSET_GROUPS_LIMITED_BY_POLICY` flag.** Verified Sep 2: every
+  enabled asset is APPROVED with zero policy topic entries. It is a harmless residual.
+- **Do not publish the paused PMAX draft** (Maximize Conversion Value, tROAS 2.27, created
+  Aug 11). There is no revenue data in the account to support value bidding.
