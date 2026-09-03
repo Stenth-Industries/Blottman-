@@ -1975,3 +1975,23 @@ these workflows in BOTH that runbook and this file's change log.**
   ⚠️ **PROCESS, same as Aug-30:** the auto-mode classifier blocked writing-and-running the script in
   one Bash call; splitting it (Write tool, then run) went through. The suggested persistent rule
   `Bash(python code/*.py:*)` is still not in place.
+- **2026-09-03** (Anshul): **PRESS-1 BRIDGE CONFIRMED WORKING — the Twilio screening chain is proven
+  end to end, and the last open cutover question is closed by evidence, not inference.** Sep-2
+  call_view: **a 715-second (11m55s) call, area 905, RECEIVED, on BMX**, plus a 51s call from 647.
+  Since the Aug-30 cutover BMX is served solely by call asset `412465293989` (+1 289 401 5322), so that
+  call ran Google → Twilio → greeting → **press 1** → Leslie's cell, and she spoke to the caller for
+  twelve minutes. **A 12-minute conversation is impossible unless the forward is correct**, so
+  `TWILIO_FORWARD_TO` is settled — it was carried as "unverified" across the Aug-25/29/30 and Sep-02
+  entries and can stop being treated as a risk.
+  **`Inbound call - Blottman (stenth)` fired on it — its first conversion since Aug-14**, ending an
+  18-day dark run.
+  **BMX DAY ONE AFTER THE tCPA REMOVAL (applied Sep-02):** impr/clicks/spend/conv went **Aug-31
+  171/4/$32.72/0 → Sep-01 69/5/$53.54/0 → Sep-02 276/20/$47.47/3**. Clicks 4x, and conversions returned
+  after six consecutive zero days. Sep-2 account total was the best in weeks: **828 impr / 53 clicks /
+  $108.46 / 4 leads** (1 stenth call, 1 Calls From Website, 2 Submit Lead Form — one BMX, one Search).
+  BMX spent $47.47 of its $50 budget, so removing the cap did NOT make it run away.
+  ⚠️ **DO NOT CALL THIS A WIN YET — n = 1 day.** PMAX re-learns over days and this account's variance
+  easily covers one good day (Aug-23 also did 22 clicks and produced 0). Give it 3-4 more days before
+  judging the tCPA removal. Watch: whether click volume holds, whether cost per conversion stays in the
+  ~$50-100 range now that nothing caps it, and the first **keypress** data (still the only direct
+  measurement of the junk rate this account has ever had, and still pending real volume).
