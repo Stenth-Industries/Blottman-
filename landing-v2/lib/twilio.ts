@@ -104,14 +104,42 @@ export function normalizePhone(raw: string): string {
 
 export const OFFICE_LINE = normalizePhone(process.env.TWILIO_FORWARD_TO || "+16477947750");
 
+// Call recording is OFF unless TWILIO_RECORD is set to "1". It stays behind a
+// flag because the decision is not a technical one: these are prospective
+// client calls to a licensed paralegal, the confidentiality duty is Leslie's,
+// and the audio would live in Stenth's Twilio account rather than her file.
+// The build is here so that turning it on is a one-variable change once she
+// has said yes in writing. See twilio-setup.md.
+export const RECORD_CALLS = process.env.TWILIO_RECORD === "1";
+
+const VOICE = "Polly.Joanna";
+
+// Played immediately before her line rings, so only a caller who already asked
+// for a human hears it. Putting it in the greeting instead would add three
+// seconds to every call including the ones we are trying to turn away, on a
+// flow whose whole purpose is getting a real client to a person quickly.
+const RECORDING_NOTICE = "Please note, this call may be recorded.";
+
 // Bridging TwiML, shared by the screening route and the mis-key rescue so the
 // two paths cannot drift apart. answerOnBridge keeps real ringback in the
 // caller's ear instead of silence, and the caller's own number is passed
 // through as the caller id, so her handset shows who is calling exactly as it
 // does today.
+//
+// record-from-answer-dual starts the recording at the moment she picks up, so
+// the greeting and the screening keypress are never captured, and the two
+// voices land on separate channels for anything transcribed later.
 export function dialOffice(): string {
+  const notice = RECORD_CALLS ? `<Say voice="${VOICE}">${xml(RECORDING_NOTICE)}</Say>` : "";
+  const record = RECORD_CALLS
+    ? ` record="record-from-answer-dual"` +
+      ` recordingStatusCallback="/api/voice/recording"` +
+      ` recordingStatusCallbackMethod="POST"` +
+      ` recordingStatusCallbackEvent="completed"`
+    : "";
   return (
-    `<Dial timeout="25" answerOnBridge="true" action="/api/voice/complete" method="POST">` +
+    notice +
+    `<Dial timeout="25" answerOnBridge="true" action="/api/voice/complete" method="POST"${record}>` +
     `<Number>${xml(OFFICE_LINE)}</Number>` +
     `</Dial>`
   );

@@ -40,6 +40,10 @@ export async function POST(req: NextRequest) {
     callSid: params.CallSid || "",
     from: params.From || "",
     to: params.To || "",
+    // Present only when TWILIO_RECORD is on. The recording route logs the
+    // authoritative duration once the media has finished processing.
+    recordingSid: params.RecordingSid || "",
+    recordingUrl: params.RecordingUrl || "",
   });
 
   if (status === "completed") {

@@ -2005,3 +2005,61 @@ these workflows in BOTH that runbook and this file's change log.**
   Website (the .ca number swap, newly pointed at Twilio) + 2 Submit Lead Form (1 BMX, 1 Search).
   ⚠️ Sober comparison for whoever reads this next: **Aug-10 also did 3 conv and was immediately
   followed by zeros on Aug-11, 13, 15 and 16.** One strong day is not a trend in this account.
+
+- **2026-09-05** (Anshul): **CALL RECORDING BUILT ON THE TWILIO FLOW, SHIPPED OFF.** Set
+  `TWILIO_RECORD=1` in Vercel and redeploy to turn it on; unset it to turn it off. Nothing else
+  changes and nothing is live today.
+  **⚠️ THIS REVERSES THE AUG-19 DECISION TO DROP RECORDING, and the reason matters.** That call
+  assumed the press-1/press-2 keypress already gave us the junk measurement. It does not, quite.
+  **The keypress measures who SAYS they have a ticket. It is blind to the payment or courthouse
+  caller who presses 1 anyway to reach a human, which is precisely the caller Leslie complains
+  about.** Recording is the only way to see that group, and to hear a caller's actual first words
+  against what the ad promised. The confidentiality objection from Aug-19 still stands and is
+  handled by the gates below rather than by not building it.
+  **WHAT IT DOES WHEN ON:** records from the moment **Leslie answers**
+  (`record="record-from-answer-dual"` on `<Dial>`), so the greeting and the keypress are never
+  captured, only the conversation, with the two voices on separate channels for later
+  transcription. Plays **"Please note, this call may be recorded"** to the CALLER immediately
+  before her line rings, on both the press-1 path and the mis-key rescue.
+  **DESIGN DECISION — the notice is NOT in the greeting.** Putting it there would add ~3s to every
+  call including the ones the flow exists to turn away, on a flow whose whole point is getting a
+  real client to a person quickly. In `dialOffice()` it rides the paths that are about to reach a
+  human, and a press-2 caller never hears it.
+  **PER USER (Kushagra): CALLER SIDE ONLY, no whisper on Leslie's leg.** TwiML placed before
+  `<Dial>` executes only on the inbound leg, so **she hears nothing new** and picks up straight into
+  the conversation as today. That is legally fine (Canadian one-party consent: she is a party and
+  has consented; the PIPEDA notification obligation runs to the caller, which is the leg that hears
+  it). I proposed an optional `<Number url=...>` whisper saying "Ads call, recorded" so she would
+  know before speaking that it is a paid lead. **Declined for now — do not build it without asking
+  again.**
+  New route **`/api/voice/recording`** receives the `recordingStatusCallback` and logs the recording
+  sid, URL, `RecordingDuration` and channel count. **It is its own route, not a query string on an
+  existing one, for the reason already learned on the rescue path: Twilio signs the full URL
+  including the query and `publicUrl()` rebuilds it without one, so every callback would 403.**
+  `RecordingDuration` is also the cleanest talk time available (it starts at answer, so unlike the
+  duration Google counts it excludes greeting + ringing) and is the number the 45s stenth threshold
+  should eventually be re-derived from. **The audio stays in Twilio; nothing is copied into the
+  deployment.**
+  **VERIFIED with a real `next start` on both settings:** recording ON emits the notice plus all
+  four record attributes on the press-1 and rescue paths, and the greeting is unchanged; recording
+  OFF emits **byte-for-byte the TwiML running in production today**, press-2 path untouched. Callback
+  returns 204 and logs every field. `tsc --noEmit` clean, `npm run build` clean, 18/18 routes.
+  ⚠️ **BUG I INTRODUCED AND FIXED IN THE SAME SESSION, worth knowing: `new Response("", {status:204})`
+  THROWS** — an empty string still counts as a body on a 204, so the callback returned 500 while
+  appearing to work (the log line was written before the throw). Must be `new Response(null, {status:204})`.
+  **⚠️ THREE GATES BEFORE ANYONE SETS `TWILIO_RECORD=1`, in this order:**
+  **(1) Leslie's agreement in writing.** These are prospective-client calls to a licensed paralegal;
+  the confidentiality duty is hers and the audio would sit in Stenth's Twilio account rather than in
+  her file. Her decision, not ours.
+  **(2) Lock the media URLs.** Twilio recording URLs are **unauthenticated by default** — anyone
+  holding the link can play the audio. Turn on HTTP basic auth for media URLs in the console BEFORE
+  the first recorded call, not after.
+  **(3) Decide retention.** Twilio keeps recordings until they are deleted and **there is no
+  deletion job in this repo.**
+  **RECOMMENDED SHAPE: two weeks on as a measurement, then off.** That answers "what are these
+  callers actually asking for" and leaves no standing archive of privileged conversations. A
+  permanent recording policy is a much larger commitment and should not begin by setting an
+  environment variable. Cost is noise (~1 cent per 5 minutes plus a fraction of that to store).
+  Docs: new "Call recording" section + `TWILIO_RECORD` row in `twilio-setup.md`. Files:
+  `landing-v2/lib/twilio.ts`, `app/api/voice/recording/route.ts` (new),
+  `app/api/voice/complete/route.ts`.

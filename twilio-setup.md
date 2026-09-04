@@ -73,9 +73,56 @@ console rather than trusting this line.
 | `TWILIO_FORWARD_TO` | `+16477947750` | Optional. Defaults to that number. |
 | `TWILIO_AFTER_HOURS` | `ring` or `message` | Optional, defaults to `ring`. See the open question below. |
 | `TWILIO_OPEN_HOUR` / `TWILIO_CLOSE_HOUR` | `9` / `19` | Optional, Toronto time, only consulted when the mode is `message`. |
+| `TWILIO_RECORD` | `1` to record | Optional, **off by default**. Records only the bridged conversation. Do not set it until Leslie has agreed in writing. See the section below. |
 | `CALL_LOG_WEBHOOK_URL` | n8n webhook | Optional. Without it the call events live only in Vercel's logs, which expire. Worth wiring to a Calls tab on the Lead Tracker before the measurement week starts. |
 
 Redeploy after setting them.
+
+## Call recording
+
+Built and tested, switched **off**. Setting `TWILIO_RECORD=1` in Vercel and
+redeploying turns it on; unsetting it turns it off again. Nothing else changes.
+
+What it does when on:
+
+- Records from the moment **Leslie answers**, so the greeting and the screening
+  keypress are never captured, only the conversation.
+- Plays "Please note, this call may be recorded" immediately before her line
+  rings, on both the press-1 path and the mis-key rescue. It is deliberately not
+  in the greeting: that would add three seconds to every call, including the
+  ones the flow exists to turn away.
+- Records the two voices on separate channels, which is what makes a later
+  transcription readable.
+- POSTs to `/api/voice/recording` when the audio is ready. That callback logs the
+  recording id, its URL and `RecordingDuration`. The audio itself stays in
+  Twilio; nothing is copied into this deployment.
+
+Why it is worth having: the keypress measures who **says** they have a ticket. It
+cannot see a payment or courthouse caller who presses 1 anyway to reach a human,
+and that is the caller Leslie actually complains about. Recording is the only way
+to close that gap, and to check the caller's first words against what the ad
+promised.
+
+Three things to settle before switching it on, in this order:
+
+1. **Leslie's written agreement.** These are prospective-client calls to a
+   licensed paralegal. The confidentiality duty is hers, and the audio would sit
+   in Stenth's Twilio account rather than in her file. That is her decision to
+   make, not ours, and the answer should be in writing.
+2. **Lock the media URLs.** Twilio recording URLs are unauthenticated by default:
+   anyone holding the link can play the audio. Turn on HTTP basic auth for media
+   URLs in the console before the first recorded call, not after.
+3. **Decide the retention period.** Twilio keeps recordings until they are
+   deleted. There is no deletion job in this repo. Either agree a period and
+   build one, or plan to record for a fixed window and delete the lot at the end.
+
+Recommended shape: two weeks on, as a measurement, then off. That answers "what
+are these callers actually asking for" and leaves no standing archive of
+privileged conversations. A permanent recording policy is a much bigger
+commitment and should not be started by setting an environment variable.
+
+Cost is negligible, roughly a cent per five minutes recorded plus a fraction of
+that per month to store it.
 
 ## Test before touching Google Ads
 
