@@ -2063,3 +2063,54 @@ these workflows in BOTH that runbook and this file's change log.**
   Docs: new "Call recording" section + `TWILIO_RECORD` row in `twilio-setup.md`. Files:
   `landing-v2/lib/twilio.ts`, `app/api/voice/recording/route.ts` (new),
   `app/api/voice/complete/route.ts`.
+
+- **2026-09-06** (Anshul): **BMX tCPA-REMOVAL VERDICT: WORKING. The Sep-2 change cleared the bar
+  `REMINDER.md` set for today.** Read-only, no mutations.
+  **THE NUMBERS.** Bar was "5+ conversions since the change at a CPA under ~$100."
+  **Sep 2-6: 5 conversions, $218.57, `$43.71` CPA.** Against the pre-change baseline
+  **Aug 24 - Sep 1: 2 conversions, $414.87, `$207` CPA**. Clicks went **7.7/day → 14.8/day**, so the
+  cap was throttling delivery and not just bids, exactly as the Sep-2 entry argued. Daily conv:
+  Sep 2 = 3, Sep 3 = 1, Sep 4 = 1, Sep 5 = 0, Sep 6 = 0 (partial, ~3h reporting lag).
+  ⚠️ **Sober framing: n = 5 days and Sep 5 was a zero for BOTH campaigns.** The Aug-10 precedent
+  (3 conv then four zeros) has NOT been fully escaped. Verdict is "keep it off and stop watching
+  daily", not "solved forever". **If BMX runs 4+ consecutive zero days, the next lever is the
+  conversion-goal mix, NOT reintroducing a target** — the signal it would be calibrated against
+  (stenth calls) is no longer where BMX converts.
+  **⚠️ THE ROLES SWAPPED BACK, SO TWO STANDING RECOMMENDATIONS ARE NOW STALE.** Since Sep 2:
+  **BMX 5 conv / $218.57 = $43.71** vs **Search 2 conv / $206.20 = $103.10**. Over the full 14d they
+  are near parity (BMX $90.49, Search $84.34). The Aug-29 "cut Search to $30" and the Sep-2 "Search
+  is the cheaper source" reads have now BOTH flipped inside a week. **At n=7-8 conversions per
+  campaign these rankings are noise. Do not move budget on them.** Both stay at $50/day.
+  **UNLOGGED CHANGE FOUND (small, sensible, logging it now): ad group `Fail to Stop`
+  (`197764410413`) on Search Consolidated was PAUSED on Sep-2 06:01:02**, 42 seconds before the
+  tCPA clear, so same session, deliberate, just never written down. It is the ad group Aug-29
+  flagged as $252.26 / 147 clicks / 30d / zero conversions. Correct call. Nine ad groups remain
+  ENABLED. No other account change since Aug 29.
+  **SEARCH-TERM HYGIENE IS HOLDING — the best reading this account has had.** Last 7d paid terms:
+  **$140.40 total, $3.70 (2.6%) matching the junk pattern**, and that one is `without insurance car
+  fine`, which is offence-intent rather than a payment portal. Zero court, parking, docket, lookup,
+  legal-aid or competitor terms bought a click. Top spend is all charge intent (`stunt driving
+  ontario`, `disobey stop sign`, `careless driving charge`). The Jul-17 AI-Max removal plus the
+  accumulated 141-keyword Master Negatives list are doing their job; the courthouse/parking
+  complaint driver is measurably gone from Search.
+  **CALLS.** 7d = 2 stenth conversions, 1 Calls From Website, 8 Submit Lead Form, 2 Contact Us.
+  Best recent call: **170s, area 647, Sep 4, on BMX** — through the Twilio press-1 gate. Also a 27s
+  from **819 (Gatineau QC)**, out of province, which no negative can fence on PMAX. Note Contact Us
+  logged **2** after being extinct since Aug-13; still `include_in_conversions_metric=False`, so it
+  is observe-only noise, not a signal. Do not quote it to Leslie.
+  **⚠️ NEEDS A HUMAN ANSWER: `TWILIO_RECORD` NOW EXISTS IN VERCEL PRODUCTION (created ~Sep 4) AND
+  ITS VALUE CANNOT BE READ FROM HERE.** `vercel env pull` returns it as `[SENSITIVE]`, and without
+  the auth token (also `[SENSITIVE]`) a signed probe of `/api/voice/screen` cannot be built either,
+  so there is no way from this machine to tell whether recording is ON. Code default is off
+  (`RECORD_CALLS = process.env.TWILIO_RECORD === "1"`, `landing-v2/lib/twilio.ts:113`), so any
+  value other than exactly `1` is safe. **The Sep-5 entry put three gates in front of turning this
+  on and none of them are technical: (1) Leslie's agreement in writing, (2) HTTP basic auth on
+  Twilio media URLs BEFORE the first recorded call — Twilio recording URLs are unauthenticated by
+  default, (3) a retention decision, since nothing in this repo deletes recordings.** If the value
+  is `1` and those gates were not cleared, prospective-client calls to a licensed paralegal are
+  being recorded into Stenth's Twilio account. **Check the value in the Vercel dashboard, or look
+  for recordings in the Twilio console.**
+  **STILL OPEN, unchanged:** keypress data (cannot be read from here — `vercel logs` only reaches a
+  recent window, so the junk-rate measurement still needs a session that catches live volume or a
+  log sink); retention capture / `Retained?`; brand creative; the old 647 number still published on
+  Google Business Profile and blottman.com.

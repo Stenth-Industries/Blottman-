@@ -8,33 +8,37 @@
 
 ---
 
-## 🔴 Friday 2026-09-04 — BMX Target CPA verdict
+## ✅ CLOSED 2026-09-06 — BMX Target CPA verdict: WORKING
 
-On **Sep 2** the $95 Target CPA was removed from **PMAX - Blottman Max** (`22979153470`),
-leaving plain Maximize Conversions. Day one looked strong, but one day proves nothing in
-this account.
+Removing the $95 Target CPA from **PMAX - Blottman Max** (`22979153470`) on Sep 2 cleared the
+bar this file set: **5 conversions, $218.57, $43.71 CPA (Sep 2-6)**, against **2 conversions,
+$414.87, $207 CPA** over the nine days before. Clicks went 7.7/day to 14.8/day.
 
-**Run:** `python code/leads.py` and `python code/campaign_status.py`
+Leave it alone. Stop checking daily. Full numbers and caveats in `CLAUDE.md`.
 
-**The question:** has BMX held its volume, or was Sep 2 an outlier?
+**The one thing that would reopen this:** BMX running **4+ consecutive zero-conversion days**.
+Sep 5 was already a zero, and n is only 5 days. If it happens, the next lever is the
+**conversion-goal mix, NOT a new Target CPA** — the signal $95 was calibrated against
+(stenth calls) is no longer where BMX converts.
 
-| Read | Verdict |
-|---|---|
-| BMX holding **~15-20 clicks/day** and converting most days | Working. Leave it alone. |
-| BMX back to **~5 clicks/day and zeros** | Sep 2 was noise. Next lever is the **conversion-goal mix**, not bidding. |
+---
 
-**Baselines to compare against:**
-- BMX Aug 18-31: **$705.21 / 4 conv = $176.30 CPA**, including 6 consecutive zero days.
-- BMX Sep 2: **276 impr / 20 clicks / $47.47 / 3 conv = $15.82 CPA**.
-- Account Sep 2: 828 impr / 53 clicks / $108.46 / **4 conv @ $27.12** — best day in 30
-  days on both count and cost, and phantom-free (`all_conversions == conversions`).
+## 🔴 Someone has to read this value — `TWILIO_RECORD`
 
-⚠️ **Friday is only 2 days post-change.** It can catch a collapse but cannot confirm a fix.
-**The real checkpoint is Sun 2026-09-06 / Mon 2026-09-07**: if BMX has logged **5+ conversions
-since the change at a CPA under ~$100**, call it fixed. Precedent for caution: Aug 10 also did
-3 conversions and was followed by zeros on Aug 11, 13, 15 and 16.
+A `TWILIO_RECORD` variable now exists in **Vercel Production** on landing-v2, created ~Sep 4.
+**Its value cannot be read from Claude Code** (`vercel env pull` returns `[SENSITIVE]`).
 
-To act: open Claude Code in `E:\Blottman-law` and say *"check BMX."*
+Recording is off unless the value is exactly `1`. If it *is* `1`, these three gates from the
+Sep-5 build were supposed to come first, and none of them are technical:
+
+1. **Leslie's agreement in writing.** These are prospective-client calls to a licensed
+   paralegal. The confidentiality duty is hers; the audio sits in Stenth's Twilio account.
+2. **HTTP basic auth on Twilio media URLs**, set *before* the first recorded call. Twilio
+   recording URLs are unauthenticated by default — anyone with the link can play the audio.
+3. **A retention decision.** Nothing in this repo deletes recordings.
+
+**To check:** open the value in the Vercel dashboard, or look for recordings in the Twilio
+console. If it is on and the gates were not cleared, set it to `0` and redeploy.
 
 ---
 
@@ -68,8 +72,9 @@ To act: open Claude Code in `E:\Blottman-law` and say *"check BMX."*
 
 - **Do not re-add an audience signal to asset group `6607110351`.** That is what triggered
   the `COMMISSION_OF_A_CRIME_IN_PERSONALIZED_ADS` throttle and the June delivery collapse.
-- **Do not cut Search Consolidated to $30.** That Aug 29 recommendation is stale — Search is
-  currently the cheaper lead source (~$100/lead vs BMX's $176 over the same 14 days).
+- **Do not move budget between BMX and Search on a weekly CPA read.** Which one looks cheaper
+  has now flipped twice in eight days (Aug 29: BMX $176 vs Search $100; Sep 6: BMX $44 vs
+  Search $103). At 7-8 conversions per campaign that ranking is noise. Both stay at $50/day.
 - **Do not chase BMX's `HAS_ASSET_GROUPS_LIMITED_BY_POLICY` flag.** Verified Sep 2: every
   enabled asset is APPROVED with zero policy topic entries. It is a harmless residual.
 - **Do not publish the paused PMAX draft** (Maximize Conversion Value, tROAS 2.27, created
