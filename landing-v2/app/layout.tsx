@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Anton, Poppins } from "next/font/google";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import MotionProvider from "@/components/MotionProvider";
 import { PHONE_TEL, PHONE_DISPLAY, GOOGLE_RATING } from "@/lib/content";
 import "./globals.css";
@@ -94,6 +95,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd) }}
         />
         <MotionProvider>{children}</MotionProvider>
+        <Analytics />
         {GADS_ID && (
           <>
             <Script src={`https://www.googletagmanager.com/gtag/js?id=${GADS_ID}`} strategy="afterInteractive" />
