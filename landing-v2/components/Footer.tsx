@@ -46,6 +46,20 @@ export default function Footer() {
             <p className="text-white/40">© {year} {BUSINESS_NAME}. All rights reserved.</p>
           </div>
         </div>
+
+        <div className="mt-8 border-t border-white/10 pt-6 text-center">
+          <p className="text-[12px] tracking-wide text-white/40">
+            Designed by{" "}
+            <a
+              href="https://stenth.com"
+              target="_blank"
+              rel="noopener"
+              className="font-semibold text-white/70 transition-colors hover:text-gold"
+            >
+              Stenth
+            </a>
+          </p>
+        </div>
       </div>
     </footer>
   );
